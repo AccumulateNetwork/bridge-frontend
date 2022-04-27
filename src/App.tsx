@@ -2,35 +2,26 @@ import * as React from "react"
 import {
   ChakraProvider,
   Box,
-  Text,
-  Link,
   VStack,
-  Code,
   Grid,
   theme,
 } from "@chakra-ui/react"
-import { ColorModeSwitcher } from "./ColorModeSwitcher"
-import { Logo } from "./Logo"
+import { Navbar } from "./Navbar"
+const appName = "Bridge"
 
 export const App = () => (
   <ChakraProvider theme={theme}>
     <Box textAlign="center" fontSize="xl">
       <Grid minH="100vh" p={3}>
-        <ColorModeSwitcher justifySelf="flex-end" />
-        <VStack spacing={8}>
-          <Logo h="40vmin" pointerEvents="none" />
-          <Text>
-            Edit <Code fontSize="xl">src/App.tsx</Code> and save to reload.
-          </Text>
-          <Link
-            color="teal.500"
-            href="https://chakra-ui.com"
-            fontSize="2xl"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn Chakra
-          </Link>
+        <Navbar appName = { appName }/>
+        <VStack spacing={10}>
+        <Box padding='4' bg='blue.400' color='black' maxW='md'>
+          Select an asset and description chain, to begin or resume a mint
+        </Box>
+        <Box padding='4' bg='blue.400' color='black' maxW='md'>
+           Send select 
+           Destination select
+        </Box>
         </VStack>
       </Grid>
     </Box>
