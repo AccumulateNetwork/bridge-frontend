@@ -3,13 +3,12 @@ import {
   ChakraProvider,
   Box,
   VStack,
-  Grid,
   SimpleGrid,
 } from "@chakra-ui/react"
 
 import theme  from "./theme"
 import { Navbar } from "./Navbar"
-import Card from "./Card"
+import { Card } from "./Card"
 const appName = "Accumulate Bridge"
 
 export const App = () => (
@@ -18,7 +17,7 @@ export const App = () => (
       <SimpleGrid minH="10vh" p={3} spacing="50px">
         <Navbar appName = { appName }/>   
         <VStack>
-        <Card key="id"/>
+        <Card/>
         </VStack>
       </SimpleGrid>
     </Box>

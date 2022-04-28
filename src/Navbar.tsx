@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import {
   Flex,
   Box,
@@ -8,7 +8,6 @@ import {
   IconProps
 } from '@chakra-ui/react'
 import { Logo } from './Logo'
-import { FaFacebook } from 'react-icons/fa'
 
 interface NavbarProps {
   appName: string
