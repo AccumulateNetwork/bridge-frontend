@@ -10,7 +10,6 @@ const styles: Styles = {
 };
 
 const theme = extendTheme({
- 
   styles
 })
 export default theme

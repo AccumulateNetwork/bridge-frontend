@@ -9,7 +9,7 @@ import {
 
 import theme  from "./theme"
 import { Navbar } from "./Navbar"
-import Card from "./card"
+import Card from "./Card"
 const appName = "Accumulate Bridge"
 
 export const App = () => (
