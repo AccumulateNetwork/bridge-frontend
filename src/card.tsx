@@ -16,6 +16,11 @@ interface CardProps {
 }
 
 export const Card: FC<CardProps> = (props) => {
+  const tab1Names = ['Mint', 'Minting'];
+  const tab2Names = ['Release', 'Releasing'];
+  const [tabIndex, setTabIndex] = React.useState(0);
+  const tab1Name = tabIndex == 0 ? tab1Names[1] : tab1Names[0];
+  const tab2Name = tabIndex == 0 ? tab2Names[0] : tab2Names[1];
   return (
     <Box
       display={{ md: "flex" }}
@@ -26,10 +31,10 @@ export const Card: FC<CardProps> = (props) => {
       borderRadius='20px'
       bg='white'
     >
-        <Tabs isFitted variant='unstyled'>
+        <Tabs isFitted variant='unstyled' onChange={(index) => setTabIndex(index)}>
         <TabList>
-          <Tab>Mint</Tab>
-          <Tab>Release</Tab>  
+          <Tab>{ tab1Name }</Tab>
+          <Tab>{ tab2Name}</Tab>  
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -38,7 +43,7 @@ export const Card: FC<CardProps> = (props) => {
                   <Box maxW='md' mb={5}>
                     Select an asset and description chain, to begin or resume a mint.
                   </Box>
-                  <Select placeholder='Send' borderRadius='15px' size='lg'>
+                  <Select  placeholder='Send' borderRadius='15px' size='lg'>
                     <option value='option1'>Option 1</option>
                     <option value='option2'>Option 2</option>
                     <option value='option3'>Option 3</option>

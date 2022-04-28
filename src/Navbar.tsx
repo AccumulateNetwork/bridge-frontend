@@ -4,23 +4,13 @@ import {
   Box,
   Spacer,
   Button,
-  Icon,
-  IconProps
 } from '@chakra-ui/react'
 import { Logo } from './Logo'
+import { CircleIcon } from './CircleIcon'
 
 interface NavbarProps {
   appName: string
 }
-
-const CircleIcon: FC<IconProps> = (props) => (
-  <Icon viewBox='0 0 200 200' {...props}>
-    <path
-      fill='currentColor'
-      d='M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0'
-    />
-  </Icon>
-)
 
 export const Navbar: FC<NavbarProps> = (props) => {
     return (
