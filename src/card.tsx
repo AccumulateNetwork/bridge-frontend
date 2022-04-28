@@ -74,7 +74,7 @@ export const Card: FC<CardProps> = (props) => {
             <Box padding='6'>
               <VStack borderRadius='15px'> 
                 <Input 
-                  placeholder='0AcmeBTC' 
+                  placeholder='0 acmeBTC' 
                   type='text'
                   border={0} 
                   fontSize='52px' 
@@ -91,9 +91,21 @@ export const Card: FC<CardProps> = (props) => {
                   <option value='option1'>Option 1</option>
                   <option value='option2'>Option 2</option>
                   <option value='option3'>Option 3</option>
-                </Select>   
+                </Select>
               </VStack>
             </Box>
+            <Box padding='6'>
+              <Input 
+                    placeholder='Enter a Destination Address' 
+                    type='text'
+                    borderRadius='15px' 
+                    fontSize='12px' 
+                   
+                    size='lg'
+                    textAlign={"center"}
+                  />   
+            </Box>
+            
             <Divider my='20px'/>
             <Box padding='6'>
               <Button 
