@@ -10,6 +10,13 @@ const styles: Styles = {
 };
 
 const theme = extendTheme({
-  styles
+  styles,
+  layerStyles: {
+    base: {
+      bg: 'blue.50',
+      border: '10px solid',
+      borderColor: 'red.500',
+    }
+  }
 })
 export default theme
