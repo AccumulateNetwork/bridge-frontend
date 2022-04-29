@@ -44,12 +44,12 @@ export const Card: FC<CardProps> = (props) => {
                 <Box mb={5} fontSize={16}>
                   Select an asset and description chain, to begin or resume a mint.
                 </Box>
-                <Select fontSize= {14} placeholder='Send' borderRadius='15px' size='lg'>
+                <Select isDisabled fontSize= {14} placeholder='Send' borderRadius='15px' size='lg'>
                   <option value='option1'>Option 1</option>
                   <option value='option2'>Option 2</option>
                   <option value='option3'>Option 3</option>
                 </Select>
-                <Select fontSize= {14} placeholder='Destination' borderRadius='15px' size='lg'>
+                <Select isDisabled fontSize= {14} placeholder='Destination' borderRadius='15px' size='lg'>
                   <option value='option1'>Option 1</option>
                   <option value='option2'>Option 2</option>
                   <option value='option3'>Option 3</option>
@@ -58,7 +58,7 @@ export const Card: FC<CardProps> = (props) => {
             </Box>
             <Divider my='20px'/>
             <Box padding='6'>
-              <Button 
+              <Button  isDisabled
                 colorScheme='blue' 
                 bg='#006FE8' 
                 w='100%' 
@@ -82,12 +82,12 @@ export const Card: FC<CardProps> = (props) => {
                   size='lg'
                   textAlign={"center"}
                 />
-                <Select fontSize= {14} placeholder='Send' borderRadius='15px' size='lg'>
+                <Select isDisabled fontSize= {14} placeholder='Send' borderRadius='15px' size='lg'>
                   <option value='option1'>Option 1</option>
                   <option value='option2'>Option 2</option>
                   <option value='option3'>Option 3</option>
                 </Select>
-                <Select fontSize= {14} placeholder='Destination' borderRadius='15px' size='lg'>
+                <Select isDisabled fontSize= {14} placeholder='Destination' borderRadius='15px' size='lg'>
                   <option value='option1'>Option 1</option>
                   <option value='option2'>Option 2</option>
                   <option value='option3'>Option 3</option>
@@ -96,19 +96,20 @@ export const Card: FC<CardProps> = (props) => {
             </Box>
             <Box padding='6'>
               <Input 
-                    placeholder='Enter a Destination Address' 
-                    type='text'
-                    borderRadius='15px' 
-                    fontSize='12px' 
-                   
-                    size='lg'
-                    textAlign={"center"}
+                isDisabled
+                placeholder='Enter a Destination Address' 
+                type='text'
+                borderRadius='15px' 
+                fontSize='12px' 
+                
+                size='lg'
+                textAlign={"center"}
                   />   
             </Box>
             
             <Divider my='20px'/>
             <Box padding='6'>
-              <Button 
+              <Button isDisabled
                 colorScheme='blue' 
                 bg='#006FE8' 
                 w='100%' 
