@@ -8,7 +8,7 @@ import {
 
 import theme  from "./theme"
 import { Navbar } from "./Navbar"
-import { Card } from "./Card"
+import { Card } from "./card"
 import { Footer } from "./Footer"
 const appName = "Accumulate Bridge"
 
