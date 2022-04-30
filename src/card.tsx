@@ -10,8 +10,7 @@ import {
   TabPanel,
   Select,
   Divider,
-  Input,
-  Center
+  Input
 } from "@chakra-ui/react";
 
 interface CardProps {
