@@ -4,11 +4,22 @@ import ReactDOM from "react-dom"
 import { App } from "./App"
 import reportWebVitals from "./reportWebVitals"
 import * as serviceWorker from "./serviceWorker"
+import { ethers } from "ethers";
+import { Web3ReactProvider } from "@web3-react/core"
+
+
+const getLibrary = (provider: any) => {
+  const library = new ethers.providers.Web3Provider(provider);
+  library.pollingInterval = 8000; // frequency provider is polling
+  return library;
+};
 
 ReactDOM.render(
   <React.StrictMode>
+     <Web3ReactProvider getLibrary={getLibrary}>
     <ColorModeScript />
     <App />
+    </Web3ReactProvider>
   </React.StrictMode>,
   document.getElementById("root"),
 )
