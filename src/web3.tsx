@@ -17,8 +17,6 @@ import { networkParams } from "./networks";
 import { connectors } from "./connectors";
 import { toHex, truncateAddress } from "./utils";
 
-
-
 export default function Home() {
     
   const { isOpen, onOpen, onClose } = useDisclosure();

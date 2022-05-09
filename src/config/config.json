@@ -7,9 +7,9 @@
           "symbol": "symbol",
           "logo": "logo",
           "ethTokenAddress": "ethTokenAddress",
-          "ethDecimals": "ethDecimals",
+          "ethDecimals": 7,
           "accTokenAddress": "accTokenAddress",
-          "accDecimals": "accDecimals",
+          "accDecimals": 7,
           "accDepositAddress": "accDepositAddress",
           "bridgeContract": "bridgeContract"
         }
