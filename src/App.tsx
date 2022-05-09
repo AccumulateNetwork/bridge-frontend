@@ -13,6 +13,8 @@ import { Card } from "./card"
 import { Footer } from "./Footer"
 import { Web3ReactProvider } from "@web3-react/core"
 
+import { config }  from './config/config';
+
 const appName = "Accumulate Bridge"
 
 
@@ -25,6 +27,7 @@ const getLibrary = (provider: any) => {
 export const App = () => (
   <ChakraProvider theme={theme}>
       <Web3ReactProvider getLibrary={getLibrary}>
+        <Box>{config.ethNetworks.toString()}</Box>
         <Box textAlign="center" fontSize="xl">
         <SimpleGrid minH="10vh" p={3} spacing="50px" ml='auto' mr='auto' maxW='1280px'>
           <Navbar appName = { appName }/>   
@@ -34,8 +37,6 @@ export const App = () => (
           <Footer/>
         </SimpleGrid>
       </Box>
-
-
       </Web3ReactProvider>
   </ChakraProvider>
 )

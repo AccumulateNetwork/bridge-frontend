@@ -1,0 +1,24 @@
+{
+  "ethNetworks": [
+    {
+      "chainId": 1337,
+      "tokens": [
+        {
+          "symbol": "symbol",
+          "logo": "logo",
+          "ethTokenAddress": "ethTokenAddress",
+          "ethDecimals": "ethDecimals",
+          "accTokenAddress": "accTokenAddress",
+          "accDecimals": "accDecimals",
+          "accDepositAddress": "accDepositAddress",
+          "bridgeContract": "bridgeContract"
+        }
+      ],
+      "bridgeContract": "bridgeContract",
+      "explorers": {
+        "ethExplorer": "ethExplorer",
+        "accExplorer": "accExplorer"
+      }
+    }
+  ]
+}

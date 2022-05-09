@@ -62,4 +62,3 @@ export default function SelectWalletModal({ isOpen, closeModal } : any) {
     </Modal>
   );
 }
-
