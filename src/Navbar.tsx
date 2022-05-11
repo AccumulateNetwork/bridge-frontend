@@ -19,11 +19,9 @@ import { connectors } from "./connectors";
 import { disconnect } from 'process';
 import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 
-interface NavbarProps {
-  appName: string
-}
+import { config }  from './config/config';
 
-export const Navbar: FC<NavbarProps> = (props) => {
+export const Navbar: FC = () => {
   const { 
     activate, 
     deactivate, 
@@ -66,12 +64,11 @@ export const Navbar: FC<NavbarProps> = (props) => {
       activate(connectors[provider]);
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
   return (
     <Flex>
       <Logo w='40px' mx = '10px'/>
     <Box>
-      { props.appName }
+      { config.appName }
     </Box>
     <Spacer/>
     <Box>

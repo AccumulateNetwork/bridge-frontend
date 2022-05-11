@@ -22,5 +22,6 @@ export interface EthNetwork {
 }
 
 export interface Config {
-  ethNetworks: EthNetwork[]
+  appName: string;
+  ethNetworks: EthNetwork[];
 }
