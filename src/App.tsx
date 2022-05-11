@@ -13,8 +13,6 @@ import { Card } from "./Card"
 import { Footer } from "./Footer"
 import { Web3ReactProvider } from "@web3-react/core"
 
-import { config }  from './config/config';
-
 const getLibrary = (provider: any) => {
   const library = new ethers.providers.Web3Provider(provider);
   library.pollingInterval = 8000; // frequency provider is polling
