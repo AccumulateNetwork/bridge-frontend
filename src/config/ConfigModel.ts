@@ -23,5 +23,7 @@ export interface EthNetwork {
 
 export interface Config {
   appName: string;
+  tab1Names: string [];
+  tab2Names: string [];
   ethNetworks: EthNetwork[];
 }

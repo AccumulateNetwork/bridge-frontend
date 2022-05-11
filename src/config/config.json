@@ -1,4 +1,6 @@
 { "appName": "Accumulate Bridge",
+  "tab1Names": ["Mint", "Minting"],
+  "tab2Names": ["Release", "Releasing"],
   "ethNetworks": [
     
     {
