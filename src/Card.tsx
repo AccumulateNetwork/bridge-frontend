@@ -13,12 +13,11 @@ import {
   Input
 } from "@chakra-ui/react";
 
-interface CardProps {
-}
+import { config } from './config/config'
 
-export const Card: FC<CardProps> = (props) => {
-  const tab1Names = ['Mint', 'Minting'];
-  const tab2Names = ['Release', 'Releasing'];
+export const Card: FC = () => {
+  const tab1Names = config.tab1Names;
+  const tab2Names = config.tab2Names;
   const [tabIndex, setTabIndex] = React.useState(0);
   const tab1Name = tabIndex === 0 ? tab1Names[1] : tab1Names[0];
   const tab2Name = tabIndex === 0 ? tab2Names[0] : tab2Names[1];
