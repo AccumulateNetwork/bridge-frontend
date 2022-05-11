@@ -11,15 +11,17 @@ import {
   MenuDivider,
   MenuList,
   MenuItem,
+  useDisclosure,
 } from '@chakra-ui/react'
 import { useWeb3React } from "@web3-react/core";
 import { Logo } from './Logo'
 import { CircleIcon } from './CircleIcon'
 import { connectors } from "./connectors";
-import { disconnect } from 'process';
 import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 
 import { config }  from './config/config';
+import SelectWalletModal from './Modal';
+import { truncateAddress } from './utils';
 
 export const Navbar: FC = () => {
   const { 
@@ -28,8 +30,9 @@ export const Navbar: FC = () => {
     active, 
     account, 
     chainId, 
-    error
   } = useWeb3React();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   // TODO don't forget
   const explorerURL = '';
@@ -43,11 +46,6 @@ export const Navbar: FC = () => {
     window.localStorage.setItem("provider", type);
   }
   
-  const connect = () => {
-    activate(connectors.injected);
-    setProvider("injected");
-  }
-
   const disconnect = () => {
     refreshState();
     deactivate();
@@ -73,7 +71,7 @@ export const Navbar: FC = () => {
     <Spacer/>
     <Box>
     {!active ? (
-      <Button bg='white' variant='ghost' fontSize='xl' borderRadius='20' onClick={() => connect()}
+      <Button bg='white' variant='ghost' fontSize='xl' borderRadius='20' onClick={onOpen}
       leftIcon={
         <CircleIcon boxSize={3} color='red.500' />
       }>
@@ -104,7 +102,8 @@ export const Navbar: FC = () => {
               </Link>
             </Tooltip>
           }
-        {/* <Menu>
+        {account ? (
+          <Menu>
           <MenuButton as={Button} size='lg' colorScheme='gray' mb={3} ml={3} leftIcon={<CircleIcon color='#48BB78' />}>{account ? truncateAddress(account) : "Connected"}</MenuButton>
           <MenuList className="address-menu">
             <MenuItem onClick={() => {navigator.clipboard.writeText(account)}}><CopyIcon />Copy address</MenuItem>
@@ -115,10 +114,13 @@ export const Navbar: FC = () => {
             <MenuDivider />
             <MenuItem onClick={() => disconnect()}>Disconnect</MenuItem>
           </MenuList>
-        </Menu> */}
+        </Menu>
+        ) : null
+        }  
       </div>
     }
     </Box>
+    <SelectWalletModal isOpen={isOpen} closeModal={onClose} />
   </Flex>
   ) 
 }

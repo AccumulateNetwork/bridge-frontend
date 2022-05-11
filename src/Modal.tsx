@@ -21,9 +21,16 @@ export default function SelectWalletModal({ isOpen, closeModal } : any) {
     window.localStorage.setItem("provider", type);
     
   }
-  const connect = () => {
+  const connectMetamask = () => {
     activate(connectors.injected);
     setProvider("injected");
+  }
+
+  const connectWalletConnect = () => {
+    activate(connectors.walletConnect, (error: Error) => {
+      console.log(error);
+    });
+    setProvider("walletConnect");
   }
   return (
     <Modal isOpen={isOpen} onClose={closeModal} isCentered>
@@ -40,7 +47,7 @@ export default function SelectWalletModal({ isOpen, closeModal } : any) {
             <Button
               variant="outline"
               onClick={() => {
-                connect();
+                connectMetamask();
                 closeModal();
               }}
               w="100%"
@@ -54,6 +61,25 @@ export default function SelectWalletModal({ isOpen, closeModal } : any) {
                   borderRadius="3px"
                 />
                 <Text>Metamask</Text>
+              </HStack>
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => {
+                connectWalletConnect();
+                closeModal();
+              }}
+              w="100%"
+            >
+              <HStack w="100%" justifyContent="center">
+                <Image
+                  src="/wc.png"
+                  alt="Wallet Connect Logo"
+                  width={26}
+                  height={26}
+                  borderRadius="3px"
+                />
+                <Text>Wallet Connect</Text>
               </HStack>
             </Button>
           </VStack>
