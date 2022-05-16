@@ -21,7 +21,10 @@ import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 
 import { config }  from './config/config';
 import SelectWalletModal from './Modal';
-import { truncateAddress } from './utils';
+import { toHex, truncateAddress, web3BNToFloatString } from './utils';
+import WACMEERC20ABI from './WACME-ABI.json'
+import Web3 from 'web3';
+import BigNumber from 'bignumber.js';
 
 export const Navbar: FC = () => {
   const { 
@@ -30,14 +33,16 @@ export const Navbar: FC = () => {
     active, 
     account, 
     chainId, 
+    library
   } = useWeb3React();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const [balance, setBalance]= useState("");
+
   // TODO don't forget
   const explorerURL = '';
   const tokenContract = '';
-  const balance2 = '';
   const symbol = '';
   
   const [appError, setAppError] = useState("");
@@ -55,6 +60,26 @@ export const Navbar: FC = () => {
     setAppError("");
     window.localStorage.removeItem("provider");
   };
+
+  const getContract = (library: any, abi: any, address: string) => {
+    const web3 = new Web3(library.provider);
+  return new web3.eth.Contract(abi, address)
+  }
+
+  const getBalance = (tokenAddress: string) => {
+    const contract = getContract(library, WACMEERC20ABI, tokenAddress);
+    contract.methods.balanceOf(account).call().then((_balance: number) => {
+      console.log(_balance)
+       const pow = new BigNumber('10').pow(new BigNumber(8));
+       setBalance(web3BNToFloatString(_balance, pow, 18, BigNumber.ROUND_DOWN));
+     })
+ }
+
+  useEffect(() => {
+    if (account) {
+      getBalance('0x3Cc66102c9155A6F6AC8dD8d8885eBbf1bF56035');
+    }
+  }, [account, chainId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const provider = window.localStorage.getItem("provider");
@@ -94,7 +119,7 @@ export const Navbar: FC = () => {
           null
         }
           {explorerURL === "" ? (
-            <Button size='lg' colorScheme='gray' variant='outline' mb={3} ml={3}>{balance2} {symbol}</Button>
+            <Button size='lg' colorScheme='gray' variant='outline' mb={3} ml={3}>{balance} {symbol}</Button>
           ) :
             <Tooltip label='View in explorer' fontSize='md'>
               <Link href={explorerURL + '/token/' + tokenContract + '?a=' + account} isExternal>
