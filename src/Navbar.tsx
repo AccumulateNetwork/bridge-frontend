@@ -36,6 +36,7 @@ export const Navbar: FC = () => {
     library
   } = useWeb3React();
 
+  const tokenAddress = '0x3Cc66102c9155A6F6AC8dD8d8885eBbf1bF5603x5';
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [balance, setBalance]= useState("");
@@ -70,7 +71,7 @@ export const Navbar: FC = () => {
 
   useEffect(() => {
     if (account) {
-      getBalance('0x3Cc66102c9155A6F6AC8dD8d8885eBbf1bF5603x5');
+      getBalance(tokenAddress);
     }
   }, [account, chainId]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -138,7 +139,7 @@ export const Navbar: FC = () => {
       </div>
     }
     </Box>
-    <SelectWalletModal isOpen={isOpen} closeModal={onClose} />
+    <SelectWalletModal  isOpen={isOpen} closeModal={onClose} />
   </Flex>
   ) 
 }
