@@ -2,7 +2,6 @@
   "tab1Names": ["Mint", "Minting"],
   "tab2Names": ["Release", "Releasing"],
   "ethNetworks": [
-    
     {
       "chainId": 1337,
       "tokens": [
@@ -11,7 +10,7 @@
           "logo": "logo",
           "ethTokenAddress": "ethTokenAddress",
           "ethDecimals": 7,
-          "accTokenAddress": "accTokenAddress",
+          "accTokenAddress": "bridge.acme/ACME",
           "accDecimals": 7,
           "accDepositAddress": "accDepositAddress",
           "bridgeContract": "bridgeContract"

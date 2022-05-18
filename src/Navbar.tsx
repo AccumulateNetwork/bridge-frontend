@@ -21,7 +21,7 @@ import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 
 import { config }  from './config/config';
 import SelectWalletModal from './Modal';
-import { toHex, truncateAddress, web3BNToFloatString } from './utils';
+import { truncateAddress, web3BNToFloatString } from './utils';
 import WACMEERC20ABI from './WACME-ABI.json'
 import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
@@ -45,19 +45,12 @@ export const Navbar: FC = () => {
   const tokenContract = '';
   const symbol = '';
   
-  const [appError, setAppError] = useState("");
-
-  const setProvider = (type: string) => {
-    window.localStorage.setItem("provider", type);
-  }
-  
   const disconnect = () => {
     refreshState();
     deactivate();
   }
 
   const refreshState = () => {
-    setAppError("");
     window.localStorage.removeItem("provider");
   };
 
@@ -77,7 +70,7 @@ export const Navbar: FC = () => {
 
   useEffect(() => {
     if (account) {
-      getBalance('0x3Cc66102c9155A6F6AC8dD8d8885eBbf1bF56035');
+      getBalance('0x3Cc66102c9155A6F6AC8dD8d8885eBbf1bF5603x5');
     }
   }, [account, chainId]); // eslint-disable-line react-hooks/exhaustive-deps
 
