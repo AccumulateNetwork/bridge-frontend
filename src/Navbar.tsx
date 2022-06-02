@@ -80,11 +80,14 @@ export const Navbar: FC = () => {
        const pow = new BigNumber('10').pow(new BigNumber(8));
        setBalance(web3BNToFloatString(_balance, pow, 18, BigNumber.ROUND_DOWN));
      }).catch((e: Error) => {
-       console.log(e);
+      toast(e.message);
      })
  }
 
   useEffect(() => {
+    if (error) {
+      toast(error);
+    }
     if (account) {
       getBalance(tokenAddress);
     }
