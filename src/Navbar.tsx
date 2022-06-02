@@ -12,6 +12,10 @@ import {
   MenuList,
   MenuItem,
   useDisclosure,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
 } from '@chakra-ui/react'
 import { useWeb3React } from "@web3-react/core";
 import { Logo } from './Logo'
@@ -25,6 +29,7 @@ import { truncateAddress, web3BNToFloatString } from './utils';
 import WACMEERC20ABI from './WACME-ABI.json'
 import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
+import { toast } from 'react-toastify';
 
 export const Navbar: FC = () => {
   const { 
@@ -33,7 +38,8 @@ export const Navbar: FC = () => {
     active, 
     account, 
     chainId, 
-    library
+    library,
+    error
   } = useWeb3React();
 
   const tokenAddress = '0x3Cc66102c9155A6F6AC8dD8d8885eBbf1bF5603x5';
@@ -57,15 +63,24 @@ export const Navbar: FC = () => {
 
   const getContract = (library: any, abi: any, address: string) => {
     const web3 = new Web3(library.provider);
-  return new web3.eth.Contract(abi, address)
+    let contract;
+    try {
+      contract = new web3.eth.Contract(abi, address);
+    } catch(e:any){
+       toast(e.message);
+     
+  }
+  return contract;
   }
 
   const getBalance = (tokenAddress: string) => {
     const contract = getContract(library, WACMEERC20ABI, tokenAddress);
-    contract.methods.balanceOf(account).call().then((_balance: number) => {
+    contract?.methods.balanceOf(account).call().then((_balance: number) => {
       console.log(_balance)
        const pow = new BigNumber('10').pow(new BigNumber(8));
        setBalance(web3BNToFloatString(_balance, pow, 18, BigNumber.ROUND_DOWN));
+     }).catch((e: Error) => {
+       console.log(e);
      })
  }
 
@@ -135,7 +150,16 @@ export const Navbar: FC = () => {
           </MenuList>
         </Menu>
         ) : null
-        }  
+        }
+         {error && error.message ? (
+            <Alert status='error' justifyContent='center'>
+              <AlertIcon />
+              <AlertTitle mr={2}>MetaMask Error</AlertTitle>
+              <AlertDescription>{error.message}</AlertDescription>
+            </Alert>
+          ) :
+            null
+          }  
       </div>
     }
     </Box>
