@@ -28,6 +28,8 @@ export interface Config {
   appName: string;
   tab1Names: string [];
   tab2Names: string [];
+  tab1Path: string,
+  tab2Path: string;
   accNetwork: AccNetwork;
   evmNetwork: EVMNetwork;
   tokens: Token[];

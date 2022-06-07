@@ -15,6 +15,8 @@ import { Web3ReactProvider } from "@web3-react/core"
 import { ToastContainer } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css'
 import { Route, Routes, BrowserRouter as Router, Navigate} from "react-router-dom"
+import { configure } from "@testing-library/react"
+import { config } from "./config/config"
 
 const getLibrary = (provider: any) => {
   const library = new ethers.providers.Web3Provider(provider);
@@ -44,8 +46,8 @@ export const App = () => (
               <VStack mt={-1} pt={1} minH='calc(93vh - 107px)'>
                 <Routes>
                   <Route path="/" element={<Navigate to="mint"/>}/>
-                  <Route path="/mint" element={ <Card tabIndex={0}/>}/>
-                  <Route path="/release" element={ <Card tabIndex={1}/>}/>
+                  <Route path={ config.tab1Path } element={ <Card tabIndex={0}/>}/>
+                  <Route path={ config.tab2Path } element={ <Card tabIndex={1}/>}/>
                   <Route
                     path="*"
                     element={

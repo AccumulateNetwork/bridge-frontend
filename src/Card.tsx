@@ -33,22 +33,22 @@ export const Card: FC<CardProps> = (props) => {
     account,
     chainId, 
   } = useWeb3React();
-  
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const navigate = useNavigate();
+  
   const tab1Names = config.tab1Names;
   const tab2Names = config.tab2Names;
   const [tabIndex, setTabIndex] = React.useState(props.tabIndex);
   const tab1Name = tabIndex === 0 ? tab1Names[1] : tab1Names[0];
   const tab2Name = tabIndex === 0 ? tab2Names[0] : tab2Names[1];
-  const navigate = useNavigate();
+ 
 
   const navigateToTab = (tabIndex: number)=> {
     setTabIndex(tabIndex);
-    if (tabIndex === 1) {
-      navigate("/release");
+    if (tabIndex === 0) {
+      navigate(config.tab1Path);
     } else {
-      navigate("/mint");
+      navigate(config.tab2Path);
     }
   }
   
