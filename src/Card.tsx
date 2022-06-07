@@ -10,7 +10,8 @@ import {
   TabPanel,
   Select,
   Divider,
-  Input
+  Input,
+  useDisclosure
 } from "@chakra-ui/react";
 
 import { useNavigate } from 'react-router-dom';
@@ -18,25 +19,32 @@ import { useNavigate } from 'react-router-dom';
 
 import { config } from './config/config'
 import { useWeb3React } from "@web3-react/core";
+import SelectWalletModal from "./Modal";
+import { isConstructorDeclaration } from "typescript";
 
 type CardProps = {
   tabIndex: number
 };
 
 export const Card: FC<CardProps> = (props) => {
+  console.log(props.tabIndex)
   const { 
-    account, 
+    active, 
+    account,
     chainId, 
   } = useWeb3React();
   
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const tab1Names = config.tab1Names;
   const tab2Names = config.tab2Names;
-  const [tabIndex] = React.useState(props.tabIndex);
+  const [tabIndex, setTabIndex] = React.useState(props.tabIndex);
   const tab1Name = tabIndex === 0 ? tab1Names[1] : tab1Names[0];
   const tab2Name = tabIndex === 0 ? tab2Names[0] : tab2Names[1];
   const navigate = useNavigate();
 
   const navigateToTab = (tabIndex: number)=> {
+    setTabIndex(tabIndex);
     if (tabIndex === 1) {
       navigate("/release");
     } else {
@@ -82,7 +90,7 @@ export const Card: FC<CardProps> = (props) => {
             </Box>
             <Divider my='20px'/>
             <Box padding='6'>
-              { account ? (
+              { active ? (
                   <Button
                     colorScheme='blue' 
                     bg='#006FE8' 
@@ -101,7 +109,8 @@ export const Card: FC<CardProps> = (props) => {
                     borderRadius='15px' 
                     mt='50px' 
                     size='lg'
-                    p='7'>
+                    p='7'
+                    onClick={onOpen}>
                       Connect wallet
                   </Button>
                 )
@@ -145,7 +154,7 @@ export const Card: FC<CardProps> = (props) => {
             </Box>
             <Divider my='20px'/>
             <Box padding='6'>
-              { account ? (
+              { active ? (
                 <Button
                   colorScheme='blue' 
                   bg='#006FE8' 
@@ -173,8 +182,10 @@ export const Card: FC<CardProps> = (props) => {
           </TabPanel>
         </TabPanels>
       </Tabs>
+      <SelectWalletModal  isOpen={isOpen} closeModal={onClose} />
     </Box>
-  );
+    
+  )
 }
 
 export default Card;
