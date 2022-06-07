@@ -15,11 +15,10 @@ import { Web3ReactProvider } from "@web3-react/core"
 import { ToastContainer } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css'
 import { Route, Routes, BrowserRouter as Router, Navigate} from "react-router-dom"
-import { configure } from "@testing-library/react"
 import { config } from "./config/config"
 
 const getLibrary = (provider: any) => {
-  const library = new ethers.providers.Web3Provider(provider);
+  const library = new ethers.providers.Web3Provider(provider)
   library.pollingInterval = 8000; // frequency provider is polling
   return library;
 };
