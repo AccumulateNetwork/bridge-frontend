@@ -13,10 +13,17 @@ import {
   Input
 } from "@chakra-ui/react";
 
+import { useNavigate } from 'react-router-dom';
+
+
 import { config } from './config/config'
 import { useWeb3React } from "@web3-react/core";
 
-export const Card: FC = () => {
+type CardProps = {
+  tabIndex: number
+};
+
+export const Card: FC<CardProps> = (props) => {
   const { 
     account, 
     chainId, 
@@ -24,9 +31,18 @@ export const Card: FC = () => {
   
   const tab1Names = config.tab1Names;
   const tab2Names = config.tab2Names;
-  const [tabIndex, setTabIndex] = React.useState(0);
+  const [tabIndex] = React.useState(props.tabIndex);
   const tab1Name = tabIndex === 0 ? tab1Names[1] : tab1Names[0];
   const tab2Name = tabIndex === 0 ? tab2Names[0] : tab2Names[1];
+  const navigate = useNavigate();
+
+  const navigateToTab = (tabIndex: number)=> {
+    if (tabIndex === 1) {
+      navigate("/release");
+    } else {
+      navigate("/mint");
+    }
+  }
   
   useEffect(() => {
     // alert("test"); 
@@ -40,7 +56,7 @@ export const Card: FC = () => {
       borderRadius='20px'
       bg='white'
     >
-      <Tabs isFitted variant='unstyled' colorScheme="grey" onChange={(index) => setTabIndex(index)}>
+      <Tabs isFitted variant='unstyled' colorScheme="grey" onChange={(index) => navigateToTab(index) }>
         <TabList>
           <Tab>{ tab1Name }</Tab>
           <Tab>{ tab2Name }</Tab>  
@@ -114,7 +130,6 @@ export const Card: FC = () => {
                 textAlign={"center"}
                   />   
             </Box>
-            
             <Divider my='20px'/>
             <Box padding='6'>
               <Button isDisabled
