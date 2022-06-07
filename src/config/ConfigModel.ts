@@ -1,5 +1,6 @@
 export interface Token {
-  symbol: string;
+  accSymbol: string;
+  evmSymbol: string;
   logo: string;
   ethTokenAddress: string;
   ethDecimals: number;
@@ -8,21 +9,26 @@ export interface Token {
   accDepositAddress: string;
 }
 
-export interface Explorers {
-  ethExplorer: string;
-  accExplorer: string;
+export interface AccNetwork {
+  node: string;
+  keyBook: string;
+  explorer: string;
 }
 
-export interface EthNetwork {
+export interface EVMNetwork {
+  node: string;
   chainId: number;
-  tokens: Token[];
-  bridgeContract: string;
-  explorers: Explorers;
+  safeAddress: string;
+  bridgeAddress: string;
+  infuraKey: string;
+  explorer: string;
 }
 
 export interface Config {
   appName: string;
   tab1Names: string [];
   tab2Names: string [];
-  ethNetworks: EthNetwork[];
+  accNetwork: AccNetwork;
+  evmNetwork: EVMNetwork;
+  tokens: Token[];
 }
