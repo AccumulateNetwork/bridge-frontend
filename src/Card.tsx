@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import {
   Box,
   Button,
@@ -14,13 +14,23 @@ import {
 } from "@chakra-ui/react";
 
 import { config } from './config/config'
+import { useWeb3React } from "@web3-react/core";
 
 export const Card: FC = () => {
+  const { 
+    account, 
+    chainId, 
+  } = useWeb3React();
+  
   const tab1Names = config.tab1Names;
   const tab2Names = config.tab2Names;
   const [tabIndex, setTabIndex] = React.useState(0);
   const tab1Name = tabIndex === 0 ? tab1Names[1] : tab1Names[0];
   const tab2Name = tabIndex === 0 ? tab2Names[0] : tab2Names[1];
+  
+  useEffect(() => {
+    // alert("test"); 
+  }, [account, chainId]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <Box
       maxW= '400px'
@@ -33,7 +43,7 @@ export const Card: FC = () => {
       <Tabs isFitted variant='unstyled' colorScheme="grey" onChange={(index) => setTabIndex(index)}>
         <TabList>
           <Tab>{ tab1Name }</Tab>
-          <Tab>{ tab2Name}</Tab>  
+          <Tab>{ tab2Name }</Tab>  
         </TabList>
         <TabPanels>
           <TabPanel>

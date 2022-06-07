@@ -26,7 +26,7 @@ import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import { config }  from './config/config';
 import SelectWalletModal from './Modal';
 import { truncateAddress, web3BNToFloatString } from './utils';
-import WACMEERC20ABI from './WACME-ABI.json'
+import CONTRACTERC20ABI from './CONTRACT-ABI.json'
 import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
 import { toast } from 'react-toastify';
@@ -42,8 +42,8 @@ export const Navbar: FC = () => {
     error
   } = useWeb3React();
 
-  const tokenAddress = '0x3Cc66102c9155A6F6AC8dD8d8885eBbf1bF5603x5';
-  const { isOpen, onOpen, onClose } = useDisclosure();
+const tokenAddress = '0x3Cc66102c9155A6F6AC8dD8d8885eBbf1bF5603x5';
+const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [balance, setBalance]= useState("");
 
@@ -66,22 +66,24 @@ export const Navbar: FC = () => {
     let contract;
     try {
       contract = new web3.eth.Contract(abi, address);
-    } catch(e:any){
+    } catch(e: any){
        toast(e.message);
-     
   }
   return contract;
   }
 
   const getBalance = (tokenAddress: string) => {
-    const contract = getContract(library, WACMEERC20ABI, tokenAddress);
-    contract?.methods.balanceOf(account).call().then((_balance: number) => {
-      console.log(_balance)
-       const pow = new BigNumber('10').pow(new BigNumber(8));
-       setBalance(web3BNToFloatString(_balance, pow, 18, BigNumber.ROUND_DOWN));
-     }).catch((e: Error) => {
-      toast(e.message);
-     })
+    const contract = getContract(library, CONTRACTERC20ABI, tokenAddress);
+    if (contract) {
+      contract.methods.balanceOf(account).call().then((_balance: number) => {
+        console.log(_balance)
+         const pow = new BigNumber('10').pow(new BigNumber(8));
+         setBalance(web3BNToFloatString(_balance, pow, 18, BigNumber.ROUND_DOWN));
+       }).catch((e: Error) => {
+        toast(e.message);
+       })
+    }
+    
  }
 
   useEffect(() => {
@@ -89,7 +91,7 @@ export const Navbar: FC = () => {
       toast(error);
     }
     if (account) {
-      getBalance(tokenAddress);
+       getBalance(tokenAddress);
     }
   }, [account, chainId]); // eslint-disable-line react-hooks/exhaustive-deps
 

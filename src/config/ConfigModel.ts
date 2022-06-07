@@ -6,7 +6,6 @@ export interface Token {
   accTokenAddress: string;
   accDecimals: number;
   accDepositAddress: string;
-  bridgeContract: string;
 }
 
 export interface Explorers {

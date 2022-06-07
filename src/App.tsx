@@ -28,7 +28,7 @@ export const App = () => (
           <SimpleGrid minH="10vh" p={3} spacing="50px" ml='auto' mr='auto' maxW='1280px'>
             <Navbar/> 
             <ToastContainer
-              style={{ width: "60%" }}
+              style={{ width: "90%" }}
               position="top-center"
               autoClose={5000}
               hideProgressBar={false}
