@@ -82,16 +82,30 @@ export const Card: FC<CardProps> = (props) => {
             </Box>
             <Divider my='20px'/>
             <Box padding='6'>
-              <Button  isDisabled
-                colorScheme='blue' 
-                bg='#006FE8' 
-                w='100%' 
-                borderRadius='15px' 
-                mt='50px' 
-                size='lg'
-                p='7'>
-                  Connect wallet
-              </Button>
+              { account ? (
+                  <Button
+                    colorScheme='blue' 
+                    bg='#006FE8' 
+                    w='100%' 
+                    borderRadius='15px' 
+                    mt='50px' 
+                    size='lg'
+                    p='7'>
+                      Next
+                  </Button>
+                ):(
+                  <Button 
+                    colorScheme='blue' 
+                    bg='#006FE8' 
+                    w='100%' 
+                    borderRadius='15px' 
+                    mt='50px' 
+                    size='lg'
+                    p='7'>
+                      Connect wallet
+                  </Button>
+                )
+                }
             </Box>  
           </TabPanel>
           <TabPanel>
@@ -124,24 +138,37 @@ export const Card: FC<CardProps> = (props) => {
                 placeholder='Enter a Destination Address' 
                 type='text'
                 borderRadius='15px' 
-                fontSize='12px' 
-                
+                fontSize='12px'
                 size='lg'
                 textAlign={"center"}
                   />   
             </Box>
             <Divider my='20px'/>
             <Box padding='6'>
-              <Button isDisabled
-                colorScheme='blue' 
-                bg='#006FE8' 
-                w='100%' 
-                borderRadius='15px' 
-                mt='50px' 
-                size='lg'
-                p='7'>
-                  Connect wallet
-              </Button>
+              { account ? (
+                <Button
+                  colorScheme='blue' 
+                  bg='#006FE8' 
+                  w='100%' 
+                  borderRadius='15px' 
+                  mt='50px' 
+                  size='lg'
+                  p='7'>
+                    Next
+                </Button>
+              ):(
+                <Button 
+                  colorScheme='blue' 
+                  bg='#006FE8' 
+                  w='100%' 
+                  borderRadius='15px' 
+                  mt='50px' 
+                  size='lg'
+                  p='7'>
+                    Connect wallet
+                </Button>
+              )
+              }
             </Box>
           </TabPanel>
         </TabPanels>

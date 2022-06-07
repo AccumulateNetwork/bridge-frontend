@@ -156,15 +156,15 @@ const { isOpen, onOpen, onClose } = useDisclosure();
         </Menu>
         ) : null
         }
-         {error && error.message ? (
-            <Alert status='error' justifyContent='center'>
-              <AlertIcon />
-              <AlertTitle mr={2}>MetaMask Error</AlertTitle>
-              <AlertDescription>{error.message}</AlertDescription>
-            </Alert>
-          ) :
-            null
-          }  
+        {error && error.message ? (
+          <Alert status='error' justifyContent='center'>
+            <AlertIcon />
+            <AlertTitle mr={2}>MetaMask Error</AlertTitle>
+            <AlertDescription>{error.message}</AlertDescription>
+          </Alert>
+        ) :
+          null
+        }  
       </div>
     }
     </Box>
