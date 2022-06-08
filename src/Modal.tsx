@@ -9,28 +9,28 @@ import {
   ModalCloseButton,
   Button,
   Text
-} from "@chakra-ui/react";
-import { Image } from "@chakra-ui/react";
-import { useWeb3React } from "@web3-react/core";
-import { connectors } from "./connectors";
+} from "@chakra-ui/react"
+import { Image } from "@chakra-ui/react"
+import { useWeb3React } from "@web3-react/core"
+import { connectors } from "./connectors"
 
 export default function SelectWalletModal({ isOpen, closeModal } : any) {
-  const { activate } = useWeb3React();
+  const { activate } = useWeb3React()
 
   const setProvider = (type: string) => {
-    window.localStorage.setItem("provider", type);
+    window.localStorage.setItem("provider", type)
     
   }
   const connectMetamask = () => {
-    activate(connectors.injected);
-    setProvider("injected");
+    activate(connectors.injected)
+    setProvider("injected")
   }
 
   const connectWalletConnect = () => {
     activate(connectors.walletConnect, (error: Error) => {
-      console.log(error);
-    });
-    setProvider("walletConnect");
+      console.log(error)
+    })
+    setProvider("walletConnect")
   }
   return (
     <Modal isOpen={isOpen} onClose={closeModal} isCentered>
@@ -47,8 +47,8 @@ export default function SelectWalletModal({ isOpen, closeModal } : any) {
             <Button
               variant="outline"
               onClick={() => {
-                connectMetamask();
-                closeModal();
+                connectMetamask()
+                closeModal()
               }}
               w="100%"
             >
@@ -66,8 +66,8 @@ export default function SelectWalletModal({ isOpen, closeModal } : any) {
             <Button
               variant="outline"
               onClick={() => {
-                connectWalletConnect();
-                closeModal();
+                connectWalletConnect()
+                closeModal()
               }}
               w="100%"
             >
@@ -86,5 +86,5 @@ export default function SelectWalletModal({ isOpen, closeModal } : any) {
         </ModalBody>
       </ModalContent>
     </Modal>
-  );
+  )
 }

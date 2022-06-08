@@ -1,4 +1,5 @@
-{ "appName": "Accumulate Bridge",
+{ 
+  "appName": "Accumulate Bridge",
   "tab1Names": ["Mint", "Minting"],
   "tab2Names": ["Release", "Releasing"],
   "tab1Path": "/mint",
@@ -19,8 +20,8 @@
   },
   "tokens": [
     {
-      "accSymbol": "symbol",
-      "evmSymbol": "symbol",
+      "accSymbol": "ACME",
+      "evmSymbol": "WACME",
       "logo": "logoUrl",
       "ethTokenAddress": "ethTokenAddress",
       "ethDecimals": 7,

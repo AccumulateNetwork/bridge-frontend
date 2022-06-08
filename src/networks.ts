@@ -18,5 +18,5 @@ export const networkParams: any = {
         "https://celo.org/images/marketplace-icons/icon-celo-CELO-color-f.svg"
       ]
     }
-  };
+  }
   
