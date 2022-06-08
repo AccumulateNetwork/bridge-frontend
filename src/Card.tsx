@@ -20,7 +20,6 @@ import { useNavigate } from 'react-router-dom';
 import { config } from './config/config'
 import { useWeb3React } from "@web3-react/core";
 import SelectWalletModal from "./Modal";
-import { isConstructorDeclaration } from "typescript";
 
 type CardProps = {
   tabIndex: number
