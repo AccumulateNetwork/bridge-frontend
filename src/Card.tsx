@@ -1,4 +1,6 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect } from "react"
+import { useNavigate } from 'react-router-dom'
+
 import {
   Box,
   Button,
@@ -12,48 +14,62 @@ import {
   Divider,
   Input,
   useDisclosure
-} from "@chakra-ui/react";
-
-import { useNavigate } from 'react-router-dom';
-
+} from "@chakra-ui/react"
 
 import { config } from './config/config'
-import { useWeb3React } from "@web3-react/core";
-import SelectWalletModal from "./Modal";
+import { useWeb3React } from "@web3-react/core"
+import SelectWalletModal from "./Modal"
+import { Token } from "./config/ConfigModel"
 
 type CardProps = {
   tabIndex: number
-};
+}
+
+type SelectItemProps = {
+  symbol: string
+}
+
+const SelectItem: FC<SelectItemProps> = (props): JSX.Element => {
+  return <option value={props.symbol}>{ props.symbol }</option>
+}
 
 export const Card: FC<CardProps> = (props) => {
-  console.log(props.tabIndex)
   const { 
     active, 
     account,
     chainId, 
-  } = useWeb3React();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const navigate = useNavigate();
+  } = useWeb3React()
+  const { isOpen, onOpen, onClose } = useDisclosure()
   
-  const tab1Names = config.tab1Names;
-  const tab2Names = config.tab2Names;
-  const [tabIndex, setTabIndex] = React.useState(props.tabIndex);
-  const tab1Name = tabIndex === 0 ? tab1Names[1] : tab1Names[0];
-  const tab2Name = tabIndex === 0 ? tab2Names[0] : tab2Names[1];
- 
+  const tab1Names = config.tab1Names
+  const tab2Names = config.tab2Names
+  const [tabIndex, setTabIndex] = React.useState(props.tabIndex)
+  const tab1Name = tabIndex === 0 ? tab1Names[1] : tab1Names[0]
+  const tab2Name = tabIndex === 0 ? tab2Names[0] : tab2Names[1]
 
+  const navigate = useNavigate()
   const navigateToTab = (tabIndex: number)=> {
-    setTabIndex(tabIndex);
+    setTabIndex(tabIndex)
     if (tabIndex === 0) {
-      navigate(config.tab1Path);
+      navigate(config.tab1Path)
     } else {
-      navigate(config.tab2Path);
+      navigate(config.tab2Path)
     }
   }
-  
+  // select options group
+  const mintOptions: JSX.Element[] = []
+  config.tokens.forEach((value:Token)=> {
+    mintOptions.push(<SelectItem key= {value.accSymbol} symbol={value.accSymbol}/>)
+  })
+
+  const releaseOptions: JSX.Element[] = []
+  config.tokens.forEach((value:Token)=> {
+    releaseOptions.push(<SelectItem key= {value.evmSymbol} symbol={value.evmSymbol}/>)
+  })
+
   useEffect(() => {
-    // alert("test"); 
-  }, [account, chainId]); // eslint-disable-line react-hooks/exhaustive-deps
+    // alert("test") 
+  }, [account, chainId]) // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <Box
       maxW= '400px'
@@ -75,15 +91,11 @@ export const Card: FC<CardProps> = (props) => {
                 <Box mb={5} fontSize={16}>
                   Select an asset and description chain, to begin or resume a mint.
                 </Box>
-                <Select isDisabled fontSize= {14} placeholder='Send' borderRadius='15px' size='lg'>
-                  <option value='option1'>Option 1</option>
-                  <option value='option2'>Option 2</option>
-                  <option value='option3'>Option 3</option>
+                <Select fontSize= {14} borderRadius='15px' size='lg'>
+                  {mintOptions}        
                 </Select>
-                <Select isDisabled fontSize= {14} placeholder='Destination' borderRadius='15px' size='lg'>
-                  <option value='option1'>Option 1</option>
-                  <option value='option2'>Option 2</option>
-                  <option value='option3'>Option 3</option>
+                <Select fontSize= {14} borderRadius='15px' size='lg'>
+                  <option value='eth'>Ethereum</option>
                 </Select>
               </VStack>
             </Box>
@@ -128,15 +140,11 @@ export const Card: FC<CardProps> = (props) => {
                   size='lg'
                   textAlign={"center"}
                 />
-                <Select isDisabled fontSize= {14} placeholder='Send' borderRadius='15px' size='lg'>
-                  <option value='option1'>Option 1</option>
-                  <option value='option2'>Option 2</option>
-                  <option value='option3'>Option 3</option>
+                <Select isDisabled fontSize= {14} borderRadius='15px' size='lg'>
+                  <option value='eth'>Ethereum</option>
                 </Select>
-                <Select isDisabled fontSize= {14} placeholder='Destination' borderRadius='15px' size='lg'>
-                  <option value='option1'>Option 1</option>
-                  <option value='option2'>Option 2</option>
-                  <option value='option3'>Option 3</option>
+                <Select isDisabled fontSize= {14} borderRadius='15px' size='lg'>
+                  { releaseOptions }
                 </Select>
               </VStack>
             </Box>
@@ -187,4 +195,4 @@ export const Card: FC<CardProps> = (props) => {
   )
 }
 
-export default Card;
+export default Card

@@ -17,19 +17,19 @@ import {
   AlertTitle,
   AlertDescription,
 } from '@chakra-ui/react'
-import { useWeb3React } from "@web3-react/core";
+import { useWeb3React } from "@web3-react/core"
 import { Logo } from './Logo'
 import { CircleIcon } from './CircleIcon'
-import { connectors } from "./connectors";
-import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons';
+import { connectors } from "./connectors"
+import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons'
 
-import { config }  from './config/config';
-import SelectWalletModal from './Modal';
-import { truncateAddress, web3BNToFloatString } from './utils';
+import { config }  from './config/config'
+import SelectWalletModal from './Modal'
+import { truncateAddress, web3BNToFloatString } from './utils'
 import CONTRACTERC20ABI from './CONTRACT-ABI.json'
-import Web3 from 'web3';
-import BigNumber from 'bignumber.js';
-import { toast } from 'react-toastify';
+import Web3 from 'web3'
+import BigNumber from 'bignumber.js'
+import { toast } from 'react-toastify'
 
 export const Navbar: FC = () => {
   const { 
@@ -40,47 +40,47 @@ export const Navbar: FC = () => {
     chainId, 
     library,
     error
-  } = useWeb3React();
+  } = useWeb3React()
 
 const tokenAddress = '0x555E7deddae1711FDEf2490a32F27eb364cF343e';
 const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [balance, setBalance]= useState("");
+  const [balance, setBalance]= useState("")
 
   // TODO don't forget
-  const explorerURL = '';
-  const tokenContract = '';
-  const symbol = '';
+  const explorerURL = ''
+  const tokenContract = ''
+  const symbol = ''
   
   const disconnect = () => {
-    refreshState();
-    deactivate();
+    refreshState()
+    deactivate()
   }
 
   const refreshState = () => {
-    window.localStorage.removeItem("provider");
-  };
+    window.localStorage.removeItem("provider")
+  }
 
   const getContract = (library: any, abi: any, address: string) => {
-    const web3 = new Web3(library.provider);
-    let contract;
+    const web3 = new Web3(library.provider)
+    let contract
     try {
-      contract = new web3.eth.Contract(abi, address);
+      contract = new web3.eth.Contract(abi, address)
     } catch(e: any){
-       toast(e.message);
+       toast(e.message)
   }
-  return contract;
+  return contract
   }
 
   const getBalance = (tokenAddress: string) => {
-    const contract = getContract(library, CONTRACTERC20ABI, tokenAddress);
+    const contract = getContract(library, CONTRACTERC20ABI, tokenAddress)
     if (contract) {
       contract.methods.balanceOf(account).call().then((_balance: number) => {
         console.log(_balance)
-         const pow = new BigNumber('10').pow(new BigNumber(8));
-         setBalance(web3BNToFloatString(_balance, pow, 18, BigNumber.ROUND_DOWN));
+         const pow = new BigNumber('10').pow(new BigNumber(8))
+         setBalance(web3BNToFloatString(_balance, pow, 18, BigNumber.ROUND_DOWN))
        }).catch((e: Error) => {
-        toast(e.message);
+        toast(e.message)
        })
     }
     
@@ -88,19 +88,19 @@ const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     if (error) {
-      toast(error);
+      toast(error)
     }
     if (account) {
-       getBalance(tokenAddress);
+       getBalance(tokenAddress)
     }
-  }, [account, chainId]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [account, chainId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    const provider = window.localStorage.getItem("provider");
+    const provider = window.localStorage.getItem("provider")
     if (provider) {
-      activate(connectors[provider]);
+      activate(connectors[provider])
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <Flex>
       <Logo w='40px' mx = '10px'/>
