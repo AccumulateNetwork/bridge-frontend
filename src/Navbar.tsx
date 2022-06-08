@@ -42,7 +42,7 @@ export const Navbar: FC = () => {
     error
   } = useWeb3React();
 
-const tokenAddress = '0x3Cc66102c9155A6F6AC8dD8d8885eBbf1bF56035';
+const tokenAddress = '0x555E7deddae1711FDEf2490a32F27eb364cF343e';
 const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [balance, setBalance]= useState("");
