@@ -9,13 +9,14 @@ import {
 import { ethers } from "ethers"
 import theme  from "./theme"
 import { Navbar } from "./Navbar"
-import { Card } from "./Card"
+import { Card } from "./card/Card"
 import { Footer } from "./Footer"
 import { Web3ReactProvider } from "@web3-react/core"
 import { ToastContainer } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css'
 import { Route, Routes, BrowserRouter as Router, Navigate} from "react-router-dom"
 import { config } from "./config/config"
+import { StoreProvider } from "./store/context"
 
 const getLibrary = (provider: any) => {
   const library = new ethers.providers.Web3Provider(provider)
@@ -25,6 +26,7 @@ const getLibrary = (provider: any) => {
 
 export const App = () => (
   <Router>
+    <StoreProvider>
     <ChakraProvider theme={theme}>
         <Web3ReactProvider getLibrary={getLibrary}>
           <Box textAlign="center" fontSize="xl">
@@ -62,5 +64,6 @@ export const App = () => (
           </Box>
         </Web3ReactProvider>
     </ChakraProvider>
+    </StoreProvider>
   </Router>
 )

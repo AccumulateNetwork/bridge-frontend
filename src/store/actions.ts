@@ -1,0 +1,1 @@
+export const CALCULATE_FEE_PAGE = 'CALCULATE_FEE_PAGE';

@@ -16,10 +16,14 @@ import {
   useDisclosure
 } from "@chakra-ui/react"
 
-import { config } from './config/config'
+import { config } from '../config/config'
 import { useWeb3React } from "@web3-react/core"
-import SelectWalletModal from "./Modal"
-import { Token } from "./config/ConfigModel"
+import SelectWalletModal from "../Modal"
+import { Token } from "../config/ConfigModel"
+import { Pages } from "./pages"
+import CalculateFee from "./CalculateFee"
+import { useStore } from "../store/useStore"
+import { CALCULATE_FEE_PAGE } from "../store/actions"
 
 type CardProps = {
   tabIndex: number
@@ -29,16 +33,12 @@ type SelectItemProps = {
   symbol: string
 }
 
-enum Pages {
-  SELECT_ASSET,
-  CALCULATE_FEE
-}
-
 const SelectItem: FC<SelectItemProps> = (props): JSX.Element => {
   return <option value={props.symbol}>{ props.symbol }</option>
 }
 
 export const Card: FC<CardProps> = (props) => {
+  const { page, dispatch } = useStore();
   const { 
     active, 
     account,
@@ -49,7 +49,7 @@ export const Card: FC<CardProps> = (props) => {
   const tab1Names = config.tab1Names
   const tab2Names = config.tab2Names
   const [tabIndex, setTabIndex] = React.useState(props.tabIndex)
-  const [page, setPage] = React.useState(Pages.SELECT_ASSET)
+  // const [page, setPage] = React.useState(Pages.SELECT_ASSET)
 
   const tab1Name = tabIndex === 0 ? tab1Names[1] : tab1Names[0]
   const tab2Name = tabIndex === 0 ? tab2Names[0] : tab2Names[1]
@@ -127,7 +127,7 @@ export const Card: FC<CardProps> = (props) => {
                       mt='50px' 
                       size='lg'
                       p='7'
-                      onClick={() => setPage(Pages.CALCULATE_FEE)}>
+                      onClick={() => dispatch({type:CALCULATE_FEE_PAGE})}>
                         Next
                     </Button>
                   ):(
@@ -209,23 +209,9 @@ export const Card: FC<CardProps> = (props) => {
           </TabPanels>
         </Tabs>
       }
-    
-      { page === Pages.CALCULATE_FEE &&
-        <Box padding='6'>
-          <VStack borderRadius='15px'>
-            <Box mb={5} fontSize={16}>
-                Amount & Fees
-            </Box>
-            <Input fontSize= {14} borderRadius='15px' size='lg' placeholder={`How much ${symbol} will you send?`}/>
-            <Select fontSize= {14} borderRadius='15px' size='lg'>
-              <option value='eth'>Ethereum</option>
-            </Select>
-          </VStack>
-        </Box>
-      }
-    <SelectWalletModal  isOpen={isOpen} closeModal={onClose} />
+        <CalculateFee symbol={symbol}/>
+        <SelectWalletModal  isOpen={isOpen} closeModal={onClose} />
     </Box>
-    
   )
 }
 
