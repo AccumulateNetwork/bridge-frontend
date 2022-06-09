@@ -30,6 +30,7 @@ import CONTRACTERC20ABI from './CONTRACT-ABI.json'
 import Web3 from 'web3'
 import BigNumber from 'bignumber.js'
 import { toast } from 'react-toastify'
+import { CoinbaseWalletProvider } from '@coinbase/wallet-sdk'
 
 export const Navbar: FC = () => {
   const { 
@@ -85,6 +86,10 @@ const { isOpen, onOpen, onClose } = useDisclosure();
     }
     
  }
+
+
+ bridgeFee - from api same for every CoinbaseWalletProvider
+ etherium
 
   useEffect(() => {
     if (error) {
