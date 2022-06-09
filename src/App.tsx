@@ -27,43 +27,43 @@ const getLibrary = (provider: any) => {
 export const App = () => (
   <Router>
     <StoreProvider>
-    <ChakraProvider theme={theme}>
-        <Web3ReactProvider getLibrary={getLibrary}>
-          <Box textAlign="center" fontSize="xl">
-            <SimpleGrid minH="10vh" p={3} spacing="50px" ml='auto' mr='auto' maxW='1280px'>
-              <Navbar/> 
-              <ToastContainer
-                style={{ width: "90%" }}
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick={true}
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-              />         
-              <VStack mt={-1} pt={1} minH='calc(93vh - 107px)'>
-                <Routes>
-                  <Route path="/" element={<Navigate to="mint"/>}/>
-                  <Route path={ config.tab1Path } element={ <Card tabIndex={0}/>}/>
-                  <Route path={ config.tab2Path } element={ <Card tabIndex={1}/>}/>
-                  <Route
-                    path="*"
-                    element={
-                      <div>
-                        <h2>404 Page not found</h2>
-                      </div>
-                    }
-                  />
-                </Routes>
-              </VStack>
-              <Footer/>
-            </SimpleGrid>
-          </Box>
-        </Web3ReactProvider>
-    </ChakraProvider>
+      <ChakraProvider theme={theme}>
+          <Web3ReactProvider getLibrary={getLibrary}>
+            <Box textAlign="center" fontSize="xl">
+              <SimpleGrid minH="10vh" p={3} spacing="50px" ml='auto' mr='auto' maxW='1280px'>
+                <Navbar/> 
+                <ToastContainer
+                  style={{ width: "90%" }}
+                  position="top-center"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick={true}
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                />         
+                <VStack mt={-1} pt={1} minH='calc(93vh - 107px)'>
+                  <Routes>
+                    <Route path="/" element={<Navigate to="mint"/>}/>
+                    <Route path={ config.tab1Path } element={ <Card tabIndex={0}/>}/>
+                    <Route path={ config.tab2Path } element={ <Card tabIndex={1}/>}/>
+                    <Route
+                      path="*"
+                      element={
+                        <div>
+                          <h2>404 Page not found</h2>
+                        </div>
+                      }
+                    />
+                  </Routes>
+                </VStack>
+                <Footer/>
+              </SimpleGrid>
+            </Box>
+          </Web3ReactProvider>
+      </ChakraProvider>
     </StoreProvider>
   </Router>
 )
