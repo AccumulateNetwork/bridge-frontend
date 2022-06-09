@@ -30,7 +30,6 @@ import CONTRACTERC20ABI from './CONTRACT-ABI.json'
 import Web3 from 'web3'
 import BigNumber from 'bignumber.js'
 import { toast } from 'react-toastify'
-import { CoinbaseWalletProvider } from '@coinbase/wallet-sdk'
 
 export const Navbar: FC = () => {
   const { 
@@ -43,8 +42,8 @@ export const Navbar: FC = () => {
     error
   } = useWeb3React()
 
-const tokenAddress = '0x555E7deddae1711FDEf2490a32F27eb364cF343e';
-const { isOpen, onOpen, onClose } = useDisclosure();
+  const tokenAddress = '0x555E7deddae1711FDEf2490a32F27eb364cF343e';
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [balance, setBalance]= useState("")
 
@@ -85,11 +84,7 @@ const { isOpen, onOpen, onClose } = useDisclosure();
        })
     }
     
- }
-
-
- bridgeFee - from api same for every CoinbaseWalletProvider
- etherium
+  }
 
   useEffect(() => {
     if (error) {
