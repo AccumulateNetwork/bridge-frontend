@@ -3,9 +3,7 @@ export interface Token {
   evmSymbol: string;
   logo: string;
   ethTokenAddress: string;
-  ethDecimals: number;
   accTokenAddress: string;
-  accDecimals: number;
   accDepositAddress: string;
 }
 
@@ -32,5 +30,6 @@ export interface Config {
   tab2Path: string;
   accNetwork: AccNetwork;
   evmNetwork: EVMNetwork;
+  
   tokens: Token[];
 }

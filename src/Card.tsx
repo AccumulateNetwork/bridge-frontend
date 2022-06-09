@@ -79,7 +79,7 @@ export const Card: FC<CardProps> = (props) => {
       borderRadius='20px'
       bg='white'
     >
-      <Tabs isFitted variant='unstyled' colorScheme="grey" onChange={(index) => navigateToTab(index) }>
+      <Tabs defaultIndex={ tabIndex } isFitted variant='unstyled' colorScheme="grey" onChange={(index) => navigateToTab(index) }>
         <TabList>
           <Tab>{ tab1Name }</Tab>
           <Tab>{ tab2Name }</Tab>  
