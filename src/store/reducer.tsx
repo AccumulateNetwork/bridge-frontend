@@ -1,19 +1,18 @@
 import { Pages } from "../card/pages"
 // action types
-import * as ACTION from './actions';
+import * as ACTION from './actions'
 
 const {
   CALCULATE_FEE_PAGE,
-} = ACTION;
+} = ACTION
 
 export type StateType = {
   page: Pages
 };
 
-
 export type ActionType = {
-  type: string;
-  payload?: any;
+  type: string
+  payload?: any
 };
 
 export type ReducerType<S, A> = (state: S, action: A) => S;
