@@ -29,6 +29,11 @@ type SelectItemProps = {
   symbol: string
 }
 
+enum Pages {
+  SELECT_ASSET,
+  CALCULATE_FEE
+}
+
 const SelectItem: FC<SelectItemProps> = (props): JSX.Element => {
   return <option value={props.symbol}>{ props.symbol }</option>
 }
@@ -44,6 +49,8 @@ export const Card: FC<CardProps> = (props) => {
   const tab1Names = config.tab1Names
   const tab2Names = config.tab2Names
   const [tabIndex, setTabIndex] = React.useState(props.tabIndex)
+  const [page, setPage] = React.useState(Pages.SELECT_ASSET)
+
   const tab1Name = tabIndex === 0 ? tab1Names[1] : tab1Names[0]
   const tab2Name = tabIndex === 0 ? tab2Names[0] : tab2Names[1]
 
@@ -67,6 +74,8 @@ export const Card: FC<CardProps> = (props) => {
     releaseOptions.push(<SelectItem key= {value.evmSymbol} symbol={value.evmSymbol}/>)
   })
 
+  const [symbol, setSymbol] = React.useState(mintOptions[0].key)
+
   useEffect(() => {
     // alert("test") 
   }, [account, chainId]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -79,29 +88,98 @@ export const Card: FC<CardProps> = (props) => {
       borderRadius='20px'
       bg='white'
     >
-      <Tabs defaultIndex={ tabIndex } isFitted variant='unstyled' colorScheme="grey" onChange={(index) => navigateToTab(index) }>
-        <TabList>
-          <Tab>{ tab1Name }</Tab>
-          <Tab>{ tab2Name }</Tab>  
-        </TabList>
-        <TabPanels>
-          <TabPanel>
-            <Box padding='6'>
-              <VStack borderRadius='15px'>
-                <Box mb={5} fontSize={16}>
-                  Select an asset and description chain, to begin or resume a mint.
-                </Box>
-                <Select fontSize= {14} borderRadius='15px' size='lg'>
-                  {mintOptions}        
-                </Select>
-                <Select fontSize= {14} borderRadius='15px' size='lg'>
-                  <option value='eth'>Ethereum</option>
-                </Select>
-              </VStack>
-            </Box>
-            <Divider my='20px'/>
-            <Box padding='6'>
-              { active ? (
+      { page === Pages.SELECT_ASSET &&
+        <Tabs 
+          defaultIndex={ tabIndex } 
+          isFitted
+          variant='unstyled' 
+          colorScheme="grey" 
+          onChange={(index) => navigateToTab(index) }>
+          <TabList>
+            <Tab>{ tab1Name }</Tab>
+            <Tab>{ tab2Name }</Tab>  
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <Box padding='6'>
+                <VStack borderRadius='15px'>
+                  <Box mb={5} fontSize={16}>
+                    Select an asset and description chain, to begin or resume a mint.
+                  </Box>
+                  <Select fontSize= {14} borderRadius='15px' size='lg' onChange={(v) => {
+                    setSymbol(v.target.value)
+                  }}>
+                    {mintOptions}        
+                  </Select>
+                  <Select fontSize= {14} borderRadius='15px' size='lg'>
+                    <option value='eth'>Ethereum</option>
+                  </Select>
+                </VStack>
+              </Box>
+              <Divider my='20px'/>
+              <Box padding='6'>
+                { active ? (
+                    <Button
+                      colorScheme='blue' 
+                      bg='#006FE8' 
+                      w='100%' 
+                      borderRadius='15px' 
+                      mt='50px' 
+                      size='lg'
+                      p='7'
+                      onClick={() => setPage(Pages.CALCULATE_FEE)}>
+                        Next
+                    </Button>
+                  ):(
+                    <Button 
+                      colorScheme='blue' 
+                      bg='#006FE8' 
+                      w='100%' 
+                      borderRadius='15px' 
+                      mt='50px' 
+                      size='lg'
+                      p='7'
+                      onClick={onOpen}>
+                        Connect wallet
+                    </Button>
+                  )
+                  }
+              </Box>  
+            </TabPanel>
+            <TabPanel>
+              <Box padding='6'>
+                <VStack borderRadius='15px'> 
+                  <Input 
+                    placeholder='0 acmeBTC' 
+                    type='text'
+                    border={0} 
+                    fontSize='52px' 
+                    mb={5} 
+                    size='lg'
+                    textAlign={"center"}
+                  />
+                  <Select isDisabled fontSize= {14} borderRadius='15px' size='lg'>
+                    <option value='eth'>Ethereum</option>
+                  </Select>
+                  <Select isDisabled fontSize= {14} borderRadius='15px' size='lg'>
+                    { releaseOptions }
+                  </Select>
+                </VStack>
+              </Box>
+              <Box padding='6'>
+                <Input 
+                  isDisabled
+                  placeholder='Enter a Destination Address' 
+                  type='text'
+                  borderRadius='15px' 
+                  fontSize='12px'
+                  size='lg'
+                  textAlign={"center"}
+                    />   
+              </Box>
+              <Divider my='20px'/>
+              <Box padding='6'>
+                { active ? (
                   <Button
                     colorScheme='blue' 
                     bg='#006FE8' 
@@ -125,71 +203,27 @@ export const Card: FC<CardProps> = (props) => {
                       Connect wallet
                   </Button>
                 )
-                }
-            </Box>  
-          </TabPanel>
-          <TabPanel>
-            <Box padding='6'>
-              <VStack borderRadius='15px'> 
-                <Input 
-                  placeholder='0 acmeBTC' 
-                  type='text'
-                  border={0} 
-                  fontSize='52px' 
-                  mb={5} 
-                  size='lg'
-                  textAlign={"center"}
-                />
-                <Select isDisabled fontSize= {14} borderRadius='15px' size='lg'>
-                  <option value='eth'>Ethereum</option>
-                </Select>
-                <Select isDisabled fontSize= {14} borderRadius='15px' size='lg'>
-                  { releaseOptions }
-                </Select>
-              </VStack>
-            </Box>
-            <Box padding='6'>
-              <Input 
-                isDisabled
-                placeholder='Enter a Destination Address' 
-                type='text'
-                borderRadius='15px' 
-                fontSize='12px'
-                size='lg'
-                textAlign={"center"}
-                  />   
-            </Box>
-            <Divider my='20px'/>
-            <Box padding='6'>
-              { active ? (
-                <Button
-                  colorScheme='blue' 
-                  bg='#006FE8' 
-                  w='100%' 
-                  borderRadius='15px' 
-                  mt='50px' 
-                  size='lg'
-                  p='7'>
-                    Next
-                </Button>
-              ):(
-                <Button 
-                  colorScheme='blue' 
-                  bg='#006FE8' 
-                  w='100%' 
-                  borderRadius='15px' 
-                  mt='50px' 
-                  size='lg'
-                  p='7'>
-                    Connect wallet
-                </Button>
-              )
               }
+              </Box>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      }
+    
+      { page === Pages.CALCULATE_FEE &&
+        <Box padding='6'>
+          <VStack borderRadius='15px'>
+            <Box mb={5} fontSize={16}>
+                Amount & Fees
             </Box>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-      <SelectWalletModal  isOpen={isOpen} closeModal={onClose} />
+            <Input fontSize= {14} borderRadius='15px' size='lg' placeholder={`How much ${symbol} will you send?`}/>
+            <Select fontSize= {14} borderRadius='15px' size='lg'>
+              <option value='eth'>Ethereum</option>
+            </Select>
+          </VStack>
+        </Box>
+      }
+    <SelectWalletModal  isOpen={isOpen} closeModal={onClose} />
     </Box>
     
   )
