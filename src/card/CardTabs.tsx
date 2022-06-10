@@ -15,12 +15,12 @@ import {
   useDisclosure
 } from "@chakra-ui/react"
 
-import { Pages } from "./pages"
+import { Step } from "./steps"
 import { useStore } from "../store/useStore"
 import { useNavigate } from "react-router-dom"
 import { config } from '../config/config'
 import { Token } from "../config/ConfigModel"
-import { CALCULATE_FEE_PAGE, SET_SYMBOL } from "../store/actions"
+import { CALCULATE_FEE_STEP, SET_SYMBOL } from "../store/actions"
 import { useWeb3React } from "@web3-react/core"
 import SelectWalletModal from "../Modal"
 
@@ -48,7 +48,7 @@ const SelectItem: FC<SelectItemProps> = (props): JSX.Element => {
  })
 
 export const CardTabs: FC<CardTabsProps> = (props) => {
-  const { page, dispatch } = useStore();
+  const { step, dispatch } = useStore();
   const { 
     active, 
   } = useWeb3React()
@@ -70,7 +70,7 @@ export const CardTabs: FC<CardTabsProps> = (props) => {
       navigate(config.tab2Path)
     }
   }
-  if (page === Pages.SELECT_ASSET) {
+  if (step === Step.SELECT_ASSET) {
     return (
       <Tabs 
       defaultIndex={ tabIndex } 
@@ -110,7 +110,7 @@ export const CardTabs: FC<CardTabsProps> = (props) => {
                   mt='50px' 
                   size='lg'
                   p='7'
-                  onClick={() => dispatch({type:CALCULATE_FEE_PAGE})}>
+                  onClick={() => dispatch({type:CALCULATE_FEE_STEP})}>
                     Next
                 </Button>
               ):(

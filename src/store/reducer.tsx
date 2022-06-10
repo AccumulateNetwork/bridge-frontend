@@ -1,16 +1,16 @@
-import { Pages } from "../card/pages"
+import {  Step } from "../card/steps"
 // action types
 import * as ACTION from './actions'
 import { config } from "../config/config"
 
 const {
-  SELECT_ASSET_PAGE,
-  CALCULATE_FEE_PAGE,
+  SELECT_ASSET_STEP,
+  CALCULATE_FEE_STEP,
   SET_SYMBOL
 } = ACTION
 
 export type StateType = {
-  page: Pages,
+  step: Step,
   accSymbol: string
 };
 
@@ -23,14 +23,14 @@ export type ReducerType<S, A> = (state: S, action: A) => S;
 
 export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
   switch (action.type) {
-    case SELECT_ASSET_PAGE:
+    case SELECT_ASSET_STEP:
       return {
         ...initialState
       }
-    case CALCULATE_FEE_PAGE:
+    case CALCULATE_FEE_STEP:
       return {
         ...state,
-        page: Pages.CALCULATE_FEE
+        step: Step.CALCULATE_FEE
       }
     case SET_SYMBOL:
       return {
@@ -43,6 +43,6 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
 }
 
 export const initialState = {
-  page: Pages.SELECT_ASSET,
+  step: Step.SELECT_ASSET,
   accSymbol: config.tokens[0].accSymbol
 }
