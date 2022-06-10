@@ -3,7 +3,6 @@ import { Pages } from "../card/pages"
 import * as ACTION from './actions'
 import { config } from "../config/config"
 
-
 const {
   SELECT_ASSET_PAGE,
   CALCULATE_FEE_PAGE,

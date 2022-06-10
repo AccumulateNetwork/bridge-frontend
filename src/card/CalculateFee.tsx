@@ -3,11 +3,13 @@ import  { FC } from "react"
 import {
   Box,
   VStack,
-  Select,
   Center,
   Input,
   Divider,
-  HStack
+  HStack,
+  Flex,
+  Spacer,
+  Button
 } from "@chakra-ui/react"
 
 import { Pages } from "./pages"
@@ -23,6 +25,9 @@ type CalculateFeeProps = {
 
 export const CalculateFee: FC<CalculateFeeProps> = (props) => {
   const { page, accSymbol, dispatch } = useStore();
+  const bredgeFeeProcentage = 0.2
+  const bridgeFee = 100
+  const ethFee = 0
   const navigate = useNavigate()
   if (page === Pages.CALCULATE_FEE) {
     return (
@@ -52,6 +57,41 @@ export const CalculateFee: FC<CalculateFeeProps> = (props) => {
           </VStack>
         </Box>
         <Divider mt={20} my='20px'/>
+        <Box pt = {5} pl={10} pr={10} pb={5}>
+          <HStack spacing='24px' pb={2}>
+            <Box fontSize= {14}>
+              Details
+            </Box>
+          </HStack>
+          <Flex fontSize={14} color={"gray.500"}>
+            <Box mr={190}>
+              Bridge fee
+              </Box>
+              <Spacer />
+              <Box >
+                {bridgeFee} $
+            </Box>
+          </Flex>
+          <Flex fontSize={14} color={"gray.500"}>
+            <Box mr={190}>
+              Ethereum fee
+              </Box>
+              <Spacer />
+              <Box >
+                {ethFee} $
+            </Box>
+          </Flex> 
+          <Button
+                colorScheme='blue' 
+                bg='#006FE8' 
+                w='100%' 
+                borderRadius='15px' 
+                mt='50px' 
+                size='lg'
+                p='7'>
+                  Next
+        </Button>   
+        </Box>  
       </Box>
     )
   } else {
