@@ -5,17 +5,17 @@ import {
   VStack,
   Select,
   Input,
+  Divider,
 } from "@chakra-ui/react"
 
 import { Pages } from "./pages"
 import { useStore } from "../store/useStore"
 
 type CalculateFeeProps = {
-  symbol: string | number | null
 }
 
 export const CalculateFee: FC<CalculateFeeProps> = (props) => {
-  const { page } = useStore();
+  const { page, accSymbol } = useStore();
   if (page === Pages.CALCULATE_FEE) {
     return (
       <Box padding='6'>
@@ -23,10 +23,11 @@ export const CalculateFee: FC<CalculateFeeProps> = (props) => {
               <Box mb={5} fontSize={16}>
                   Amount & Fees
               </Box>
-              <Input fontSize= {14} borderRadius='15px' size='lg' placeholder={`How much ${props.symbol} will you send?`}/>
+              <Input fontSize= {14} borderRadius='15px' size='lg' placeholder={`How much ${accSymbol} will you send?`}/>
               <Select fontSize= {14} borderRadius='15px' size='lg'>
                 <option value='eth'>Ethereum</option>
               </Select>
+              <Divider my='20px'/>
             </VStack>
       </Box>
     )

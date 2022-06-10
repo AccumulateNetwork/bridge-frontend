@@ -13,7 +13,6 @@ export const StoreContext = React.createContext<ContextType>({
 
 export const StoreProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  console.log(state)
   return (
     <StoreContext.Provider value={{ dispatch, ...state }}>
       {children}

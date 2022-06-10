@@ -30,6 +30,5 @@ export interface Config {
   tab2Path: string;
   accNetwork: AccNetwork;
   evmNetwork: EVMNetwork;
-  
   tokens: Token[];
 }
