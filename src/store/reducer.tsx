@@ -25,8 +25,7 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
   switch (action.type) {
     case SELECT_ASSET_PAGE:
       return {
-        ...state,
-        page: Pages.SELECT_ASSET
+        ...initialState
       }
     case CALCULATE_FEE_PAGE:
       return {

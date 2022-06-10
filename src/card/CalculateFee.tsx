@@ -45,7 +45,7 @@ export const CalculateFee: FC<CalculateFeeProps> = (props) => {
           <VStack borderRadius='15px'>
             <HStack spacing='24px' borderRadius={14} width="100%" borderWidth={1}>
               <Input fontSize= {14} borderRadius={14} border={0} size='lg' placeholder={`How much ${accSymbol} will you send?`}/>
-              <Center fontSize={13} w='90px' h='45px'>
+              <Center fontSize={13} w='80px' h='45px'>
                   {accSymbol}
               </Center>
             </HStack>
