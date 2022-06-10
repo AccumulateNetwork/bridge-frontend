@@ -7,24 +7,31 @@ import {
   Center,
   Input,
   Divider,
-  HStack,
-  CloseButton
+  HStack
 } from "@chakra-ui/react"
 
 import { Pages } from "./pages"
+import { config } from '../config/config'
+
 import { useStore } from "../store/useStore"
 import { ArrowBackIcon } from "@chakra-ui/icons"
+import { useNavigate } from "react-router-dom"
+import { SELECT_ASSET_PAGE } from "../store/actions"
 
 type CalculateFeeProps = {
 }
 
 export const CalculateFee: FC<CalculateFeeProps> = (props) => {
-  const { page, accSymbol } = useStore();
+  const { page, accSymbol, dispatch } = useStore();
+  const navigate = useNavigate()
   if (page === Pages.CALCULATE_FEE) {
     return (
       <Box>
         <HStack p={2} width="100%">
-          <ArrowBackIcon mr="100px"/>
+          <ArrowBackIcon mr="100px" onClick={()=> {
+            dispatch({type: SELECT_ASSET_PAGE})
+            navigate(config.tab1Path)
+          }}/>
           <Center mb={5} fontSize={16}>
               Amount & Fees
           </Center>

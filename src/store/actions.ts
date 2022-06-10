@@ -1,3 +1,4 @@
+export const SELECT_ASSET_PAGE = 'SELECT_ASSET_PAGE'
 export const CALCULATE_FEE_PAGE = 'CALCULATE_FEE_PAGE'
 export const SET_SYMBOL = 'SET_SYMBOL'
 

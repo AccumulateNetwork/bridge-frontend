@@ -5,6 +5,7 @@ import { config } from "../config/config"
 
 
 const {
+  SELECT_ASSET_PAGE,
   CALCULATE_FEE_PAGE,
   SET_SYMBOL
 } = ACTION
@@ -23,16 +24,21 @@ export type ReducerType<S, A> = (state: S, action: A) => S;
 
 export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
   switch (action.type) {
+    case SELECT_ASSET_PAGE:
+      return {
+        ...state,
+        page: Pages.SELECT_ASSET
+      }
     case CALCULATE_FEE_PAGE:
       return {
         ...state,
         page: Pages.CALCULATE_FEE
       }
-      case SET_SYMBOL:
-        return {
-          ...state,
-          accSymbol: action.payload
-        }
+    case SET_SYMBOL:
+      return {
+        ...state,
+        accSymbol: action.payload
+      }
     default:
       return state
   }
