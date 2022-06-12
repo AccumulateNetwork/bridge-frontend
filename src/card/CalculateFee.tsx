@@ -12,9 +12,7 @@ import {
   Button
 } from "@chakra-ui/react"
 
-import { Step } from "./steps"
 import { config } from '../config/config'
-
 import { useStore } from "../store/useStore"
 import { ArrowBackIcon } from "@chakra-ui/icons"
 import { useNavigate } from "react-router-dom"
@@ -24,12 +22,11 @@ type CalculateFeeProps = {
 }
 
 export const CalculateFee: FC<CalculateFeeProps> = (props) => {
-  const { step, accSymbol, dispatch } = useStore();
+  const { accSymbol, dispatch } = useStore();
   const bredgeFeeProcentage = 0.2
   const bridgeFee = 100
   const ethFee = 0
   const navigate = useNavigate()
-  if (step === Step.CALCULATE_FEE) {
     return (
       <Box>
         <HStack p={2} width="100%">
@@ -94,8 +91,6 @@ export const CalculateFee: FC<CalculateFeeProps> = (props) => {
         </Box>  
       </Box>
     )
-  } else {
-    return null;
-  }
+ 
 }
 export default CalculateFee

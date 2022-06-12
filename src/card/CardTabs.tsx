@@ -15,7 +15,6 @@ import {
   useDisclosure
 } from "@chakra-ui/react"
 
-import { Step } from "./steps"
 import { useStore } from "../store/useStore"
 import { useNavigate } from "react-router-dom"
 import { config } from '../config/config'
@@ -48,7 +47,7 @@ const SelectItem: FC<SelectItemProps> = (props): JSX.Element => {
  })
 
 export const CardTabs: FC<CardTabsProps> = (props) => {
-  const { step, dispatch } = useStore();
+  const { dispatch } = useStore();
   const { 
     active, 
   } = useWeb3React()
@@ -70,7 +69,7 @@ export const CardTabs: FC<CardTabsProps> = (props) => {
       navigate(config.tab2Path)
     }
   }
-  if (step === Step.SELECT_ASSET) {
+  
     return (
       <Tabs 
       defaultIndex={ tabIndex } 
@@ -193,8 +192,5 @@ export const CardTabs: FC<CardTabsProps> = (props) => {
       <SelectWalletModal  isOpen={isOpen} closeModal={onClose} />
     </Tabs>
     )
-  } else {
-    return null;
-  }
 }
 export default CardTabs
