@@ -18,7 +18,6 @@ import { useNavigate } from "react-router-dom"
 import { 
   SELECT_ASSET_STEP, 
   SET_SEND_AND_RECEIVING, 
-  SET_RECEIVING, 
   TRANSFER_INSTRUCTIONS_STEP } from "../store/actions"
 import { CardButton } from "./СardButton"
 import BigNumber from "bignumber.js"

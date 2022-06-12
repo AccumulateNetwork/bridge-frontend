@@ -9,7 +9,6 @@ const {
   TRANSFER_INSTRUCTIONS_STEP,
   SET_ACC_SYMBOL,
   SET_SEND_AND_RECEIVING,
-  SET_RECEIVING
 } = ACTION
 
 export type StateType = {
@@ -54,11 +53,6 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
         ...state,
         send: action.payload.send,
         receiving: action.payload.receiving
-      }
-    case SET_RECEIVING:
-      return {
-        ...state,
-        receiving: action.payload
       }
     default:
       return state
