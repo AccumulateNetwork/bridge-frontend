@@ -15,7 +15,11 @@ import { config } from '../config/config'
 import { useStore } from "../store/useStore"
 import { ArrowBackIcon } from "@chakra-ui/icons"
 import { useNavigate } from "react-router-dom"
-import { SELECT_ASSET_STEP } from "../store/actions"
+import { 
+  SELECT_ASSET_STEP, 
+  SET_SEND_AND_RECEIVING, 
+  SET_RECEIVING, 
+  TRANSFER_INSTRUCTIONS_STEP } from "../store/actions"
 import { CardButton } from "./СardButton"
 import BigNumber from "bignumber.js"
 
@@ -23,33 +27,34 @@ type Props = {
 }
 
 export const CalculateFee: FC<Props> = (props) => {
-  const { accSymbol, dispatch } = useStore();
+  const { accSymbol, evmSymbol, send, receiving, dispatch } = useStore();
   const [nextDisabled, setNextDisabled]= useState(true)
-  const [receiving, setReceiving]= useState("")
-  const [evmSymbol, setEvmSymbol]= useState("")
 
   // TODO don't forget get brigde fee from config
   const bridgeFeePercentage = 0.2
   const ethFee = 10
   const navigate = useNavigate()
 
-  const calculateFee = (inputValue: string) => {    
+  const calculateFee = (inputValue: string) => {  
+    const payload =  {"send": "", "receiving": ""}
+    if (isNaN(Number(inputValue)) || inputValue == "") {
+      dispatch({type: SET_SEND_AND_RECEIVING, payload: payload})
+      return;
+    }
     const value = new BigNumber(inputValue)
     const bridgeFee = value.div(100).multipliedBy(bridgeFeePercentage)
     let result = value.minus(bridgeFee)
-    result = result.minus(ethFee);
+    result = result.minus(ethFee)
     if (result.isGreaterThan(0)) {
-      setReceiving(result.toFixed(3))
+     const payload =  {"send": value.toFixed(0), "receiving": result.toFixed(3)}
+      dispatch({type: SET_SEND_AND_RECEIVING, payload: payload})
       setNextDisabled(false)
     } else {
       setNextDisabled(true)
-      setReceiving("")
+      const payload =  {"send": value.toFixed(0), "receiving": ""}
+     dispatch({type: SET_SEND_AND_RECEIVING, payload: payload})
     }
   }
-
-  useEffect(() => {
-    setEvmSymbol(config.tokens.filter(token => token.accSymbol === accSymbol)[0].evmSymbol)
-  }, [accSymbol])
   return (
     <Box>
       <HStack p={2} width="100%">
@@ -68,6 +73,7 @@ export const CalculateFee: FC<Props> = (props) => {
               onChange={(v) => 
                 // TODO reqexp only numbers
                 calculateFee(v.target.value)}
+                value={send}
             />
             <Center fontSize={13} w='80px' h='45px'>
                 {accSymbol}
@@ -116,10 +122,9 @@ export const CalculateFee: FC<Props> = (props) => {
               {ethFee} ACME
           </Box>
         </Flex> 
-        <CardButton title="Next" disabled={nextDisabled}/>
+        <CardButton title="Next" disabled={nextDisabled} onClick={() =>  dispatch({type: TRANSFER_INSTRUCTIONS_STEP})}/>
       </Box>  
     </Box>
   )
- 
 }
 export default CalculateFee

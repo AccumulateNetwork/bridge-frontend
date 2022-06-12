@@ -5,18 +5,21 @@ import { useStore } from "../store/useStore"
 import { Step } from "./steps"
 import CalculateFee from "./CalculateFee"
 import CardTabs from "./CardTabs"
+import { TransferInstructions } from "./TransferInstructions"
 
-type CardProps = {
+type Props = {
   tabIndex: number
 }
 
-export const Card: FC<CardProps> = (props) => {
+export const Card: FC<Props> = (props) => {
   const { step } = useStore();
   switch(step) {
     case Step.SELECT_ASSET:
     return <CardStateless children={<CardTabs tabIndex={props.tabIndex}/>}/>
     case Step.CALCULATE_FEE:
       return <CardStateless children={<CalculateFee/>}/> 
+    case Step.TRANSFER_INSTRUCTIONS:
+    return <CardStateless children={<TransferInstructions/>}/> 
     default: return null
   }
 }
@@ -36,7 +39,7 @@ const CardStateless = ({ children }: CardStatelessProps) => (
       borderRadius='20px'
       bg='white'
     >
-      {children}
+      { children }
     </Box>
 )
 export default Card

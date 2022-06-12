@@ -6,12 +6,18 @@ import { config } from "../config/config"
 const {
   SELECT_ASSET_STEP,
   CALCULATE_FEE_STEP,
-  SET_SYMBOL
+  TRANSFER_INSTRUCTIONS_STEP,
+  SET_ACC_SYMBOL,
+  SET_SEND_AND_RECEIVING,
+  SET_RECEIVING
 } = ACTION
 
 export type StateType = {
   step: Step,
-  accSymbol: string
+  accSymbol: string,
+  evmSymbol: string,
+  send: string,
+  receiving: string
 };
 
 export type ActionType = {
@@ -32,10 +38,27 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
         ...state,
         step: Step.CALCULATE_FEE
       }
-    case SET_SYMBOL:
+      case TRANSFER_INSTRUCTIONS_STEP:
+        return {
+          ...state,
+          step: Step.TRANSFER_INSTRUCTIONS
+        }
+    case SET_ACC_SYMBOL:
       return {
         ...state,
-        accSymbol: action.payload
+        accSymbol: action.payload,
+        evmSymbol: config.tokens.filter(token => token.accSymbol === action.payload)[0].evmSymbol
+      } 
+    case SET_SEND_AND_RECEIVING:
+      return {
+        ...state,
+        send: action.payload.send,
+        receiving: action.payload.receiving
+      }
+    case SET_RECEIVING:
+      return {
+        ...state,
+        receiving: action.payload
       }
     default:
       return state
@@ -44,5 +67,8 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
 
 export const initialState = {
   step: Step.SELECT_ASSET,
-  accSymbol: config.tokens[0].accSymbol
+  accSymbol: config.tokens[0].accSymbol,
+  evmSymbol: config.tokens[0].evmSymbol,
+  send: "",
+  receiving: ""
 }

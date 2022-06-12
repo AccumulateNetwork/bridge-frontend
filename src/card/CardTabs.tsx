@@ -18,7 +18,7 @@ import { useStore } from "../store/useStore"
 import { useNavigate } from "react-router-dom"
 import { config } from '../config/config'
 import { Token } from "../config/ConfigModel"
-import { CALCULATE_FEE_STEP, SET_SYMBOL } from "../store/actions"
+import { CALCULATE_FEE_STEP, SET_ACC_SYMBOL } from "../store/actions"
 import { useWeb3React } from "@web3-react/core"
 import SelectWalletModal from "../Modal"
 import { CardButton } from "./СardButton"
@@ -88,7 +88,7 @@ export const CardTabs: FC<CardTabsProps> = (props) => {
               Select an asset and description chain, to begin or resume a mint.
             </Box>
             <Select fontSize= {14} borderRadius='15px' size='lg' onChange={(v) => {
-              dispatch({type: SET_SYMBOL, payload: v.target.value})
+              dispatch({type: SET_ACC_SYMBOL, payload: v.target.value})
             }}>
               {mintOptions}        
             </Select>
