@@ -37,7 +37,7 @@ export const CalculateFee: FC<Props> = (props) => {
 
   const calculateFee = (inputValue: string) => {  
     const payload =  {"send": "", "receiving": ""}
-    if (isNaN(Number(inputValue)) || inputValue == "") {
+    if (isNaN(Number(inputValue)) || inputValue === "") {
       dispatch({type: SET_SEND_AND_RECEIVING, payload: payload})
       return
     }
