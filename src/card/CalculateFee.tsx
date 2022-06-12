@@ -17,6 +17,7 @@ import { ArrowBackIcon } from "@chakra-ui/icons"
 import { useNavigate } from "react-router-dom"
 import { 
   SELECT_ASSET_STEP, 
+  SET_SEND, 
   SET_SEND_AND_RECEIVING, 
   TRANSFER_INSTRUCTIONS_STEP } from "../store/actions"
 import { CardButton } from "./СardButton"
@@ -38,19 +39,23 @@ export const CalculateFee: FC<Props> = (props) => {
     const payload =  {"send": "", "receiving": ""}
     if (isNaN(Number(inputValue)) || inputValue == "") {
       dispatch({type: SET_SEND_AND_RECEIVING, payload: payload})
-      return;
+      return
+    }
+    if (inputValue.length > 1 && inputValue.endsWith(".")) {
+      dispatch({type: SET_SEND, payload: inputValue})
+      return
     }
     const value = new BigNumber(inputValue)
     const bridgeFee = value.div(100).multipliedBy(bridgeFeePercentage)
     let result = value.minus(bridgeFee)
     result = result.minus(ethFee)
     if (result.isGreaterThan(0)) {
-     const payload =  {"send": value.toFixed(0), "receiving": result.toFixed(3)}
+     const payload =  {"send": value.toNumber(), "receiving": result.toNumber()}
       dispatch({type: SET_SEND_AND_RECEIVING, payload: payload})
       setNextDisabled(false)
     } else {
       setNextDisabled(true)
-      const payload =  {"send": value.toFixed(0), "receiving": ""}
+      const payload =  {"send": value.toNumber(), "receiving":""}
      dispatch({type: SET_SEND_AND_RECEIVING, payload: payload})
     }
   }

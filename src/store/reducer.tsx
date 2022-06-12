@@ -8,6 +8,7 @@ const {
   CALCULATE_FEE_STEP,
   TRANSFER_INSTRUCTIONS_STEP,
   SET_ACC_SYMBOL,
+  SET_SEND,
   SET_SEND_AND_RECEIVING,
 } = ACTION
 
@@ -54,6 +55,11 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
         send: action.payload.send,
         receiving: action.payload.receiving
       }
+      case SET_SEND:
+        return {
+          ...state,
+          send: action.payload
+        }
     default:
       return state
   }
