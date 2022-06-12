@@ -1,4 +1,4 @@
-import  { FC, useState } from "react"
+import  { FC, useEffect, useState } from "react"
 
 import {
   Box,
@@ -26,6 +26,7 @@ export const CalculateFee: FC<Props> = (props) => {
   const { accSymbol, dispatch } = useStore();
   const [nextDisabled, setNextDisabled]= useState(true)
   const [receiving, setReceiving]= useState("")
+  const [evmSymbol, setEvmSymbol]= useState("")
 
   // TODO don't forget get brigde fee from config
   const bridgeFeePercentage = 0.2
@@ -45,6 +46,10 @@ export const CalculateFee: FC<Props> = (props) => {
       setReceiving("")
     }
   }
+
+  useEffect(() => {
+    setEvmSymbol(config.tokens.filter(token => token.accSymbol === accSymbol)[0].evmSymbol)
+  }, [accSymbol])
   return (
     <Box>
       <HStack p={2} width="100%">
@@ -77,9 +82,12 @@ export const CalculateFee: FC<Props> = (props) => {
             <Center fontSize={13} w='60px' h='45px'>
                 {receiving}
             </Center>
-            <Center fontSize={13} w='60px' h='45px'>
-                {accSymbol}
-            </Center>
+            { receiving ? (
+              <Center fontSize={13} w='60px' h='45px'>
+                {evmSymbol}
+              </Center>
+              ): null
+            }     
           </HStack>
         </VStack>
       </Box>
