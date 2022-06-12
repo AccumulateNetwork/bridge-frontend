@@ -17,6 +17,7 @@ import { useStore } from "../store/useStore"
 import { ArrowBackIcon } from "@chakra-ui/icons"
 import { useNavigate } from "react-router-dom"
 import { SELECT_ASSET_STEP } from "../store/actions"
+import { CardButton } from "./СardButton"
 
 type CalculateFeeProps = {
 }
@@ -78,16 +79,7 @@ export const CalculateFee: FC<CalculateFeeProps> = (props) => {
                 {ethFee} $
             </Box>
           </Flex> 
-          <Button
-                colorScheme='blue' 
-                bg='#006FE8' 
-                w='100%' 
-                borderRadius='15px' 
-                mt='50px' 
-                size='lg'
-                p='7'>
-                  Next
-        </Button>   
+          <CardButton title="Next"/>
         </Box>  
       </Box>
     )
