@@ -3,12 +3,13 @@ import { FC } from "react"
 
 type Props = {
   title: string,
-  onClick?: () => void
+  disabled?: boolean,
+  onClick?: () => void,
 }
 
 export const CardButton: FC<Props> = (props) => {
   return (
-    <Button
+    <Button disabled={props.disabled}
       colorScheme='blue' 
       bg='#006FE8' 
       w='100%' 

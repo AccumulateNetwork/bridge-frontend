@@ -11,7 +11,6 @@ import {
   TabPanels,
   Tab,
   TabPanel,
-  Button,
   useDisclosure
 } from "@chakra-ui/react"
 
