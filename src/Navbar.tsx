@@ -47,7 +47,7 @@ export const Navbar: FC = () => {
 
   const [balance, setBalance]= useState("")
 
-  // TODO don't forget
+  // TODO don't forget get from config
   const explorerURL = ''
   const tokenContract = ''
   const symbol = ''
@@ -76,14 +76,12 @@ export const Navbar: FC = () => {
     const contract = getContract(library, CONTRACTERC20ABI, tokenAddress)
     if (contract) {
       contract.methods.balanceOf(account).call().then((_balance: number) => {
-        console.log(_balance)
          const pow = new BigNumber('10').pow(new BigNumber(8))
          setBalance(web3BNToFloatString(_balance, pow, 18, BigNumber.ROUND_DOWN))
        }).catch((e: Error) => {
         toast(e.message)
        })
     }
-    
   }
 
   useEffect(() => {

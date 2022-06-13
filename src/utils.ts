@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js"
 
-export const truncateAddress = (address: string) => {
+export const truncateAddress = (address: string | null| undefined) => {
     if (!address) return "No Account"
     const match = address.match(
       /^(0x[a-zA-Z0-9]{2})[a-zA-Z0-9]+([a-zA-Z0-9]{2})$/

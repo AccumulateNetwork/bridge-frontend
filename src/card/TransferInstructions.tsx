@@ -5,6 +5,8 @@ import { FC, useState } from "react"
 import { CALCULATE_FEE_STEP } from "../store/actions"
 import { useStore } from "../store/useStore"
 import { config } from '../config/config'
+import { useWeb3React } from "@web3-react/core"
+import { truncateAddress } from "../utils"
 
 type Props =  {
 }
@@ -34,13 +36,17 @@ export const CopyPopover: FC<CopyPopoverProps> = (props) => {
   )
 }
 export const TransferInstructions: FC<Props> = (props) => {
+  const { 
+    account, 
+  } = useWeb3React()
+
   const { accSymbol, dispatch } = useStore()
   const accDepositAddress =  config.tokens.filter(token => token.accSymbol === accSymbol)[0].accDepositAddress
   return (
     <Box fontSize={16}>
       <HStack p={2} width="100%">
         <ArrowBackIcon mr="90px" onClick={()=> dispatch({type: CALCULATE_FEE_STEP})}/>
-        <Center mb={5} fontSize={16}>
+        <Center mb={5}>
             Transfer Instructions
         </Center>
       </HStack>
@@ -48,10 +54,20 @@ export const TransferInstructions: FC<Props> = (props) => {
         <VStack>
         <Box>Send { accSymbol } to </Box>    
         <Box>
-          [{accDepositAddress}] 
+          {accDepositAddress}
           <CopyPopover address={accDepositAddress}/>
         </Box>
         <Box>with <b>memo</b> </Box> 
+        <Box> 
+          { truncateAddress(account) } 
+          {
+            account ? (
+              <CopyPopover address={account}/>
+            ) : 
+            null
+          }
+          
+        </Box>
         <Box>(txs without memo will be lost)</Box>
         </VStack>
          
