@@ -27,7 +27,7 @@
       "ethDecimals": 7,
       "accTokenAddress": "bridge.acme/ACME",
       "accDecimals": 7,
-      "accDepositAddress": "accDepositAddress",
+      "accDepositAddress": "acc://acme.test.address",
       "bridgeContract": "bridgeContract"
     },
     {
