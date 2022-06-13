@@ -1,4 +1,4 @@
-import  { FC, useState } from "react"
+import  { FC } from "react"
 
 import {
   Box,
@@ -27,8 +27,7 @@ type Props = {
 }
 
 export const CalculateFee: FC<Props> = (props) => {
-  const { accSymbol, evmSymbol, send, receiving, dispatch } = useStore();
-  const [nextDisabled, setNextDisabled]= useState(true)
+  const { accSymbol, evmSymbol, send, receiving, nextStepDisabled, dispatch } = useStore();
 
   // TODO don't forget get brigde fee from config
   const bridgeFeePercentage = 0.2
@@ -50,13 +49,20 @@ export const CalculateFee: FC<Props> = (props) => {
     let result = value.minus(bridgeFee)
     result = result.minus(ethFee)
     if (result.isGreaterThan(0)) {
-     const payload =  {"send": value.toNumber(), "receiving": result.toNumber()}
+     const payload =  {
+      "send": value.toNumber(), 
+      "receiving": result.toNumber(), 
+      "nextStepDisabled": false
+    }
       dispatch({type: SET_SEND_AND_RECEIVING, payload: payload})
-      setNextDisabled(false)
     } else {
-      setNextDisabled(true)
-      const payload =  {"send": value.toNumber(), "receiving":""}
-     dispatch({type: SET_SEND_AND_RECEIVING, payload: payload})
+      const payload =  {
+
+        "send": value.toNumber(),
+        "receiving":"",
+        "nextStepDisabled": true
+      }
+      dispatch({type: SET_SEND_AND_RECEIVING, payload: payload})
     }
   }
   return (
@@ -126,7 +132,7 @@ export const CalculateFee: FC<Props> = (props) => {
               {ethFee} ACME
           </Box>
         </Flex> 
-        <CardButton title="Next" disabled={nextDisabled} onClick={() =>  dispatch({type: TRANSFER_INSTRUCTIONS_STEP})}/>
+        <CardButton title="Next" disabled={nextStepDisabled} onClick={() =>  dispatch({type: TRANSFER_INSTRUCTIONS_STEP})}/>
       </Box>  
     </Box>
   )

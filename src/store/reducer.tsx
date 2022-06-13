@@ -17,7 +17,8 @@ export type StateType = {
   accSymbol: string,
   evmSymbol: string,
   send: string,
-  receiving: string
+  receiving: string,
+  nextStepDisabled: boolean
 };
 
 export type ActionType = {
@@ -53,7 +54,8 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
       return {
         ...state,
         send: action.payload.send,
-        receiving: action.payload.receiving
+        receiving: action.payload.receiving,
+        nextStepDisabled: action.payload.nextStepDisabled
       }
       case SET_SEND:
         return {
@@ -70,5 +72,6 @@ export const initialState = {
   accSymbol: config.tokens[0].accSymbol,
   evmSymbol: config.tokens[0].evmSymbol,
   send: "",
-  receiving: ""
+  receiving: "",
+  nextStepDisabled: true
 }
