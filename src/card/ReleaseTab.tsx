@@ -1,4 +1,4 @@
-import { Box, Divider, Input, Select, TabPanel, useDisclosure, VStack } from "@chakra-ui/react"
+import { Box, Divider, Input, Select, useDisclosure, VStack } from "@chakra-ui/react"
 import { FC } from "react"
 import { CardButton } from "./СardButton"
 import { config } from '../config/config'
