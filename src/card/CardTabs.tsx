@@ -1,57 +1,27 @@
 import  React, { FC } from "react"
 
 import {
-  Box,
-  VStack,
-  Select,
-  Input,
-  Divider,
   Tabs,
   TabList,
   TabPanels,
   Tab,
-  TabPanel,
-  useDisclosure
+  useDisclosure,
+  TabPanel
 } from "@chakra-ui/react"
 
-import { useStore } from "../store/useStore"
 import { useNavigate } from "react-router-dom"
 import { config } from '../config/config'
-import { Token } from "../config/ConfigModel"
-import { CALCULATE_FEE_STEP, SET_ACC_SYMBOL } from "../store/actions"
-import { useWeb3React } from "@web3-react/core"
 import SelectWalletModal from "../Modal"
-import { CardButton } from "./СardButton"
+import { ReleaseTab } from "./ReleaseTab"
+import { MintTab } from "./MintTab"
 
-type CardTabsProps = {
+type Props = {
   tabIndex: number
 }
 
-type SelectItemProps = {
-  symbol: string
-}
+export const CardTabs: FC<Props> = (props) => {
+  const { isOpen, onClose } = useDisclosure()
 
-const SelectItem: FC<SelectItemProps> = (props): JSX.Element => {
-  return <option value={props.symbol}>{ props.symbol }</option>
-}
-
- // select options group
- const mintOptions: JSX.Element[] = []
- config.tokens.forEach((value:Token)=> {
-   mintOptions.push(<SelectItem key= {value.accSymbol} symbol={value.accSymbol}/>)
- })
-
- const releaseOptions: JSX.Element[] = []
- config.tokens.forEach((value:Token)=> {
-   releaseOptions.push(<SelectItem key= {value.evmSymbol} symbol={value.evmSymbol}/>)
- })
-
-export const CardTabs: FC<CardTabsProps> = (props) => {
-  const { dispatch } = useStore();
-  const { 
-    active, 
-  } = useWeb3React()
-  const { isOpen, onOpen, onClose } = useDisclosure()
   const tab1Names = config.tab1Names
   const tab2Names = config.tab2Names
   const [tabIndex, setTabIndex] = React.useState(props.tabIndex)
@@ -82,71 +52,10 @@ export const CardTabs: FC<CardTabsProps> = (props) => {
     </TabList>
     <TabPanels>
       <TabPanel>
-        <Box padding='6'>
-          <VStack borderRadius='15px'>
-            <Box mb={5} fontSize={16}>
-              Select an asset and description chain, to begin or resume a mint.
-            </Box>
-            <Select fontSize= {14} borderRadius='15px' size='lg' onChange={(v) => {
-              dispatch({type: SET_ACC_SYMBOL, payload: v.target.value})
-            }}>
-              {mintOptions}        
-            </Select>
-            <Select fontSize= {14} borderRadius='15px' size='lg'>
-              <option value='eth'>Ethereum</option>
-            </Select>
-          </VStack>
-        </Box>
-        <Divider my='20px'/>
-        <Box padding='6'>
-          { active ? (
-              <CardButton title="Next" onClick={() => dispatch({type:CALCULATE_FEE_STEP})}/>
-            ):(
-              <CardButton title="Connect wallet" onClick={onOpen}/>
-            )
-            }
-        </Box>  
+        <MintTab/>
       </TabPanel>
       <TabPanel>
-        <Box padding='6'>
-          <VStack borderRadius='15px'> 
-            <Input 
-              placeholder='0 acmeBTC' 
-              type='text'
-              border={0} 
-              fontSize='52px' 
-              mb={5} 
-              size='lg'
-              textAlign={"center"}
-            />
-            <Select isDisabled fontSize= {14} borderRadius='15px' size='lg'>
-              <option value='eth'>Ethereum</option>
-            </Select>
-            <Select isDisabled fontSize= {14} borderRadius='15px' size='lg'>
-              { releaseOptions }
-            </Select>
-          </VStack>
-        </Box>
-        <Box padding='6'>
-          <Input 
-            isDisabled
-            placeholder='Enter a Destination Address' 
-            type='text'
-            borderRadius='15px' 
-            fontSize='12px'
-            size='lg'
-            textAlign={"center"}
-              />   
-        </Box>
-        <Divider my='20px'/>
-        <Box padding='6'>
-          { active ? (
-            <CardButton title="Next"/>
-          ):(
-            <CardButton title="Connect wallet" onClick={onOpen}/>
-          )
-        }
-        </Box>
+        <ReleaseTab/>
       </TabPanel>
     </TabPanels>
     <SelectWalletModal  isOpen={isOpen} closeModal={onClose} />

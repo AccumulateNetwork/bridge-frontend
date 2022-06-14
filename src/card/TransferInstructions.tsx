@@ -1,5 +1,15 @@
 import { ArrowBackIcon, CopyIcon } from "@chakra-ui/icons"
-import { Box, Center, HStack, Popover, PopoverBody, PopoverContent, PopoverTrigger, Portal, Tooltip, VStack } from "@chakra-ui/react"
+import {
+  Box, 
+  Center, 
+  HStack, 
+  Popover, 
+  PopoverContent, 
+  PopoverTrigger, 
+  Portal, 
+  VStack 
+} from "@chakra-ui/react"
+
 import { FC, useState } from "react"
 
 import { CALCULATE_FEE_STEP } from "../store/actions"
@@ -66,7 +76,6 @@ export const TransferInstructions: FC<Props> = (props) => {
             ) : 
             null
           }
-          
         </Box>
         <Box>(txs without memo will be lost)</Box>
         </VStack>
