@@ -6,30 +6,20 @@ import { Token } from "../config/ConfigModel"
 import { CardSelectItem } from "./CardSelectItem"
 import { useWeb3React } from "@web3-react/core"
 
-type Props = {
-}
-
 const releaseOptions: JSX.Element[] = []
 config.tokens.forEach((value:Token)=> {
   releaseOptions.push(<CardSelectItem key= {value.evmSymbol} symbol={value.evmSymbol}/>)
 })
 
+type Props = {
+}
 export const ReleaseTab: FC<Props> = (props) => {
   const { active } = useWeb3React()
   const { onOpen } = useDisclosure()
   return (
     <Box>
       <Box padding='6'>
-        <VStack borderRadius='15px'> 
-          <Input 
-            placeholder='0 acmeBTC' 
-            type='text'
-            border={0} 
-            fontSize='52px' 
-            mb={5} 
-            size='lg'
-            textAlign={"center"}
-          />
+        <VStack borderRadius='15px'>
           <Select isDisabled fontSize= {14} borderRadius='15px' size='lg'>
             <option value='eth'>Ethereum</option>
           </Select>

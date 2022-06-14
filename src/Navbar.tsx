@@ -16,6 +16,7 @@ import {
   AlertIcon,
   AlertTitle,
   AlertDescription,
+  Center
 } from '@chakra-ui/react'
 import { useWeb3React } from "@web3-react/core"
 import { Logo } from './Logo'
@@ -101,10 +102,10 @@ export const Navbar: FC = () => {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <Flex>
-      <Logo w='40px' mx = '10px'/>
-    <Box>
+      <Logo w='40px' h='40px'/>
+    <Center ml={1} mb={5}>
       { config.appName }
-    </Box>
+    </Center>
     <Spacer/>
     <Box>
     {!active ? (
