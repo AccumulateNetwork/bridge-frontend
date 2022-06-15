@@ -32,7 +32,10 @@ import Web3 from 'web3'
 import BigNumber from 'bignumber.js'
 import { toast } from 'react-toastify'
 
-export const Navbar: FC = () => {
+type Props = {
+}
+
+export const Navbar: FC<Props> = () => {
   const { 
     activate, 
     deactivate, 
