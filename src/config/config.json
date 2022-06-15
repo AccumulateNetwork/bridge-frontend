@@ -23,10 +23,8 @@
       "accSymbol": "ACME",
       "evmSymbol": "WACME",
       "logo": "logoUrl",
-      "ethTokenAddress": "ethTokenAddress",
-      "ethDecimals": 7,
+      "evmTokenAddress": "0x555E7deddae1711FDEf2490a32F27eb364cF343e",
       "accTokenAddress": "bridge.acme/ACME",
-      "accDecimals": 7,
       "accDepositAddress": "acc://acme.test.address",
       "bridgeContract": "bridgeContract"
     },
@@ -34,10 +32,8 @@
       "accSymbol": "TEST",
       "evmSymbol": "WTEST",
       "logo": "logoUrl",
-      "ethTokenAddress": "ethTokenAddress",
-      "ethDecimals": 7,
+      "evmTokenAddress": "ethTokenAddress",
       "accTokenAddress": "bridge.acme/ACME",
-      "accDecimals": 7,
       "accDepositAddress": "accDepositAddress",
       "bridgeContract": "bridgeContract"
     }

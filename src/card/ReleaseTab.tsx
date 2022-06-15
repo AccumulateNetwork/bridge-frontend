@@ -1,3 +1,4 @@
+
 import { Box, Button, Divider, HStack, Input, Link, Select, Text, useDisclosure, VStack } from "@chakra-ui/react"
 import { FC, useEffect, useState } from "react"
 import { CardButton } from "./СardButton"
@@ -18,9 +19,10 @@ config.tokens.forEach((value:Token)=> {
   releaseOptions.push(<CardSelectItem key= {value.evmSymbol} symbol={value.evmSymbol}/>)
 })
 
-const getEthTokenAddress = (evmSymbol: string) =>{
+const getEvmTokenAddress = (evmSymbol: string) => {
   const result = config.tokens
-  .find(token => {token.evmSymbol === evmSymbol})?.ethTokenAddress
+  .find(token => token.evmSymbol === evmSymbol)!
+  .evmTokenAddress
   return result
 }
 
@@ -34,7 +36,6 @@ export const ReleaseTab: FC<Props> = (props) => {
   } = useWeb3React()
 
   const { evmSymbol } = useStore()
-
 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [ amount, setAmount ] = useState(0)
@@ -68,6 +69,7 @@ export const ReleaseTab: FC<Props> = (props) => {
     if (contract) {
       contract.methods.balanceOf(account).call().then((_balance: number) => {
          const pow = new BigNumber('10').pow(new BigNumber(8))
+         alert(_balance)
          setBalance(web3BNToFloatNumber(_balance, pow, 18, BigNumber.ROUND_DOWN))
        }).catch((e: Error) => {
         toast(e.message)
@@ -76,8 +78,10 @@ export const ReleaseTab: FC<Props> = (props) => {
   }
 
   useEffect(() => {
-     getBalance(getEthTokenAddress(evmSymbol));
-    }, [account]);
+    if (account) {
+      getBalance(getEvmTokenAddress(evmSymbol))
+    }
+    }, [account]);// eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Box>

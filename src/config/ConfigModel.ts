@@ -2,7 +2,7 @@ export interface Token {
   accSymbol: string
   evmSymbol: string
   logo: string
-  ethTokenAddress: string
+  evmTokenAddress: string
   accTokenAddress: string
   accDepositAddress: string
 }
