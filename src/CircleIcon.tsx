@@ -1,5 +1,5 @@
-import { Icon, IconProps } from "@chakra-ui/react";
-import { FC } from "react";
+import { Icon, IconProps } from "@chakra-ui/react"
+import { FC } from "react"
 
 export const CircleIcon: FC<IconProps> = (props) => (
   <Icon viewBox='0 0 200 200' {...props}>

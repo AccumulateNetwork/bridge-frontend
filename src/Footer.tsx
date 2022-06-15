@@ -1,5 +1,5 @@
-import React from "react";
-import { Flex, Text, HStack } from "@chakra-ui/react";
+import React from "react"
+import { Flex, Text, HStack } from "@chakra-ui/react"
 
 export const Footer = (): React.ReactElement => {
   return (
@@ -14,5 +14,5 @@ export const Footer = (): React.ReactElement => {
         <Text color="gray.400">Wiki</Text>
       </HStack>
     </Flex>
-  );
-};
+  )
+}

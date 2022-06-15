@@ -1,0 +1,41 @@
+{ 
+  "appName": "Accumulate Bridge",
+  "tab1Names": ["Mint", "Minting"],
+  "tab2Names": ["Release", "Releasing"],
+  "tab1Path": "/mint",
+  "tab2Path": "/release",
+
+  "accNetwork": {
+    "node": "string",
+    "keyBook": "string",
+    "explorer": "accExplorerUrl"
+  },
+  "evmNetwork": {
+    "node": "string",
+    "chainId": 1337,
+    "safeAddress": "string",
+    "bridgeAddress":"string",
+    "infuraKey": "string",
+    "explorer": "evmExplorerUrl"
+  },
+  "tokens": [
+    {
+      "accSymbol": "ACME",
+      "evmSymbol": "WACME",
+      "logo": "logoUrl",
+      "evmTokenAddress": "0x555E7deddae1711FDEf2490a32F27eb364cF343e",
+      "accTokenAddress": "bridge.acme/ACME",
+      "accDepositAddress": "acc://acme.test.address",
+      "bridgeContract": "bridgeContract"
+    },
+    {
+      "accSymbol": "TEST",
+      "evmSymbol": "WTEST",
+      "logo": "logoUrl",
+      "evmTokenAddress": "ethTokenAddress",
+      "accTokenAddress": "bridge.acme/ACME",
+      "accDepositAddress": "accDepositAddress",
+      "bridgeContract": "bridgeContract"
+    }
+  ]
+}
