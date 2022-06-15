@@ -26,8 +26,8 @@ import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons'
 
 import { config }  from './config/config'
 import SelectWalletModal from './Modal'
-import { truncateAddress, web3BNToFloatString } from './utils'
-import CONTRACTERC20ABI from './CONTRACT-ABI.json'
+import { truncateAddress, web3BNToFloatNumber } from './utils'
+import CONTRACTERC20ABI from './contracts/CONTRACT-ABI.json'
 import Web3 from 'web3'
 import BigNumber from 'bignumber.js'
 import { toast } from 'react-toastify'
@@ -49,7 +49,7 @@ export const Navbar: FC<Props> = () => {
   const tokenAddress = '0x555E7deddae1711FDEf2490a32F27eb364cF343e';
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [balance, setBalance]= useState("")
+  const [balance, setBalance]= useState(0)
 
   // TODO don't forget get from config
   const explorerURL = ''
@@ -70,10 +70,10 @@ export const Navbar: FC<Props> = () => {
     let contract
     try {
       contract = new web3.eth.Contract(abi, address)
-    } catch(e: any){
+    } catch(e: any) {
        toast(e.message)
-  }
-  return contract
+    }
+    return contract
   }
 
   const getBalance = (tokenAddress: string) => {
@@ -81,7 +81,7 @@ export const Navbar: FC<Props> = () => {
     if (contract) {
       contract.methods.balanceOf(account).call().then((_balance: number) => {
          const pow = new BigNumber('10').pow(new BigNumber(8))
-         setBalance(web3BNToFloatString(_balance, pow, 18, BigNumber.ROUND_DOWN))
+         setBalance(web3BNToFloatNumber(_balance, pow, 18, BigNumber.ROUND_DOWN))
        }).catch((e: Error) => {
         toast(e.message)
        })

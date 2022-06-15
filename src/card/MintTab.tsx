@@ -20,8 +20,7 @@ config.tokens.forEach((value:Token)=> {
 
 export const MintTab: FC<Props> = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-
-  const { dispatch } = useStore();
+  const { dispatch } = useStore()
   const { 
     active, 
   } = useWeb3React()

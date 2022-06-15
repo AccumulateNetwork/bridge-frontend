@@ -14,14 +14,13 @@ export const toHex = (num: any) => {
   return "0x" + val.toString(16)
 }
 
-export function web3BNToFloatString(
+export const web3BNToFloatNumber = (
   bn: number,
   divideBy: BigNumber,
   decimals: number,
-  roundingMode = BigNumber.ROUND_DOWN
-): string {
-  const converted = new BigNumber(bn.toString())
-  const divided = converted.div(divideBy)
-  return divided.toFixed(decimals, roundingMode)
-}
+  roundingMode = BigNumber.ROUND_DOWN) => {
+    const converted = new BigNumber(bn.toString())
+    const divided = converted.div(divideBy)
+    return Number(divided.toFixed(decimals, roundingMode))
+  }
   
