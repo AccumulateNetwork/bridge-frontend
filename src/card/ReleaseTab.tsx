@@ -1,36 +1,84 @@
 import { Box, Button, Divider, HStack, Input, Link, Select, Text, useDisclosure, VStack } from "@chakra-ui/react"
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { CardButton } from "./СardButton"
 import { config } from '../config/config'
 import { Token } from "../config/ConfigModel"
 import { CardSelectItem } from "./CardSelectItem"
 import { useWeb3React } from "@web3-react/core"
 import SelectWalletModal from "../Modal"
+import Web3 from "web3"
+import { toast } from "react-toastify"
+import CONTRACTERC20ABI from '../contracts/CONTRACT-ABI.json'
+import BigNumber from "bignumber.js"
+import { web3BNToFloatNumber } from "../utils"
+import { useStore } from "../store/useStore"
 
 const releaseOptions: JSX.Element[] = []
 config.tokens.forEach((value:Token)=> {
   releaseOptions.push(<CardSelectItem key= {value.evmSymbol} symbol={value.evmSymbol}/>)
 })
 
+const getEthTokenAddress = (evmSymbol: string) =>{
+  const result = config.tokens
+  .find(token => {token.evmSymbol === evmSymbol})?.ethTokenAddress
+  return result
+}
+
 type Props = {
 }
 export const ReleaseTab: FC<Props> = (props) => {
-  const { active } = useWeb3React()
+  const { 
+    active, 
+    account, 
+    library,
+  } = useWeb3React()
+
+  const { evmSymbol } = useStore()
+
+
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [ amount, setAmount ] = useState(0)
   const [ balance, setBalance ] = useState(0)
+  const [amountError, setAmountError] = useState("")
 
-  const calculateACMEValue = (v: number) => {
+  const calculateValue = (v: number) => {
     let val = Number(v) || 0;
     if (val > balance) {
-      // setAppError("Not enough tokens");
+       setAmountError("Not enough tokens");
     } else {
-      // setAppError("");
+      setAmountError("");
     }
     // const pow = new BigNumber('10').pow(new BigNumber(8));
     // setACMEValue(web3BNToFloatString(val*5*1e8, pow, 0, BigNumber.ROUND_DOWN));
   }
- 
+
+  const getContract = (library: any, abi: any, address: string) => {
+    const web3 = new Web3(library.provider)
+    let contract
+    try {
+      contract = new web3.eth.Contract(abi, address)
+    } catch(e: any) {
+       toast(e.message)
+    }
+    return contract
+  }
+
+   const getBalance = (tokenAddress: string) => {
+    const contract = getContract(library, CONTRACTERC20ABI, tokenAddress)
+    if (contract) {
+      contract.methods.balanceOf(account).call().then((_balance: number) => {
+         const pow = new BigNumber('10').pow(new BigNumber(8))
+         setBalance(web3BNToFloatNumber(_balance, pow, 18, BigNumber.ROUND_DOWN))
+       }).catch((e: Error) => {
+        toast(e.message)
+       })
+    }
+  }
+
+  useEffect(() => {
+     getBalance(getEthTokenAddress(evmSymbol));
+    }, [account]);
+
   return (
     <Box>
       <Box padding='6'>
@@ -44,19 +92,23 @@ export const ReleaseTab: FC<Props> = (props) => {
         </VStack>
       </Box>
       <Box padding='6'>
-        <Input borderColor={"red"} placeholder="Amount"  borderRadius='15px' 
+        <Input borderColor={ amountError ? "red" : "inherit"} placeholder="Amount"  borderRadius='15px' 
           fontSize='12px'
           size='lg'/>
-        <Text color={"red.400"} my={2} fontSize='sm'>Not enough tokens </Text>
+        { amountError ?
+          <Text color={"red.400"} my={2} fontSize='sm'>Not enough tokens </Text>
+          : null
+        }
         <Link color='#3182ce' 
-          onClick={() => { setAmount(balance); calculateACMEValue(balance); }}>
+          onClick={() => { 
+            setAmount(balance)
+            calculateValue(balance) }}>
           <Text my={2} fontSize='sm'>Available balance: { balance } </Text>
         </Link>
       </Box>
       <Box padding='6'>
         <Input 
           placeholder='Enter a Destination Address' 
-          type='text'
           borderRadius='15px' 
           fontSize='12px'
           size='lg'
