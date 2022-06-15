@@ -12,6 +12,8 @@ import { useNavigate } from "react-router-dom"
 import { config } from '../config/config'
 import { ReleaseTab } from "./ReleaseTab"
 import { MintTab } from "./MintTab"
+import { SELECT_ASSET_STEP } from "../store/actions"
+import { useStore } from "../store/useStore"
 
 type Props = {
   tabIndex: number
@@ -20,6 +22,7 @@ type Props = {
 export const CardTabs: FC<Props> = (props) => {
   const tab1Names = config.tab1Names
   const tab2Names = config.tab2Names
+  const { dispatch } = useStore()
   const [tabIndex, setTabIndex] = React.useState(props.tabIndex)
 
   const tab1Name = tabIndex === 0 ? tab1Names[1] : tab1Names[0]
@@ -33,6 +36,8 @@ export const CardTabs: FC<Props> = (props) => {
     } else {
       navigate(config.tab2Path)
     }
+    dispatch({type: SELECT_ASSET_STEP})
+
   }
   return (
     <Tabs 

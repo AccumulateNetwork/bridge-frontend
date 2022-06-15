@@ -13,6 +13,7 @@ import CONTRACTERC20ABI from '../contracts/CONTRACT-ABI.json'
 import BigNumber from "bignumber.js"
 import { web3BNToFloatNumber } from "../utils"
 import { useStore } from "../store/useStore"
+import { SET_EVM_SYMBOL } from "../store/actions"
 
 const releaseOptions: JSX.Element[] = []
 config.tokens.forEach((value:Token)=> {
@@ -35,12 +36,18 @@ export const ReleaseTab: FC<Props> = (props) => {
     library,
   } = useWeb3React()
 
-  const { evmSymbol } = useStore()
+  const { evmSymbol, dispatch } = useStore()
 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [ amount, setAmount ] = useState(0)
   const [ balance, setBalance ] = useState(0)
   const [amountError, setAmountError] = useState("")
+
+
+  const handleChange = (event: any) => {
+    setAmount(event.target.value);
+    calculateValue(event.target.value);
+  };
 
   const calculateValue = (v: number) => {
     let val = Number(v) || 0;
@@ -69,7 +76,6 @@ export const ReleaseTab: FC<Props> = (props) => {
     if (contract) {
       contract.methods.balanceOf(account).call().then((_balance: number) => {
          const pow = new BigNumber('10').pow(new BigNumber(8))
-         alert(_balance)
          setBalance(web3BNToFloatNumber(_balance, pow, 18, BigNumber.ROUND_DOWN))
        }).catch((e: Error) => {
         toast(e.message)
@@ -81,13 +87,15 @@ export const ReleaseTab: FC<Props> = (props) => {
     if (account) {
       getBalance(getEvmTokenAddress(evmSymbol))
     }
-    }, [account]);// eslint-disable-line react-hooks/exhaustive-deps
+    }, [account, evmSymbol]);// eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Box>
       <Box padding='6'>
         <VStack borderRadius='15px'>
-          <Select fontSize= {14} borderRadius='15px' size='lg'>
+          <Select fontSize= {14} borderRadius='15px' size='lg' onChange={(v) => {
+              dispatch({type: SET_EVM_SYMBOL, payload: v.target.value})
+            }}>
             { releaseOptions }
           </Select>
           <Select fontSize= {14} borderRadius='15px' size='lg'>
@@ -96,9 +104,14 @@ export const ReleaseTab: FC<Props> = (props) => {
         </VStack>
       </Box>
       <Box padding='6'>
-        <Input borderColor={ amountError ? "red" : "inherit"} placeholder="Amount"  borderRadius='15px' 
+        <Input 
+          _focus={amountError ? {borderColor:"red"} :{ borderColor:"inherit"}} 
+          borderColor={ amountError ? "red" : "inherit"}
+          placeholder="Amount"  borderRadius='15px' 
           fontSize='12px'
-          size='lg'/>
+          size='lg'
+          onChange={handleChange}
+          value={ amount }/>
         { amountError ?
           <Text color={"red.400"} my={2} fontSize='sm'>Not enough tokens </Text>
           : null

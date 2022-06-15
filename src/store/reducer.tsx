@@ -8,6 +8,7 @@ const {
   CALCULATE_FEE_STEP,
   TRANSFER_INSTRUCTIONS_STEP,
   SET_ACC_SYMBOL,
+  SET_EVM_SYMBOL,
   SET_SEND,
   SET_SEND_AND_RECEIVING,
 } = ACTION
@@ -48,8 +49,14 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
       return {
         ...state,
         accSymbol: action.payload,
-        evmSymbol: config.tokens.filter(token => token.accSymbol === action.payload)[0].evmSymbol
-      } 
+        evmSymbol: config.tokens.find(token => token.accSymbol === action.payload)!.evmSymbol
+      }
+    case SET_EVM_SYMBOL:
+      return {
+        ...state,
+        accSymbol: config.tokens.find(token => token.evmSymbol === action.payload)!.accSymbol,
+        evmSymbol: action.payload
+      }
     case SET_SEND_AND_RECEIVING:
       return {
         ...state,

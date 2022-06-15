@@ -27,19 +27,19 @@ export const MintTab: FC<Props> = (props) => {
   return (
     <Box>
       <Box padding='6'>
-          <VStack borderRadius='15px'>
-            <Box mb={5} fontSize={16}>
-              Select an asset and description chain, to begin or resume a mint.
-            </Box>
-            <Select fontSize= {14} borderRadius='15px' size='lg' onChange={(v) => {
-              dispatch({type: SET_ACC_SYMBOL, payload: v.target.value})
-            }}>
-              {mintOptions}        
-            </Select>
-            <Select fontSize= {14} borderRadius='15px' size='lg'>
-              <option value='eth'>Ethereum</option>
-            </Select>
-          </VStack>
+        <VStack borderRadius='15px'>
+          <Box mb={5} fontSize={16}>
+            Select an asset and description chain, to begin or resume a mint.
+          </Box>
+          <Select fontSize= {14} borderRadius='15px' size='lg' onChange={(v) => {
+            dispatch({type: SET_ACC_SYMBOL, payload: v.target.value})
+          }}>
+            {mintOptions}        
+          </Select>
+          <Select fontSize= {14} borderRadius='15px' size='lg'>
+            <option value='eth'>Ethereum</option>
+          </Select>
+        </VStack>
         </Box>
         <Divider my='20px'/>
         <Box padding='6'>
@@ -48,7 +48,7 @@ export const MintTab: FC<Props> = (props) => {
             ):(
               <CardButton title="Connect wallet" onClick={onOpen}/>
             )
-            }
+           }
         </Box> 
         <SelectWalletModal  isOpen={isOpen} closeModal={onClose} />
     </Box>
