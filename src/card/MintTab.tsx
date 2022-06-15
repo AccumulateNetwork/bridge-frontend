@@ -7,6 +7,7 @@ import { CardSelectItem } from "./CardSelectItem"
 import { CALCULATE_FEE_STEP, SET_ACC_SYMBOL } from "../store/actions"
 import { useStore } from "../store/useStore"
 import { useWeb3React } from "@web3-react/core"
+import SelectWalletModal from "../Modal"
 
 type Props = {
 }
@@ -18,11 +19,12 @@ config.tokens.forEach((value:Token)=> {
 })
 
 export const MintTab: FC<Props> = (props) => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
   const { dispatch } = useStore();
   const { 
     active, 
   } = useWeb3React()
-  const { onOpen } = useDisclosure()
   return (
     <Box>
       <Box padding='6'>
@@ -48,7 +50,8 @@ export const MintTab: FC<Props> = (props) => {
               <CardButton title="Connect wallet" onClick={onOpen}/>
             )
             }
-        </Box>  
+        </Box> 
+        <SelectWalletModal  isOpen={isOpen} closeModal={onClose} />
     </Box>
         
   )

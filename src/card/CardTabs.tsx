@@ -5,13 +5,11 @@ import {
   TabList,
   TabPanels,
   Tab,
-  useDisclosure,
   TabPanel
 } from "@chakra-ui/react"
 
 import { useNavigate } from "react-router-dom"
 import { config } from '../config/config'
-import SelectWalletModal from "../Modal"
 import { ReleaseTab } from "./ReleaseTab"
 import { MintTab } from "./MintTab"
 
@@ -20,8 +18,6 @@ type Props = {
 }
 
 export const CardTabs: FC<Props> = (props) => {
-  const { isOpen, onClose } = useDisclosure()
-
   const tab1Names = config.tab1Names
   const tab2Names = config.tab2Names
   const [tabIndex, setTabIndex] = React.useState(props.tabIndex)
@@ -30,7 +26,6 @@ export const CardTabs: FC<Props> = (props) => {
   const tab2Name = tabIndex === 0 ? tab2Names[0] : tab2Names[1]
 
   const navigate = useNavigate()
-  
   const navigateToTab = (tabIndex: number)=> {
     setTabIndex(tabIndex)
     if (tabIndex === 0) {
@@ -58,7 +53,6 @@ export const CardTabs: FC<Props> = (props) => {
         <ReleaseTab/>
       </TabPanel>
     </TabPanels>
-    <SelectWalletModal  isOpen={isOpen} closeModal={onClose} />
   </Tabs>
   )
 }
