@@ -14,6 +14,7 @@ import BigNumber from "bignumber.js"
 import { web3BNToFloatNumber } from "../utils"
 import { useStore } from "../store/useStore"
 import { SET_EVM_SYMBOL } from "../store/actions"
+import { OperationCanceledException } from "typescript"
 
 const releaseOptions: JSX.Element[] = []
 config.tokens.forEach((value:Token)=> {
@@ -78,12 +79,16 @@ export const ReleaseTab: FC<Props> = (props) => {
    const getBalance = (tokenAddress: string) => {
     const contract = getContract(library, TOKENSERC20ABI, tokenAddress)
     if (contract) {
-      contract.methods.balanceOf(account).call().then((_balance: number) => {
-         const pow = new BigNumber('10').pow(new BigNumber(8))
-         setBalance(web3BNToFloatNumber(_balance, pow, 18, BigNumber.ROUND_DOWN))
-       }).catch((e: Error) => {
+      contract.methods.decimals().call().then((_decimals: number) => {
+        return contract.methods.balanceOf(account).call()
+          .then((_balance: number) => {
+            const pow = new BigNumber('10').pow(new BigNumber(_decimals))
+            setBalance(web3BNToFloatNumber(_balance, pow, 18, BigNumber.ROUND_DOWN))
+          })
+      }).catch((e: Error) => {
         toast(e.message)
        })
+     
     }
   }
 
