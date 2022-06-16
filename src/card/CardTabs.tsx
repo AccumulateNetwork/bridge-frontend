@@ -43,15 +43,16 @@ export const CardTabs: FC<Props> = (props) => {
     <Tabs 
     defaultIndex={ tabIndex } 
     isFitted
+    
     variant='unstyled' 
     colorScheme="grey" 
     onChange={(index) => navigateToTab(index) }>
     <TabList>
-      <Tab>{ tab1Name }</Tab>
-      <Tab>{ tab2Name }</Tab>  
+      <Tab _focus={{borderColor:"inherit"}}>{ tab1Name }</Tab>
+      <Tab _focus={{borderColor:"inherit"}}>{ tab2Name }</Tab>  
     </TabList>
     <TabPanels>
-      <TabPanel>
+      <TabPanel >
         <MintTab/>
       </TabPanel>
       <TabPanel>

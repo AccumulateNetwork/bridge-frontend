@@ -87,7 +87,6 @@ export const ReleaseTab: FC<Props> = (props) => {
       }).catch((e: Error) => {
         toast(e.message)
        })
-     
     }
   }
 
