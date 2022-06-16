@@ -45,16 +45,19 @@ export const ReleaseTab: FC<Props> = (props) => {
 
 
   const handleChange = (event: any) => {
-    setAmount(event.target.value);
-    calculateValue(event.target.value);
-  };
+     if (isNaN(Number(event.target.value))) {
+       return
+     }
+     setAmount(event.target.value);
+     calculateValue(event.target.value)   
+  }
 
   const calculateValue = (v: number) => {
-    let val = Number(v) || 0;
+    let val = Number(v) || 0
     if (val > balance) {
-       setAmountError("Not enough tokens");
+      setAmountError("Not enough tokens")
     } else {
-      setAmountError("");
+      setAmountError("")
     }
     // const pow = new BigNumber('10').pow(new BigNumber(8));
     // setACMEValue(web3BNToFloatString(val*5*1e8, pow, 0, BigNumber.ROUND_DOWN));
