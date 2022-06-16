@@ -4,7 +4,7 @@ import * as ACTION from './actions'
 import { config } from "../config/config"
 
 const {
-  SELECT_ASSET_STEP,
+  INITIAL,
   CALCULATE_FEE_STEP,
   TRANSFER_INSTRUCTIONS_STEP,
   SET_ACC_SYMBOL,
@@ -31,7 +31,7 @@ export type ReducerType<S, A> = (state: S, action: A) => S;
 
 export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
   switch (action.type) {
-    case SELECT_ASSET_STEP:
+    case INITIAL:
       return {
         ...initialState
       }

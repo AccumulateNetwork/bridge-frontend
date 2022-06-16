@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom"
 import { config } from '../config/config'
 import { ReleaseTab } from "./ReleaseTab"
 import { MintTab } from "./MintTab"
-import { SELECT_ASSET_STEP } from "../store/actions"
+import { INITIAL } from "../store/actions"
 import { useStore } from "../store/useStore"
 
 type Props = {
@@ -36,7 +36,7 @@ export const CardTabs: FC<Props> = (props) => {
     } else {
       navigate(config.tab2Path)
     }
-    dispatch({type: SELECT_ASSET_STEP})
+    dispatch({type: INITIAL})
 
   }
   return (

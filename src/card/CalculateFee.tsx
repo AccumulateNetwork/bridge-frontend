@@ -16,7 +16,7 @@ import { useStore } from "../store/useStore"
 import { ArrowBackIcon } from "@chakra-ui/icons"
 import { useNavigate } from "react-router-dom"
 import { 
-  SELECT_ASSET_STEP, 
+  INITIAL, 
   SET_SEND, 
   SET_SEND_AND_RECEIVING, 
   TRANSFER_INSTRUCTIONS_STEP } from "../store/actions"
@@ -69,7 +69,7 @@ export const CalculateFee: FC<Props> = (props) => {
     <Box>
       <HStack p={2} width="100%">
         <ArrowBackIcon mr="100px" onClick={()=> {
-          dispatch({type: SELECT_ASSET_STEP})
+          dispatch({type: INITIAL})
           navigate(config.tab1Path)
         }}/>
         <Center mb={5} fontSize={16}>

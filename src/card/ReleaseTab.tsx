@@ -93,9 +93,9 @@ export const ReleaseTab: FC<Props> = (props) => {
   useEffect(() => {
     if (account) {
       getBalance(getEvmTokenAddress(evmSymbol))
-      setAmount(0)
-      calculateValue(0)
     }
+    setAmount(0)
+    calculateValue(0)
     }, [chainId, account, evmSymbol]);// eslint-disable-line react-hooks/exhaustive-deps
 
   return (
