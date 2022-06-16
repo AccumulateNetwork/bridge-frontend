@@ -62,24 +62,23 @@ export const TransferInstructions: FC<Props> = (props) => {
       </HStack>
       <Box pt = {5} pl={10} pr={10} pb={5}>
         <VStack>
-        <Box>Send { accSymbol } to </Box>    
-        <Box>
-          {accDepositAddress}
-          <CopyPopover address={accDepositAddress}/>
-        </Box>
-        <Box>with <b>memo</b> </Box> 
-        <Box> 
-          { truncateAddress(account) } 
-          {
-            account ? (
-              <CopyPopover address={account}/>
-            ) : 
-            null
-          }
-        </Box>
-        <Box>(txs without memo will be lost)</Box>
+          <Box>Send { accSymbol } to </Box>    
+          <Box>
+            {accDepositAddress}
+            <CopyPopover address={accDepositAddress}/>
+          </Box>
+          <Box>with <b>memo</b> </Box> 
+          <Box> 
+            { truncateAddress(account) } 
+            {
+              account ? (
+                <CopyPopover address={account}/>
+              ) : 
+              null
+            }
+          </Box>
+          <Box>(txs without memo will be lost)</Box>
         </VStack>
-         
       </Box>
     </Box>
   )

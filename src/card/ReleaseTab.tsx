@@ -9,7 +9,7 @@ import { useWeb3React } from "@web3-react/core"
 import SelectWalletModal from "../Modal"
 import Web3 from "web3"
 import { toast } from "react-toastify"
-import CONTRACTERC20ABI from '../contracts/CONTRACT-ABI.json'
+import TOKENSERC20ABI from '../contracts/TOKENS-CONTRACT-ABI.json'
 import BigNumber from "bignumber.js"
 import { web3BNToFloatNumber } from "../utils"
 import { useStore } from "../store/useStore"
@@ -76,7 +76,7 @@ export const ReleaseTab: FC<Props> = (props) => {
   }
 
    const getBalance = (tokenAddress: string) => {
-    const contract = getContract(library, CONTRACTERC20ABI, tokenAddress)
+    const contract = getContract(library, TOKENSERC20ABI, tokenAddress)
     if (contract) {
       contract.methods.balanceOf(account).call().then((_balance: number) => {
          const pow = new BigNumber('10').pow(new BigNumber(8))
@@ -93,7 +93,7 @@ export const ReleaseTab: FC<Props> = (props) => {
       setAmount(0)
       calculateValue(0)
     }
-    }, [account, evmSymbol]);// eslint-disable-line react-hooks/exhaustive-deps
+    }, [chainId, account, evmSymbol]);// eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Box>
