@@ -14,7 +14,6 @@ import BigNumber from "bignumber.js"
 import { web3BNToFloatNumber } from "../utils"
 import { useStore } from "../store/useStore"
 import { SET_EVM_SYMBOL } from "../store/actions"
-import { OperationCanceledException } from "typescript"
 
 const releaseOptions: JSX.Element[] = []
 config.tokens.forEach((value:Token)=> {
