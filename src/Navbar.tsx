@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect } from 'react'
 import {
   Flex,
   Box,
@@ -26,10 +26,7 @@ import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons'
 
 import { config }  from './config/config'
 import SelectWalletModal from './Modal'
-import { truncateAddress, web3BNToFloatNumber } from './utils'
-import CONTRACTERC20ABI from './contracts/CONTRACT-ABI.json'
-import Web3 from 'web3'
-import BigNumber from 'bignumber.js'
+import { truncateAddress } from './utils'
 import { toast } from 'react-toastify'
 
 type Props = {
@@ -42,20 +39,14 @@ export const Navbar: FC<Props> = () => {
     active, 
     account, 
     chainId, 
-    library,
     error
   } = useWeb3React()
 
-  const tokenAddress = '0x555E7deddae1711FDEf2490a32F27eb364cF343e';
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const [balance, setBalance]= useState(0)
 
   // TODO don't forget get from config
   const explorerURL = ''
-  const tokenContract = ''
-  const symbol = ''
-  
+  const tokenContract = ''  
   const disconnect = () => {
     refreshState()
     deactivate()
@@ -65,35 +56,9 @@ export const Navbar: FC<Props> = () => {
     window.localStorage.removeItem("provider")
   }
 
-  const getContract = (library: any, abi: any, address: string) => {
-    const web3 = new Web3(library.provider)
-    let contract
-    try {
-      contract = new web3.eth.Contract(abi, address)
-    } catch(e: any) {
-       toast(e.message)
-    }
-    return contract
-  }
-
-  const getBalance = (tokenAddress: string) => {
-    const contract = getContract(library, CONTRACTERC20ABI, tokenAddress)
-    if (contract) {
-      contract.methods.balanceOf(account).call().then((_balance: number) => {
-         const pow = new BigNumber('10').pow(new BigNumber(8))
-         setBalance(web3BNToFloatNumber(_balance, pow, 18, BigNumber.ROUND_DOWN))
-       }).catch((e: Error) => {
-        toast(e.message)
-       })
-    }
-  }
-
   useEffect(() => {
     if (error) {
       toast(error)
-    }
-    if (account) {
-       getBalance(tokenAddress)
     }
   }, [account, chainId]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -134,14 +99,21 @@ export const Navbar: FC<Props> = () => {
         ) :
           null
         }
-          {explorerURL === "" ? (
-            <Button size='lg' colorScheme='gray' variant='outline' mb={3} ml={3}>{balance} {symbol}</Button>
-          ) :
-            <Tooltip label='View in explorer' fontSize='md'>
-              <Link href={explorerURL + '/token/' + tokenContract + '?a=' + account} isExternal>
-                {/* <Button size='lg' colorScheme='gray' variant='outline' mb={3} ml={chainId === 3 ? ( 3 ) : null}>{balance2} {symbol}<ExternalLinkIcon ml={2} /></Button> */}
-              </Link>
-            </Tooltip>
+        {chainId === 4 ? (
+          <Tooltip label='You are connected to testnet' fontSize='md'>
+            <Button size='lg' colorScheme='orange' variant='outline' mb={3}>RinkedBy Testnet</Button>
+          </Tooltip>
+        ) :
+          null
+        }
+          {explorerURL !== "" ? (
+             <Tooltip label='View in explorer' fontSize='md'>
+             <Link href={explorerURL + '/token/' + tokenContract + '?a=' + account} isExternal>
+               {/* <Button size='lg' colorScheme='gray' variant='outline' mb={3} ml={chainId === 3 ? ( 3 ) : null}>{balance2} {symbol}<ExternalLinkIcon ml={2} /></Button> */}
+             </Link>
+           </Tooltip>
+          ) : null
+   
           }
         {account ? (
           <Menu>

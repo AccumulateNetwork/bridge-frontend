@@ -32,7 +32,8 @@ type Props = {
 export const ReleaseTab: FC<Props> = (props) => {
   const { 
     active, 
-    account, 
+    account,
+    chainId,
     library,
   } = useWeb3React()
 
@@ -89,6 +90,8 @@ export const ReleaseTab: FC<Props> = (props) => {
   useEffect(() => {
     if (account) {
       getBalance(getEvmTokenAddress(evmSymbol))
+      setAmount(0)
+      calculateValue(0)
     }
     }, [account, evmSymbol]);// eslint-disable-line react-hooks/exhaustive-deps
 
@@ -108,7 +111,7 @@ export const ReleaseTab: FC<Props> = (props) => {
       </Box>
       <Box padding='6'>
         <Input 
-          _focus={amountError ? {borderColor:"red"} :{ borderColor:"inherit"}} 
+          _focus={amountError ? {borderColor:"red"} : { borderColor:"inherit"}} 
           borderColor={ amountError ? "red" : "inherit"}
           placeholder="Amount"  borderRadius='15px' 
           fontSize='12px'

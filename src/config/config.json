@@ -32,7 +32,7 @@
       "accSymbol": "TEST",
       "evmSymbol": "WTEST",
       "logo": "logoUrl",
-      "evmTokenAddress": "ethTokenAddress",
+      "evmTokenAddress": "0xE5d6B94849D6f924398125DAd70C8b2dB7d0E36E",
       "accTokenAddress": "bridge.acme/ACME",
       "accDepositAddress": "accDepositAddress",
       "bridgeContract": "bridgeContract"
