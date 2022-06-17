@@ -18,7 +18,6 @@ export interface EVMNetwork {
   chainId: number
   safeAddress: string
   bridgeAddress: string
-  infuraKey: string
   explorer: string
 }
 

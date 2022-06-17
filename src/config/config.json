@@ -15,7 +15,6 @@
     "chainId": 1337,
     "safeAddress": "string",
     "bridgeAddress":"string",
-    "infuraKey": "string",
     "explorer": "evmExplorerUrl"
   },
   "tokens": [
