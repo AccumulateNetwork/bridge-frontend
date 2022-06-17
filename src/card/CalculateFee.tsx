@@ -79,13 +79,14 @@ export const CalculateFee: FC<Props> = (props) => {
       <Box pt = {5} pl={10} pr={10} pb={5}>
         <VStack borderRadius='15px'>
           <HStack spacing='24px' borderRadius={14} width="100%" borderWidth={1}>
-            <Input fontSize= {14} borderRadius={14} border={0} size='lg' placeholder={`How much ${accSymbol} will you send?`}
+            <Input  _focus={{borderColor:"none"}}
+            fontSize= {14} borderRadius={14} border={0} size='lg' placeholder={`How much ${accSymbol} will you send?`}
               onChange={(v) => 
                 // TODO reqexp only numbers
                 calculateFee(v.target.value)}
                 value={send}
             />
-            <Center fontSize={13} w='80px' h='45px'>
+            <Center fontSize={13} w='77px' h='45px'>
                 {accSymbol}
             </Center>
           </HStack>
