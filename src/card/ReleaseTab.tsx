@@ -152,12 +152,13 @@ export const ReleaseTab: FC<Props> = (props) => {
     return false;
   }
 
-  useEffect(() => {
-    if (account) {  
-      getBalance(tokenAddress)
-      getAllowance(tokenAddress, config.evmNetwork.bridgeAddress)
+  useEffect(() => {    
+    const address = getEvmTokenAddress(evmSymbol)
+    if (account && address) {  
+      getBalance(address)
+      getAllowance(address, config.evmNetwork.bridgeAddress)
     }
-    setTokenAddress(getEvmTokenAddress(evmSymbol))
+    setTokenAddress(address)
     setAmount(0)
     calculateValue(0)
     }, [chainId, account, evmSymbol]);// eslint-disable-line react-hooks/exhaustive-deps

@@ -75,7 +75,7 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
 }
 
 export const initialState = {
-  step: Step.SELECT_ASSET,
+  step: Step.INITIAL,
   accSymbol: config.tokens[0].accSymbol,
   evmSymbol: config.tokens[0].evmSymbol,
   send: "",

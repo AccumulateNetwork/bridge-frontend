@@ -1,5 +1,5 @@
 export enum Step {
-  SELECT_ASSET,
+  INITIAL,
   CALCULATE_FEE,
   TRANSFER_INSTRUCTIONS
 }
