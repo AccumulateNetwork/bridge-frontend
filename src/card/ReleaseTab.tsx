@@ -47,6 +47,7 @@ export const ReleaseTab: FC<Props> = (props) => {
   const [ tokenAddress, setTokenAddress] = useState("")
   const [ allowance, setAllowance ] = useState(0)
   const [ isApproving, setIsApproving] = useState(false)
+  const [ isBurning, setIsBurning] = useState(false)
   const [ destinationAddress, setDestinationAddress] = useState("")
   const [destinationAddressError, setDestinationAddressError] = useState(false)
 
@@ -133,18 +134,18 @@ export const ReleaseTab: FC<Props> = (props) => {
 
   const handleBurn = () => {
     const contract = getContract(library, BRIDGEABI, config.evmNetwork.bridgeAddress)
-    const amountBig = new BigNumber(amount, 10).toNumber() * 1e8
+    const value = new BigNumber(amount, 10).toNumber() * 1e8
+    setIsBurning(true)
     if (contract) {
-      contract.methods.burn(amountBig, destinationAddress).send({from: account}).then((result: any) => {
+      contract.methods.burn(tokenAddress, destinationAddress, value).send({from: account}).then((result: any) => {
         window.location.reload();
       }).catch((e: Error) => {
-        setIsApproving(false)
-       })
+        setIsBurning(false)
+       }) 
     }   
   }
 
   const isAllowanceMoreThenAmount = (allowance: number, amount: number) => {
-    const amountBig = new BigNumber(amount, 10).toNumber() * 1e8
     if (Number(allowance) >= Number(amount)) {
       return true;
     }
@@ -225,12 +226,12 @@ export const ReleaseTab: FC<Props> = (props) => {
               onClick={() => handleApprove()}
               disabled={
                 isAllowanceMoreThenAmount(allowance, amount) || isApproving
-              }>                                                                                      
-              {
-                isApproving ?
-                  "Approving..." :
-                  (!isAllowanceMoreThenAmount(allowance, amount) ? "Approve" : "Approved")
-              }
+              }>
+                {
+                  isApproving ?
+                    "Approving..." :
+                    (!isAllowanceMoreThenAmount(allowance, amount) ? "Approve" : "Approved")
+                }
 
            </Button>
           <Button
@@ -240,10 +241,17 @@ export const ReleaseTab: FC<Props> = (props) => {
               borderRadius='15px' 
               size='lg'
               p='7'
-              disabled={!isAllowanceMoreThenAmount(allowance, amount) || isApproving || amount === 0 || destinationAddressError }
+              disabled={
+                !isAllowanceMoreThenAmount(allowance, amount) 
+                || isApproving || isBurning
+                || amount === 0 || destinationAddressError 
+              }
               onClick={() => {handleBurn()}}>
-                
-              Burn
+                {
+                  isBurning ?
+                  "Burning...":
+                  "Burn"
+                } 
            </Button>
         </HStack>
         ):(
