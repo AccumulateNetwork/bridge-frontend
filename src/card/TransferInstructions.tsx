@@ -51,7 +51,7 @@ export const TransferInstructions: FC<Props> = (props) => {
   } = useWeb3React()
 
   const { accSymbol, dispatch } = useStore()
-  const accDepositAddress =  config.tokens.filter(token => token.accSymbol === accSymbol)[0].accDepositAddress
+  const accDepositAddress =  config.tokens.find(token => token.accSymbol === accSymbol)!.accDepositAddress
   return (
     <Box fontSize={16}>
       <HStack p={2} width="100%">
