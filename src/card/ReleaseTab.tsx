@@ -173,7 +173,7 @@ export const ReleaseTab: FC<Props> = (props) => {
             { releaseOptions }
           </Select>
           <Select fontSize= {14} borderRadius='15px' size='lg'>
-            <option value='eth'>Ethereum</option>
+            <option value='acc'>Accumulate</option>
           </Select>
         </VStack>
       </Box>
