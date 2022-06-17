@@ -10,6 +10,8 @@ import SelectWalletModal from "../Modal"
 import Web3 from "web3"
 import { toast } from "react-toastify"
 import TOKENSERC20ABI from '../contracts/TOKENS-CONTRACT-ABI.json'
+import BRIDGEABI from '../contracts/BRIDGE-CONTRACT-ABI.json'
+
 import BigNumber from "bignumber.js"
 import { web3BNToFloatNumber } from "../utils"
 import { useStore } from "../store/useStore"
@@ -42,15 +44,30 @@ export const ReleaseTab: FC<Props> = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [ amount, setAmount ] = useState(0)
   const [ balance, setBalance ] = useState(0)
+  const [ tokenAddress, setTokenAddress] = useState("")
+  const [ allowance, setAllowance ] = useState(0)
+  const [ isApproving, setIsApproving] = useState(false)
+  const [ destinationAddress, setDestinationAddress] = useState("")
+  const [destinationAddressError, setDestinationAddressError] = useState(false)
+
   const [amountError, setAmountError] = useState("")
 
-
-  const handleChange = (event: any) => {
+  const handleAmountChange = (event: any) => {
      if (isNaN(Number(event.target.value))) {
        return
      }
      setAmount(event.target.value);
      calculateValue(event.target.value)   
+  }
+
+  const handleDestinationAddressChange = (event: any) => {
+    const address = event.target.value
+    if (address.includes(".acme")) {
+      setDestinationAddressError(false)
+    } else {
+      setDestinationAddressError(true)
+    }
+    setDestinationAddress(address)
   }
 
   const calculateValue = (v: number) => {
@@ -75,7 +92,7 @@ export const ReleaseTab: FC<Props> = (props) => {
     return contract
   }
 
-   const getBalance = (tokenAddress: string) => {
+  const getBalance = (tokenAddress: string) => {
     const contract = getContract(library, TOKENSERC20ABI, tokenAddress)
     if (contract) {
       contract.methods.decimals().call().then((_decimals: number) => {
@@ -90,10 +107,56 @@ export const ReleaseTab: FC<Props> = (props) => {
     }
   }
 
-  useEffect(() => {
-    if (account) {
-      getBalance(getEvmTokenAddress(evmSymbol))
+  const getAllowance = (tokenAddress: string, spender: string) => {
+    const contract = getContract(library, TOKENSERC20ABI, tokenAddress)
+    if (contract) {
+      contract.methods.allowance(account, spender).call().then((_amount: number) => {
+        setAllowance(_amount)
+      }).catch((e: Error) => {
+        toast(e.message)
+       })
     }
+  }
+
+   const handleApprove = (address: string = tokenAddress, spender: string = config.evmNetwork.bridgeAddress) => {
+    const contract = getContract(library, TOKENSERC20ABI, address);
+    const maxApproval = new BigNumber(2).pow(256).minus(1);
+    setIsApproving(true);
+    if (contract) {
+      contract.methods.approve(spender, maxApproval).send({from: account}).then((_ : number) => {
+        window.location.reload();
+      }).catch((e: Error) => {
+        setIsApproving(false)
+       })
+    }
+  }
+
+  const handleBurn = () => {
+    const contract = getContract(library, BRIDGEABI, config.evmNetwork.bridgeAddress)
+    const amountBig = new BigNumber(amount, 10).toNumber() * 1e8
+    if (contract) {
+      contract.methods.burn(amountBig, destinationAddress).send({from: account}).then((result: any) => {
+        window.location.reload();
+      }).catch((e: Error) => {
+        setIsApproving(false)
+       })
+    }   
+  }
+
+  const isAllowanceMoreThenAmount = (allowance: number, amount: number) => {
+    const amountBig = new BigNumber(amount, 10).toNumber() * 1e8
+    if (Number(allowance) >= Number(amount)) {
+      return true;
+    }
+    return false;
+  }
+
+  useEffect(() => {
+    if (account) {  
+      getBalance(tokenAddress)
+      getAllowance(tokenAddress, config.evmNetwork.bridgeAddress)
+    }
+    setTokenAddress(getEvmTokenAddress(evmSymbol))
     setAmount(0)
     calculateValue(0)
     }, [chainId, account, evmSymbol]);// eslint-disable-line react-hooks/exhaustive-deps
@@ -119,7 +182,7 @@ export const ReleaseTab: FC<Props> = (props) => {
           placeholder="Amount"  borderRadius='15px' 
           fontSize='12px'
           size='lg'
-          onChange={handleChange}
+          onChange={handleAmountChange}
           value={ amount }/>
         { amountError ?
           <Text color={"red.400"} my={2} fontSize='sm'>Not enough tokens </Text>
@@ -139,7 +202,14 @@ export const ReleaseTab: FC<Props> = (props) => {
           fontSize='12px'
           size='lg'
           textAlign={"center"}
-          />   
+          _focus={ destinationAddressError ? {borderColor:"red"} : { borderColor:"inherit"} } 
+          borderColor={ destinationAddressError ? "red" : "inherit" }
+          onChange={ handleDestinationAddressChange }
+        />
+        { destinationAddressError ?
+          <Text color={"red.400"} my={2} fontSize='sm'>Address should contains .acme </Text>
+          : null
+        }  
       </Box>
       <Divider my='20px'/>
       <Box padding='6'>
@@ -151,8 +221,17 @@ export const ReleaseTab: FC<Props> = (props) => {
               w='100%' 
               borderRadius='15px' 
               size='lg'
-              p='7'>
-              Approve
+              p='7'
+              onClick={() => handleApprove()}
+              disabled={
+                isAllowanceMoreThenAmount(allowance, amount) || isApproving
+              }>                                                                                      
+              {
+                isApproving ?
+                  "Approving..." :
+                  (!isAllowanceMoreThenAmount(allowance, amount) ? "Approve" : "Approved")
+              }
+
            </Button>
           <Button
               colorScheme='blue' 
@@ -160,7 +239,10 @@ export const ReleaseTab: FC<Props> = (props) => {
               w='100%' 
               borderRadius='15px' 
               size='lg'
-              p='7'>
+              p='7'
+              disabled={!isAllowanceMoreThenAmount(allowance, amount) || isApproving || amount === 0 || destinationAddressError }
+              onClick={() => {handleBurn()}}>
+                
               Burn
            </Button>
         </HStack>

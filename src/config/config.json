@@ -14,7 +14,7 @@
     "node": "string",
     "chainId": 1337,
     "safeAddress": "string",
-    "bridgeAddress":"string",
+    "bridgeAddress":"0x167dA1A6074A68b3ae4dF4205e9f44a1703Cab66",
     "explorer": "evmExplorerUrl"
   },
   "tokens": [
