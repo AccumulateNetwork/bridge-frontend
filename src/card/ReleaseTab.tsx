@@ -13,7 +13,7 @@ import TOKENSERC20ABI from '../contracts/TOKENS-CONTRACT-ABI.json'
 import BRIDGEABI from '../contracts/BRIDGE-CONTRACT-ABI.json'
 
 import BigNumber from "bignumber.js"
-import { web3BNToFloatNumber } from "../utils"
+import { toETHNumber, web3BNToFloatNumber } from "../utils"
 import { useStore } from "../store/useStore"
 import { SET_EVM_SYMBOL } from "../store/actions"
 
@@ -52,6 +52,8 @@ export const ReleaseTab: FC<Props> = (props) => {
   const [destinationAddressError, setDestinationAddressError] = useState(false)
 
   const [amountError, setAmountError] = useState("")
+
+  const [ decimals, setDecimals] = useState(0)
 
   const handleAmountChange = (event: any) => {
      if (isNaN(Number(event.target.value))) {
@@ -97,6 +99,7 @@ export const ReleaseTab: FC<Props> = (props) => {
     const contract = getContract(library, TOKENSERC20ABI, tokenAddress)
     if (contract) {
       contract.methods.decimals().call().then((_decimals: number) => {
+        setDecimals(_decimals)
         return contract.methods.balanceOf(account).call()
           .then((_balance: number) => {
             const pow = new BigNumber('10').pow(new BigNumber(_decimals))
@@ -133,8 +136,9 @@ export const ReleaseTab: FC<Props> = (props) => {
   }
 
   const handleBurn = () => {
+    console.log(decimals)
     const contract = getContract(library, BRIDGEABI, config.evmNetwork.bridgeAddress)
-    const value = new BigNumber(amount, 10).toNumber() * 1e8
+    const value = toETHNumber(amount, decimals)
     setIsBurning(true)
     if (contract) {
       contract.methods.burn(tokenAddress, destinationAddress, value).send({from: account}).then((result: any) => {
@@ -245,9 +249,9 @@ export const ReleaseTab: FC<Props> = (props) => {
               disabled={
                 !isAllowanceMoreThenAmount(allowance, amount) 
                 || isApproving || isBurning
-                || amount === 0 || destinationAddressError 
+                || amount === 0 || destinationAddress === "" || destinationAddressError 
               }
-              onClick={() => {handleBurn()}}>
+              onClick={handleBurn}>
                 {
                   isBurning ?
                   "Burning...":

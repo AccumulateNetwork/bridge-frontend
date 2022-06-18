@@ -23,4 +23,11 @@ export const web3BNToFloatNumber = (
     const divided = converted.div(divideBy)
     return Number(divided.toFixed(decimals, roundingMode))
   }
+
+export const toETHNumber = (bn: number, decimals: number) => {
+  const pow = new BigNumber('10').pow(new BigNumber(decimals))
+  const number = new BigNumber(bn, 10)
+  const result = number.multipliedBy(pow)
+  return result.toNumber()
+}
   
