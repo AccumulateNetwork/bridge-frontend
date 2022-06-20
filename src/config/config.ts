@@ -1,4 +1,4 @@
-import { Config } from './ConfigModel';
-import configJson from './config.json'; 
+import { Config } from './ConfigModel'
+import configJson from './config-overrides.json'
 
-export const config = configJson as Config;
+export const config = configJson as Config
