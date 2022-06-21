@@ -20,6 +20,5 @@ buildConfig()
 async function downloadConfig() {
   const response = await fetchApi(process.env.CONFIG_URL)
   if (!response.ok) throw new Error(`unexpected response ${response.statusText}`)
-  const type = response.headers.get('Content-Type')
   await streamPipeline(response.body, fs.createWriteStream(CONFIG_DIR + '/' + CONFIG_FILE))
 }
