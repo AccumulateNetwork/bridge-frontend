@@ -27,7 +27,8 @@ type Props = {
 }
 
 export const CalculateFee: FC<Props> = (props) => {
-  const { accSymbol, evmSymbol, send, receiving, nextStepDisabled, dispatch } = useStore();
+  const { accSymbol, evmSymbol, send, receiving, nextStepDisabled, dispatch, fees } = useStore();
+
 
   // TODO don't forget get brigde fee from config
   const bridgeFeePercentage = 0.2

@@ -1,14 +1,18 @@
 import axios from 'axios';
+import { config } from '../config/config';
 
 class RPC {
+    private currentId;
   constructor() {
-    axios.defaults.baseURL = "localhost:8000"
+    axios.defaults.baseURL = config.apiUrl
+    this.currentId  = 1
     axios.defaults.headers.post['Content-Type'] = 'application/json'
   }
   
   request = (method: string, params = null, showMessage = 0) => {
     const result = axios.post('', {
-      jsonrpc: '2.0', п
+      jsonrpc: '2.0',
+      id: ++this.currentId,
       method,
       params: typeof params === 'string' ? [params] : params
     })
@@ -28,7 +32,7 @@ class RPC {
         }
       }
       if (response) {
-        return response;
+        return response.data.result;
       }
     })
     .catch(() => {

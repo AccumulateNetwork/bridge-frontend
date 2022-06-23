@@ -2,6 +2,8 @@ import {  Step } from "../card/steps"
 // action types
 import * as ACTION from './actions'
 import { config } from "../config/config"
+import RPC from "../common/RPC"
+import { Fees } from "../common/Fees"
 
 const {
   INITIAL,
@@ -19,7 +21,8 @@ export type StateType = {
   evmSymbol: string,
   send: string,
   receiving: string,
-  nextStepDisabled: boolean
+  nextStepDisabled: boolean,
+  fees: any
 };
 
 export type ActionType = {
@@ -74,11 +77,16 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
   }
 }
 
+const getFees =  async () => {
+   RPC.request("fees")
+}
+
 export const initialState = {
   step: Step.INITIAL,
   accSymbol: config.tokens[0].accSymbol,
   evmSymbol: config.tokens[0].evmSymbol,
   send: "",
   receiving: "",
+  fees: getFees(),
   nextStepDisabled: true
 }

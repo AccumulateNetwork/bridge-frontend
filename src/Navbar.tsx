@@ -28,14 +28,12 @@ import { config }  from './config/config'
 import SelectWalletModal from './Modal'
 import { truncateAddress } from './utils'
 import { toast } from 'react-toastify'
-import RPC from './common/RPC'
 
 type Props = {
 }
 
 export const Navbar: FC<Props> = () => {
 
-  RPC.request("bridgeFee")
   const { 
     activate, 
     deactivate, 
