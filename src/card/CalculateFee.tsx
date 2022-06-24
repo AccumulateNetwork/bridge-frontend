@@ -33,8 +33,8 @@ export const CalculateFee: FC<Props> = (props) => {
      dispatch, fees } = useStore();
 
   // TODO don't forget get brigde fee from config
-  const bridgeFeePercentage = 0.2
-  const evmFee = fees.evmFee
+  const evmFeeBps = fees.evmFee
+  const evmFeePercentage = evmFeeBps / 100
   const navigate = useNavigate()
 
   const calculateFee = (inputValue: string) => {  
@@ -48,9 +48,8 @@ export const CalculateFee: FC<Props> = (props) => {
       return
     }
     const value = new BigNumber(inputValue)
-    const bridgeFee = value.div(100).multipliedBy(bridgeFeePercentage)
-    let result = value.minus(bridgeFee)
-    result = result.minus(evmFee)
+    const evmFee = value.div(100).multipliedBy(evmFeePercentage)
+    let result = value.minus(evmFee)
     if (result.isGreaterThan(0)) {
      const payload =  {
       "send": value.toNumber(), 
@@ -119,22 +118,13 @@ export const CalculateFee: FC<Props> = (props) => {
         </HStack>
         <Flex fontSize={14} color={"gray.500"}>
           <Box>
-            Bridge fee
+            EVM fee
             </Box>
             <Spacer />
             <Box >
-              {bridgeFeePercentage} %
+              {evmFeePercentage} %
           </Box>
         </Flex>
-        <Flex fontSize={14} color={"gray.500"}>
-          <Box>
-            Ethereum fee
-            </Box>
-            <Spacer />
-            <Box >
-              {evmFee} ACME
-          </Box>
-        </Flex> 
         <CardButton title="Next" disabled={nextStepDisabled} onClick={() =>  dispatch({type: TRANSFER_INSTRUCTIONS_STEP})}/>
       </Box>  
     </Box>
