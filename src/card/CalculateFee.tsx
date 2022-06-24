@@ -16,7 +16,7 @@ import { useStore } from "../store/useStore"
 import { ArrowBackIcon } from "@chakra-ui/icons"
 import { useNavigate } from "react-router-dom"
 import { 
-  INITIAL, 
+  INITIAL_WITH_DATA, 
   SET_SEND, 
   SET_SEND_AND_RECEIVING, 
   TRANSFER_INSTRUCTIONS_STEP } from "../store/actions"
@@ -27,11 +27,14 @@ type Props = {
 }
 
 export const CalculateFee: FC<Props> = (props) => {
-  const { accSymbol, evmSymbol, send, receiving, nextStepDisabled, dispatch } = useStore();
+  const { accSymbol, evmSymbol,
+     send, receiving, 
+     nextStepDisabled,
+     dispatch, fees } = useStore();
 
   // TODO don't forget get brigde fee from config
-  const bridgeFeePercentage = 0.2
-  const ethFee = 10
+  const evmFeeBps = fees.evmFee
+  const evmFeePercentage = evmFeeBps / 100
   const navigate = useNavigate()
 
   const calculateFee = (inputValue: string) => {  
@@ -45,9 +48,8 @@ export const CalculateFee: FC<Props> = (props) => {
       return
     }
     const value = new BigNumber(inputValue)
-    const bridgeFee = value.div(100).multipliedBy(bridgeFeePercentage)
-    let result = value.minus(bridgeFee)
-    result = result.minus(ethFee)
+    const evmFee = value.div(100).multipliedBy(evmFeePercentage)
+    let result = value.minus(evmFee)
     if (result.isGreaterThan(0)) {
      const payload =  {
       "send": value.toNumber(), 
@@ -57,7 +59,6 @@ export const CalculateFee: FC<Props> = (props) => {
       dispatch({type: SET_SEND_AND_RECEIVING, payload: payload})
     } else {
       const payload =  {
-
         "send": value.toNumber(),
         "receiving":"",
         "nextStepDisabled": true
@@ -69,7 +70,7 @@ export const CalculateFee: FC<Props> = (props) => {
     <Box>
       <HStack p={2} width="100%">
         <ArrowBackIcon mr="100px" onClick={()=> {
-          dispatch({type: INITIAL})
+           dispatch({type: INITIAL_WITH_DATA})
           navigate(config.tab1Path)
         }}/>
         <Center mb={5} fontSize={16}>
@@ -117,22 +118,13 @@ export const CalculateFee: FC<Props> = (props) => {
         </HStack>
         <Flex fontSize={14} color={"gray.500"}>
           <Box>
-            Bridge fee
+            EVM fee
             </Box>
             <Spacer />
             <Box >
-              {bridgeFeePercentage} %
+              {evmFeePercentage} %
           </Box>
         </Flex>
-        <Flex fontSize={14} color={"gray.500"}>
-          <Box>
-            Ethereum fee
-            </Box>
-            <Spacer />
-            <Box >
-              {ethFee} ACME
-          </Box>
-        </Flex> 
         <CardButton title="Next" disabled={nextStepDisabled} onClick={() =>  dispatch({type: TRANSFER_INSTRUCTIONS_STEP})}/>
       </Box>  
     </Box>

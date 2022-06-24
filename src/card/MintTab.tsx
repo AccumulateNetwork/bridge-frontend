@@ -51,7 +51,6 @@ export const MintTab: FC<Props> = (props) => {
            }
         </Box> 
         <SelectWalletModal  isOpen={isOpen} closeModal={onClose} />
-    </Box>
-        
+    </Box>  
   )
 }

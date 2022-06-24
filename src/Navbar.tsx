@@ -33,6 +33,7 @@ type Props = {
 }
 
 export const Navbar: FC<Props> = () => {
+
   const { 
     activate, 
     deactivate, 

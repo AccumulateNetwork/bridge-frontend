@@ -1,5 +1,5 @@
 
-import { Box, Button, Divider, HStack, Input, Link, Select, Text, useDisclosure, VStack } from "@chakra-ui/react"
+import { Box, Button, Divider, Flex, HStack, Input, Link, Select, Spacer, Text, useDisclosure, VStack } from "@chakra-ui/react"
 import { FC, useEffect, useState } from "react"
 import { CardButton } from "./СardButton"
 import { config } from '../config/config'
@@ -39,7 +39,7 @@ export const ReleaseTab: FC<Props> = (props) => {
     library,
   } = useWeb3React()
 
-  const { evmSymbol, dispatch } = useStore()
+  const { evmSymbol, dispatch, fees } = useStore()
 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [ amount, setAmount ] = useState(0)
@@ -54,6 +54,11 @@ export const ReleaseTab: FC<Props> = (props) => {
   const [amountError, setAmountError] = useState("")
 
   const [ decimals, setDecimals] = useState(0)
+
+  const evmFeeBps = fees.evmFee
+  const evmFeePercentage = evmFeeBps / 100
+  const burnFeeBps = fees.burnFee
+  const burnFeePercentage = burnFeeBps / 100
 
   const handleAmountChange = (event: any) => {
      if (isNaN(Number(event.target.value))) {
@@ -80,8 +85,6 @@ export const ReleaseTab: FC<Props> = (props) => {
     } else {
       setAmountError("")
     }
-    // const pow = new BigNumber('10').pow(new BigNumber(8));
-    // setACMEValue(web3BNToFloatString(val*5*1e8, pow, 0, BigNumber.ROUND_DOWN));
   }
 
   const getContract = (library: any, abi: any, address: string) => {
@@ -136,7 +139,6 @@ export const ReleaseTab: FC<Props> = (props) => {
   }
 
   const handleBurn = () => {
-    console.log(decimals)
     const contract = getContract(library, BRIDGEABI, config.evmNetwork.bridgeAddress)
     const value = toETHNumber(amount, decimals)
     setIsBurning(true)
@@ -218,6 +220,31 @@ export const ReleaseTab: FC<Props> = (props) => {
         }  
       </Box>
       <Divider my='20px'/>
+      <Box pt = {5} pl={10} pr={10} pb={5}>
+        <HStack spacing='24px' pb={2}>
+          <Box fontSize= {14}>
+            Details
+          </Box>
+        </HStack>
+        <Flex fontSize={14} color={"gray.500"}>
+          <Box>
+            Burn fee
+            </Box>
+            <Spacer />
+            <Box >
+              {burnFeePercentage} %
+          </Box>
+        </Flex>
+        <Flex fontSize={14} color={"gray.500"}>
+          <Box>
+            EVM fee
+            </Box>
+            <Spacer />
+            <Box >
+              {evmFeePercentage} %
+          </Box>
+        </Flex>
+      </Box>
       <Box padding='6'>
         { active ? (
           <HStack>
