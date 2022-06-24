@@ -1,4 +1,4 @@
-import  React, { FC } from "react"
+import  React, { FC, useEffect } from "react"
 
 import {
   Tabs,
@@ -12,8 +12,10 @@ import { useNavigate } from "react-router-dom"
 import { config } from '../config/config'
 import { ReleaseTab } from "./ReleaseTab"
 import { MintTab } from "./MintTab"
-import { INITIAL } from "../store/actions"
+import { GET_FEES, INITIAL } from "../store/actions"
 import { useStore } from "../store/useStore"
+import RPC from "../common/RPC"
+import { Fees } from "../common/Fees"
 
 type Props = {
   tabIndex: number
@@ -28,6 +30,19 @@ export const CardTabs: FC<Props> = (props) => {
   const tab1Name = tabIndex === 0 ? tab1Names[1] : tab1Names[0]
   const tab2Name = tabIndex === 0 ? tab2Names[0] : tab2Names[1]
 
+  const getFees = () => {
+    const fees = sessionStorage.getItem("Fees")
+    if (fees) {
+      const data = JSON.parse(fees) as Fees
+      dispatch({ type: GET_FEES, payload: data })
+    } else {
+      RPC.request('fees').then((data) => {
+        dispatch({ type: GET_FEES, payload: data })
+        sessionStorage.setItem("Fees", JSON.stringify(data))
+      })
+    }
+  }
+
   const navigate = useNavigate()
   const navigateToTab = (tabIndex: number)=> {
     setTabIndex(tabIndex)
@@ -37,8 +52,12 @@ export const CardTabs: FC<Props> = (props) => {
       navigate(config.tab2Path)
     }
     dispatch({type: INITIAL})
-
+    getFees()
   }
+
+  useEffect(() => {
+    getFees()
+  }, [])// eslint-disable-line react-hooks/exhaustive-deps
   return (
     <Tabs 
     defaultIndex={ tabIndex } 

@@ -80,8 +80,6 @@ export const ReleaseTab: FC<Props> = (props) => {
     } else {
       setAmountError("")
     }
-    // const pow = new BigNumber('10').pow(new BigNumber(8));
-    // setACMEValue(web3BNToFloatString(val*5*1e8, pow, 0, BigNumber.ROUND_DOWN));
   }
 
   const getContract = (library: any, abi: any, address: string) => {
