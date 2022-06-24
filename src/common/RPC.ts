@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 class RPC {
   private currentId
   constructor() {
-    axios.defaults.baseURL = config.apiUrl
+    axios.defaults.baseURL = process.env.REACT_APP_API_URL
     this.currentId  = 1
     axios.defaults.headers.post['Content-Type'] = 'application/json'
   }

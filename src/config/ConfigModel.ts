@@ -23,7 +23,6 @@ export interface EVMNetwork {
 
 export interface Config {
   appName: string
-  apiUrl: string
   tab1Names: string []
   tab2Names: string []
   tab1Path: string

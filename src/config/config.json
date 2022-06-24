@@ -1,6 +1,5 @@
 { 
   "appName": "Accumulate Bridge",
-  "apiUrl" : "http://127.0.0.1:8081",
   "tab1Names": ["Mint", "Minting"],
   "tab2Names": ["Release", "Releasing"],
   "tab1Path": "/mint",
