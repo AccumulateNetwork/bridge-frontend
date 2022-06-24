@@ -134,7 +134,6 @@ export const ReleaseTab: FC<Props> = (props) => {
   }
 
   const handleBurn = () => {
-    console.log(decimals)
     const contract = getContract(library, BRIDGEABI, config.evmNetwork.bridgeAddress)
     const value = toETHNumber(amount, decimals)
     setIsBurning(true)
