@@ -1,9 +1,9 @@
 { 
   "appName": "Accumulate Bridge",
   "tab1Names": ["Mint", "Mint"],
-  "tab2Names": ["Redeem", "Redeem"],
+  "tab2Names": ["Release", "Release"],
   "tab1Path": "/mint",
-  "tab2Path": "/redeem",
+  "tab2Path": "/release",
 
   "accNetwork": {
     "node": "string",
@@ -12,10 +12,10 @@
   },
   "evmNetwork": {
     "node": "string",
-    "chainId": 1337,
-    "safeAddress": "string",
+    "chainId": 4,
+    "safeAddress": "0x5ca3ad054405cbe88b0907131cf021f8d24a6291",
     "bridgeAddress":"0x167dA1A6074A68b3ae4dF4205e9f44a1703Cab66",
-    "explorer": "evmExplorerUrl"
+    "explorer": "https://rinkeby.etherscan.io"
   },
   "tokens": [
     {

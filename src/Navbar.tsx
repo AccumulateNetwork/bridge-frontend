@@ -15,8 +15,7 @@ import {
   Alert,
   AlertIcon,
   AlertTitle,
-  AlertDescription,
-  Center
+  AlertDescription
 } from '@chakra-ui/react'
 import { useWeb3React } from "@web3-react/core"
 import { Logo } from './Logo'
@@ -46,8 +45,8 @@ export const Navbar: FC<Props> = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   // TODO don't forget get from config
-  const explorerURL = ''
-  const tokenContract = ''  
+  // const explorerURL = ''
+  // const tokenContract = ''
   const disconnect = () => {
     refreshState()
     deactivate()
@@ -99,13 +98,18 @@ export const Navbar: FC<Props> = () => {
           ) :
             null
           }
+          {chainId === 1 ? (
+            <Button size='lg' colorScheme='grey' variant='outline' mb={3}>Ethereum</Button>
+          ) :
+            null
+          }
           {account ? (
             <Menu>
             <MenuButton as={Button} size='lg' colorScheme='messenger' mb={3} ml={3} leftIcon={<CircleIcon color='#48BB78' />}>{account ? truncateAddress(account) : "Connected"}</MenuButton>
             <MenuList className="address-menu">
-              <MenuItem onClick={() => {navigator.clipboard.writeText(account)}}><CopyIcon />Copy address</MenuItem>
-              {explorerURL !== "" ? (
-                <MenuItem><Link href={explorerURL + '/address/' + account} isExternal><ExternalLinkIcon />View on explorer</Link></MenuItem>
+              <MenuItem onClick={() => {navigator.clipboard.writeText(account)}}><CopyIcon mr={2} />Copy address</MenuItem>
+              {config.evmNetwork.explorer !== "" ? (
+                <MenuItem><Link href={config.evmNetwork.explorer + '/address/' + account} isExternal><ExternalLinkIcon mr={2} />View on explorer</Link></MenuItem>
               ) : null
               }
               <MenuDivider />
