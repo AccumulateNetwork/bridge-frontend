@@ -32,7 +32,6 @@ export const CalculateFee: FC<Props> = (props) => {
      nextStepDisabled,
      dispatch, fees } = useStore();
 
-  // TODO don't forget get brigde fee from config
   const evmFeeBps = fees.evmFee
   const evmFeePercentage = evmFeeBps / 100
   const navigate = useNavigate()
@@ -121,9 +120,19 @@ export const CalculateFee: FC<Props> = (props) => {
             EVM fee
             </Box>
             <Spacer />
-            <Box >
-              {evmFeePercentage} %
-          </Box>
+            {fees.received ?
+            (
+              <Box >
+                {evmFeePercentage} % 
+              </Box>
+            ) :
+            (
+              <Box w={40}>
+                { config.messages.feesNotReceived }
+              </Box>
+            )
+            }
+           
         </Flex>
         <CardButton title="Next" disabled={nextStepDisabled} onClick={() =>  dispatch({type: TRANSFER_INSTRUCTIONS_STEP})}/>
       </Box>  

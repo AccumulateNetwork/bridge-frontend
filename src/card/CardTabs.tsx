@@ -36,9 +36,13 @@ export const CardTabs: FC<Props> = (props) => {
       const data = JSON.parse(fees) as Fees
       dispatch({ type: GET_FEES, payload: data })
     } else {
-      RPC.request('fees').then((data) => {
-        dispatch({ type: GET_FEES, payload: data })
-        sessionStorage.setItem("Fees", JSON.stringify(data))
+      RPC.request('fees', null, false).then((data) => {
+        const _data = {...data, received: true} as Fees 
+        dispatch({ type: GET_FEES, payload: _data })
+        sessionStorage.setItem("Fees", JSON.stringify(_data))
+      }).catch((e) => {
+        sessionStorage.removeItem("Fees")
+        dispatch({ type: GET_FEES, payload: {burnFee: 0, evmFee: 0, mintFee: 0, received: false} as Fees })
       })
     }
   }

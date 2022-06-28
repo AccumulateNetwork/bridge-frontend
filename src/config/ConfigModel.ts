@@ -7,6 +7,10 @@ export interface Token {
   accDepositAddress: string
 }
 
+export interface Messages {
+  feesNotReceived: string
+}
+
 export interface AccNetwork {
   node: string
   keyBook: string
@@ -30,4 +34,5 @@ export interface Config {
   accNetwork: AccNetwork
   evmNetwork: EVMNetwork
   tokens: Token[]
+  messages: Messages
 }

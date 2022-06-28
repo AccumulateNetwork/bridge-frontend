@@ -11,13 +11,12 @@ export const Main: FC<Props> = () => {
     const { account, chainId } = useWeb3React()
     return (
       <VStack mt={-1} pt={1} minH='calc(93vh - 107px)'>
-        {account && chainId !== config.evmNetwork.chainId ? 
+        { account && chainId !== config.evmNetwork.chainId ? 
         (
           <Alert  justifyContent='center' status='error'>
               <AlertIcon />
               Wrong network. Use chain with id {config.evmNetwork.chainId} 
           </Alert>
-                
         ) : 
         (
           <Routes>
