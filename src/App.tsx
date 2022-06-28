@@ -44,7 +44,7 @@ export const App = () => (
                   draggable
                   pauseOnHover
                 />         
-                <VStack mt={-1} pt={1} minH='calc(93vh - 107px)'>
+                <VStack>
                   <Routes>
                     <Route path="/" element={<Navigate to="mint"/>}/>
                     <Route path={ config.tab1Path } element={ <Card tabIndex={0}/>}/>

@@ -1,9 +1,9 @@
 { 
   "appName": "Accumulate Bridge",
-  "tab1Names": ["Mint", "Minting"],
-  "tab2Names": ["Release", "Releasing"],
+  "tab1Names": ["Mint", "Mint"],
+  "tab2Names": ["Redeem", "Redeem"],
   "tab1Path": "/mint",
-  "tab2Path": "/release",
+  "tab2Path": "/redeem",
 
   "accNetwork": {
     "node": "string",
