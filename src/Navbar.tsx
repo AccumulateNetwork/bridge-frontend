@@ -70,80 +70,63 @@ export const Navbar: FC<Props> = () => {
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
   return (
-    <Flex>
-      <Logo w='40px' h='40px'/>
-    <Center ml={1} mb={5}>
-      { config.appName }
-    </Center>
-    <Spacer/>
-    <Box>
-    {!active ? (
-      <Button bg='white' variant='ghost' fontSize='xl' borderRadius='20' onClick={onOpen}
-      leftIcon={
-        <CircleIcon boxSize={3} color='red.500' />
-      }>
-          Connect a wallet
-      </Button>              
-      ) : 
-      <div>
-        {chainId === 1337 ? (
-          <Tooltip label='You are connected to localhost' fontSize='md'>
-            <Button size='lg' colorScheme='orange' variant='outline' mb={3}>Localhost</Button>
-          </Tooltip>
-        ) :
-          null
-        }
-        {chainId === 3 ? (
-          <Tooltip label='You are connected to testnet' fontSize='md'>
-            <Button size='lg' colorScheme='orange' variant='outline' mb={3}>Ropsten Testnet</Button>
-          </Tooltip>
-        ) :
-          null
-        }
-        {chainId === 4 ? (
-          <Tooltip label='You are connected to testnet' fontSize='md'>
-            <Button size='lg' colorScheme='orange' variant='outline' mb={3}>RinkedBy Testnet</Button>
-          </Tooltip>
-        ) :
-          null
-        }
-          {explorerURL !== "" ? (
-             <Tooltip label='View in explorer' fontSize='md'>
-             <Link href={explorerURL + '/token/' + tokenContract + '?a=' + account} isExternal>
-               {/* <Button size='lg' colorScheme='gray' variant='outline' mb={3} ml={chainId === 3 ? ( 3 ) : null}>{balance2} {symbol}<ExternalLinkIcon ml={2} /></Button> */}
-             </Link>
-           </Tooltip>
-          ) : null
-   
+    <Flex gap='0' wrap='wrap'>
+      <Box>
+        <Logo h='30px' mb={6} mt={2} />
+      </Box>
+      <Spacer/>
+      <Box>
+      {!active ? (
+        <Button bg='white' variant='ghost' fontSize='xl' borderRadius='20' onClick={onOpen}
+        leftIcon={
+          <CircleIcon boxSize={3} color='red.500' />
+        }>
+            Connect a wallet
+        </Button>              
+        ) : 
+        <div>
+          {chainId === 1337 ? (
+            <Tooltip label='You are connected to localhost' fontSize='md'>
+              <Button size='lg' colorScheme='grey' variant='outline' mb={3}>Localhost</Button>
+            </Tooltip>
+          ) :
+            null
           }
-        {account ? (
-          <Menu>
-          <MenuButton as={Button} size='lg' colorScheme='gray' mb={3} ml={3} leftIcon={<CircleIcon color='#48BB78' />}>{account ? truncateAddress(account) : "Connected"}</MenuButton>
-          <MenuList className="address-menu">
-            <MenuItem onClick={() => {navigator.clipboard.writeText(account)}}><CopyIcon />Copy address</MenuItem>
-            {explorerURL !== "" ? (
-              <MenuItem><Link href={explorerURL + '/address/' + account} isExternal><ExternalLinkIcon />View on explorer</Link></MenuItem>
-            ) : null
-            }
-            <MenuDivider />
-            <MenuItem onClick={() => disconnect()}>Disconnect</MenuItem>
-          </MenuList>
-        </Menu>
-        ) : null
-        }
-        {error && error.message ? (
-          <Alert status='error' justifyContent='center'>
-            <AlertIcon />
-            <AlertTitle mr={2}>MetaMask Error</AlertTitle>
-            <AlertDescription>{error.message}</AlertDescription>
-          </Alert>
-        ) :
-          null
-        }  
-      </div>
-    }
-    </Box>
-    <SelectWalletModal  isOpen={isOpen} closeModal={onClose} />
-  </Flex>
+          {chainId === 4 ? (
+            <Tooltip label='You are connected to testnet' fontSize='md'>
+              <Button size='lg' colorScheme='grey' variant='outline' mb={3}>Rinkeby Testnet</Button>
+            </Tooltip>
+          ) :
+            null
+          }
+          {account ? (
+            <Menu>
+            <MenuButton as={Button} size='lg' colorScheme='messenger' mb={3} ml={3} leftIcon={<CircleIcon color='#48BB78' />}>{account ? truncateAddress(account) : "Connected"}</MenuButton>
+            <MenuList className="address-menu">
+              <MenuItem onClick={() => {navigator.clipboard.writeText(account)}}><CopyIcon />Copy address</MenuItem>
+              {explorerURL !== "" ? (
+                <MenuItem><Link href={explorerURL + '/address/' + account} isExternal><ExternalLinkIcon />View on explorer</Link></MenuItem>
+              ) : null
+              }
+              <MenuDivider />
+              <MenuItem onClick={() => disconnect()}>Disconnect</MenuItem>
+            </MenuList>
+          </Menu>
+          ) : null
+          }
+          {error && error.message ? (
+            <Alert status='error' justifyContent='center'>
+              <AlertIcon />
+              <AlertTitle mr={2}>MetaMask Error</AlertTitle>
+              <AlertDescription>{error.message}</AlertDescription>
+            </Alert>
+          ) :
+            null
+          }  
+        </div>
+      }
+      </Box>
+      <SelectWalletModal  isOpen={isOpen} closeModal={onClose} />
+    </Flex>
   ) 
 }
