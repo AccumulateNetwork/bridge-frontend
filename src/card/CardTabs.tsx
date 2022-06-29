@@ -62,14 +62,13 @@ export const CardTabs: FC<Props> = (props) => {
   useEffect(() => {
     getFees()
   }, [])// eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <Tabs 
-    defaultIndex={ tabIndex } 
-    isFitted
-    
-    variant='unstyled' 
-    colorScheme="grey" 
-    onChange={(index) => navigateToTab(index) }>
+      defaultIndex={ tabIndex } 
+      isFitted
+      colorScheme="messenger" 
+      onChange={(index) => navigateToTab(index) }>
     <TabList>
       <Tab _focus={{borderColor:"inherit"}}>{ tab1Name }</Tab>
       <Tab _focus={{borderColor:"inherit"}}>{ tab2Name }</Tab>  
