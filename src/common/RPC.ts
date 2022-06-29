@@ -9,7 +9,7 @@ class RPC {
     axios.defaults.headers.post['Content-Type'] = 'application/json'
   }
   
-  request = (method: string, params = null) => {
+  request = (method: string, params = null, catchError = false) => {
     const result = axios.post('', {
       jsonrpc: '2.0',
       id: ++this.currentId,
@@ -28,9 +28,12 @@ class RPC {
         return response.data.result
       }
     })
-    .catch(() => {
-      toast('Accumulate API is unavailable')
-    })
+    if (catchError) {
+      result
+      .catch(() => {
+        toast('Accumulate API is unavailable')
+      })
+    }
     return result
   }
 }

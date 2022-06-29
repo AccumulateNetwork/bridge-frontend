@@ -231,18 +231,35 @@ export const ReleaseTab: FC<Props> = (props) => {
             Burn fee
             </Box>
             <Spacer />
-            <Box >
-              {burnFeePercentage} %
-          </Box>
+            {fees.received ?
+            ( <Box >
+              { burnFeePercentage } %
+              </Box>
+            ):
+            (
+              <Box w={40}> 
+              { config.messages.feesNotReceived } 
+              </Box>
+            )
+            }
+           
         </Flex>
         <Flex fontSize={14} color={"gray.500"}>
           <Box>
             EVM fee
             </Box>
             <Spacer />
-            <Box >
+            {fees.received ?
+            ( <Box>
               {evmFeePercentage} %
-          </Box>
+              </Box>
+            ):
+            (
+              <Box w={40}> 
+              { config.messages.feesNotReceived } 
+              </Box>
+            )
+            }
         </Flex>
       </Box>
       <Box padding='6'>

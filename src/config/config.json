@@ -34,5 +34,8 @@
       "accTokenAddress": "bridge.acme/ACME",
       "accDepositAddress": "accDepositAddress"
     }
-  ]
+  ],
+  "messages": {
+    "feesNotReceived": "Unable to get fees from bridge node"
+  }
 }

@@ -95,6 +95,6 @@ export const initialState = {
   evmSymbol: config.tokens[0].evmSymbol,
   send: "",
   receiving: "",
-  fees: { mintFee:0, burnFee: 0, evmFee: 0 },
+  fees: {  mintFee:0, burnFee: 0, evmFee: 0, received: null } as Fees,
   nextStepDisabled: true
 }
