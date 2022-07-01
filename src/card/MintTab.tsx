@@ -1,4 +1,4 @@
-import { Box, Divider, Select, useDisclosure, VStack } from "@chakra-ui/react"
+import { Box, Select, useDisclosure, VStack, FormControl, FormLabel, Alert, AlertIcon } from "@chakra-ui/react"
 import { FC } from "react"
 import { CardButton } from "./СardButton"
 import { config } from '../config/config'
@@ -26,31 +26,39 @@ export const MintTab: FC<Props> = (props) => {
   } = useWeb3React()
   return (
     <Box>
-      <Box padding='6'>
+      <Box padding='6' pt={4}>
+        <Alert status='info' fontSize='sm' textAlign='left'>
+          <AlertIcon />
+          Select an asset and destination chain, to begin a mint
+        </Alert>
+      </Box>
+      <Box padding='6' pt={2} pb={0}>
         <VStack borderRadius='15px'>
-          <Box mb={5} fontSize={16}>
-            Select an asset and description chain, to begin or resume a mint.
-          </Box>
-          <Select fontSize= {14} borderRadius='15px' size='lg' onChange={(v) => {
-            dispatch({type: SET_ACC_SYMBOL, payload: v.target.value})
-          }}>
-            {mintOptions}        
-          </Select>
-          <Select fontSize= {14} borderRadius='15px' size='lg'>
-            <option value='eth'>Ethereum</option>
-          </Select>
+          <FormControl pb={3}>
+            <FormLabel htmlFor='token'>Token</FormLabel>
+            <Select id='token' fontSize={14} borderRadius='15px' size='lg' onChange={(v) => {
+              dispatch({type: SET_ACC_SYMBOL, payload: v.target.value})
+            }}>
+              {mintOptions}
+            </Select>
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor='destination'>Destination</FormLabel>
+            <Select id='destination' fontSize={14} borderRadius='15px' size='lg'>
+              <option value='eth'>Ethereum</option>
+            </Select>
+          </FormControl>
         </VStack>
         </Box>
-        <Divider my='20px'/>
-        <Box padding='6'>
-          { active ? (
+        <Box padding='6' pt={0}>
+          {active ? (
               <CardButton title="Next" onClick={() => dispatch({type:CALCULATE_FEE_STEP})}/>
-            ):(
+            ) : (
               <CardButton title="Connect wallet" onClick={onOpen}/>
             )
            }
         </Box> 
-        <SelectWalletModal  isOpen={isOpen} closeModal={onClose} />
+        <SelectWalletModal isOpen={isOpen} closeModal={onClose} />
     </Box>  
   )
 }

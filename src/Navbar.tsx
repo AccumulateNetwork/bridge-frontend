@@ -69,12 +69,12 @@ export const Navbar: FC<Props> = () => {
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
   return (
-    <Flex gap='0' wrap='wrap'>
-      <Box>
-        <Logo h='30px' mb={6} mt={2} />
+    <Flex gap='2' wrap='wrap'>
+      <Box ml={2}>
+        <Logo h='32px' mb={6} mt={2} />
       </Box>
       <Spacer/>
-      <Box>
+      <Box mr={2}>
       {!active ? (
         <Button bg='white' variant='ghost' fontSize='xl' borderRadius='20' onClick={onOpen}
         leftIcon={

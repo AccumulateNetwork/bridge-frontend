@@ -36,7 +36,7 @@ export const CardTabs: FC<Props> = (props) => {
       const data = JSON.parse(fees) as Fees
       dispatch({ type: GET_FEES, payload: data })
     } else {
-      RPC.request('fees', null, false).then((data) => {
+      RPC.request('fees', null).then((data) => {
         const _data = {...data, received: true} as Fees 
         dispatch({ type: GET_FEES, payload: _data })
         sessionStorage.setItem("Fees", JSON.stringify(_data))
@@ -70,8 +70,8 @@ export const CardTabs: FC<Props> = (props) => {
       colorScheme="messenger" 
       onChange={(index) => navigateToTab(index) }>
     <TabList>
-      <Tab _focus={{borderColor:"inherit"}}>{ tab1Name }</Tab>
-      <Tab _focus={{borderColor:"inherit"}}>{ tab2Name }</Tab>  
+      <Tab _focus={{borderColor:"inherit"}} py={3}>{ tab1Name }</Tab>
+      <Tab _focus={{borderColor:"inherit"}} py={3}>{ tab2Name }</Tab>  
     </TabList>
     <TabPanels>
       <TabPanel >

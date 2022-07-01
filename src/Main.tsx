@@ -10,12 +10,12 @@ type Props = {}
 export const Main: FC<Props> = () => {
     const { account, chainId } = useWeb3React()
     return (
-      <VStack mt={-1} pt={1} minH='calc(93vh - 107px)'>
+      <VStack mt={-16} pt={1} minH='calc(93vh - 107px)'>
         { account && chainId !== config.evmNetwork.chainId ? 
         (
           <Alert  justifyContent='center' status='error'>
               <AlertIcon />
-              Wrong network. Use chain with id {config.evmNetwork.chainId} 
+              Wrong network. Use Chain ID {config.evmNetwork.chainId} 
           </Alert>
         ) : 
         (
@@ -27,7 +27,8 @@ export const Main: FC<Props> = () => {
               path="*"
               element={
                 <div>
-                  <h2>404 Page not found</h2>
+                  <h1><strong>404</strong></h1>
+                  <h2>Page not found</h2>
                 </div>
               }
             />

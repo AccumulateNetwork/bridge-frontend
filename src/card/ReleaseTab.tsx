@@ -1,5 +1,5 @@
 
-import { Box, Button, Divider, Flex, HStack, Input, Link, Select, Spacer, Text, useDisclosure, VStack } from "@chakra-ui/react"
+import { Box, Button, Divider, Flex, HStack, Input, Link, Select, Spacer, Text, useDisclosure, VStack, Alert, AlertIcon, FormControl, FormLabel } from "@chakra-ui/react"
 import { FC, useEffect, useState } from "react"
 import { CardButton } from "./СardButton"
 import { config } from '../config/config'
@@ -171,59 +171,74 @@ export const ReleaseTab: FC<Props> = (props) => {
 
   return (
     <Box>
-      <Box padding='6'>
+      <Box padding='6' pt={4}>
+        <Alert status='info' fontSize='sm' textAlign='left'>
+          <AlertIcon />
+          Select an asset to begin a release
+        </Alert>
+      </Box>
+      <Box padding='6' pt={2} pb={0}>
         <VStack borderRadius='15px'>
-          <Select fontSize= {14} borderRadius='15px' size='lg' onChange={(v) => {
+        <FormControl pb={3}>
+          <FormLabel htmlFor='token'>Token</FormLabel>
+          <Select id='token' fontSize= {14} borderRadius='15px' size='lg' onChange={(v) => {
               dispatch({type: SET_EVM_SYMBOL, payload: v.target.value})
             }}>
             { releaseOptions }
           </Select>
-          <Select fontSize= {14} borderRadius='15px' size='lg'>
+        </FormControl>
+        <FormControl pb={3}>
+          <FormLabel htmlFor='destination'>Destination</FormLabel>
+          <Select id='destination' fontSize= {14} borderRadius='15px' size='lg'>
             <option value='acc'>Accumulate</option>
           </Select>
+        </FormControl>
+        <FormControl pb={3}>
+          <FormLabel htmlFor='amount'>Amount</FormLabel>
+          <Input 
+            _focus={amountError ? {borderColor:"red"} : { borderColor:"inherit"}} 
+            borderColor={ amountError ? "red" : "inherit"}
+            placeholder="Amount"  borderRadius='15px' 
+            fontSize='12px'
+            size='lg'
+            id='amount'
+            onChange={handleAmountChange}
+            value={ amount }/>
+          { amountError ?
+            <Text color={"red.400"} my={2} fontSize='sm'>Not enough tokens </Text>
+            : null
+          }
+          <Link color='#3182ce' 
+            onClick={() => { 
+              setAmount(balance)
+              calculateValue(balance) }}>
+            <Text my={2} fontSize='sm'>Available balance: { balance } </Text>
+          </Link>
+        </FormControl>
+        <FormControl pb={3}>
+          <FormLabel htmlFor='amount'>Destination Address</FormLabel>
+          <Input 
+            placeholder='Enter a Destination Address' 
+            borderRadius='15px' 
+            fontSize='12px'
+            size='lg'
+            textAlign={"center"}
+            _focus={ destinationAddressError ? {borderColor:"red"} : { borderColor:"inherit"} } 
+            borderColor={ destinationAddressError ? "red" : "inherit" }
+            onChange={ handleDestinationAddressChange }
+          />
+          { destinationAddressError ?
+            <Text color={"red.400"} my={2} fontSize='sm'>Address should contains .acme </Text>
+            : null
+          }
+        </FormControl>
         </VStack>
       </Box>
-      <Box padding='6'>
-        <Input 
-          _focus={amountError ? {borderColor:"red"} : { borderColor:"inherit"}} 
-          borderColor={ amountError ? "red" : "inherit"}
-          placeholder="Amount"  borderRadius='15px' 
-          fontSize='12px'
-          size='lg'
-          onChange={handleAmountChange}
-          value={ amount }/>
-        { amountError ?
-          <Text color={"red.400"} my={2} fontSize='sm'>Not enough tokens </Text>
-          : null
-        }
-        <Link color='#3182ce' 
-          onClick={() => { 
-            setAmount(balance)
-            calculateValue(balance) }}>
-          <Text my={2} fontSize='sm'>Available balance: { balance } </Text>
-        </Link>
-      </Box>
-      <Box padding='6'>
-        <Input 
-          placeholder='Enter a Destination Address' 
-          borderRadius='15px' 
-          fontSize='12px'
-          size='lg'
-          textAlign={"center"}
-          _focus={ destinationAddressError ? {borderColor:"red"} : { borderColor:"inherit"} } 
-          borderColor={ destinationAddressError ? "red" : "inherit" }
-          onChange={ handleDestinationAddressChange }
-        />
-        { destinationAddressError ?
-          <Text color={"red.400"} my={2} fontSize='sm'>Address should contains .acme </Text>
-          : null
-        }  
-      </Box>
-      <Divider my='20px'/>
-      <Box pt = {5} pl={10} pr={10} pb={5}>
+      <Box padding={6}>
+      <Divider mb={6} />
         <HStack spacing='24px' pb={2}>
           <Box fontSize= {14}>
-            Details
+            Fees
           </Box>
         </HStack>
         <Flex fontSize={14} color={"gray.500"}>
@@ -279,11 +294,11 @@ export const ReleaseTab: FC<Props> = (props) => {
                 {
                   isApproving ?
                     "Approving..." :
-                    (!isAllowanceMoreThenAmount(allowance, amount) ? "Approve" : "Approved")
+                    ((!isAllowanceMoreThenAmount(allowance, amount) || allowance==0) ? "Approve" : "Approved")
                 }
 
            </Button>
-          <Button
+           <Button
               colorScheme='blue' 
               bg='#006FE8' 
               w='100%' 
@@ -298,8 +313,8 @@ export const ReleaseTab: FC<Props> = (props) => {
               onClick={handleBurn}>
                 {
                   isBurning ?
-                  "Burning...":
-                  "Burn"
+                  "Releasing...":
+                  "Release"
                 } 
            </Button>
         </HStack>
