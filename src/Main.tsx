@@ -4,14 +4,16 @@ import { FC } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Card from "./card/Card";
 import { config } from "./config/config";
+import { useStore } from "./store/useStore";
 
 type Props = {}
 
 export const Main: FC<Props> = () => {
     const { account, chainId } = useWeb3React()
+    const {globalNetworkError } = useStore()
     return (
       <VStack mt={-16} pt={1} minH='calc(93vh - 107px)'>
-        { account && chainId !== config.evmNetwork.chainId ? 
+        { globalNetworkError || (account && chainId !== config.evmNetwork.chainId) ? 
         (
           <Alert  justifyContent='center' status='error'>
               <AlertIcon />

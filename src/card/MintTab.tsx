@@ -1,30 +1,30 @@
 import { Box, Select, useDisclosure, VStack, FormControl, FormLabel, Alert, AlertIcon, Input, HStack, Flex, Spacer, Divider } from "@chakra-ui/react"
-import { FC, useState } from "react"
+import { FC } from "react"
 import { CardButton } from "./СardButton"
 import { config } from '../config/config'
-import { Token } from "../config/ConfigModel"
 import { CardSelectItem } from "./CardSelectItem"
 import { SET_ACC_SYMBOL, SET_MINT_AMOUNT_AND_RECEIVED, TRANSFER_INSTRUCTIONS_STEP } from "../store/actions"
 import { useStore } from "../store/useStore"
 import { useWeb3React } from "@web3-react/core"
 import SelectWalletModal from "../Modal"
 import BigNumber from "bignumber.js"
+import { Token } from "../common/Token"
 
 type Props = {
 }
 
-// select options group
-const mintOptions: JSX.Element[] = []
-config.tokens.forEach((value:Token)=> {
-  mintOptions.push(<CardSelectItem key= {value.accSymbol} symbol={value.accSymbol}/>)
-})
-
 export const MintTab: FC<Props> = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { mintAmount, mintReceived, dispatch, fees } = useStore()
+  const { mintAmount, mintReceived, fees, tokens, dispatch } = useStore()
 
   const mintFeeBps = fees.mintFee
   const mintFeePercentage = mintFeeBps / 100
+
+  // select options group
+  const options: JSX.Element[] = []
+  tokens.forEach((value:Token)=> {
+    options.push(<CardSelectItem key= {value.symbol} symbol={value.symbol}/>)
+  })
   
   const { 
     active, 
@@ -65,7 +65,7 @@ export const MintTab: FC<Props> = (props) => {
             <Select id='token' fontSize={14} borderRadius='15px' size='lg' onChange={(v) => {
               dispatch({type: SET_ACC_SYMBOL, payload: v.target.value})
             }}>
-              {mintOptions}
+              {options}
             </Select>
           </FormControl>
           <FormControl>

@@ -1,8 +1,9 @@
 import {  Step } from "../card/steps"
 // action types
 import * as ACTION from './actions'
-import { config } from "../config/config"
 import { Fees } from "../common/Fees"
+import { Token } from "../common/Token"
+
 
 const {
   INITIAL,
@@ -12,7 +13,9 @@ const {
   SET_ACC_SYMBOL,
   SET_EVM_SYMBOL,
   SET_MINT_AMOUNT_AND_RECEIVED,
-  GET_FEES
+  GET_FEES,
+  GET_TOKENS,
+  SET_GLOBAL_NETWORK_ERROR
 } = ACTION
 
 export type StateType = {
@@ -21,7 +24,9 @@ export type StateType = {
   evmSymbol: string,
   mintAmount: number,
   mintReceived: number,
-  fees: Fees
+  fees: Fees,
+  tokens: Token[],
+  globalNetworkError: boolean
 }
 
 export type ActionType = {
@@ -51,13 +56,13 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
       return {
         ...state,
         accSymbol: action.payload,
-        evmSymbol: config.tokens.find(token => token.accSymbol === action.payload)!.evmSymbol
+        evmSymbol: state.tokens.find(token => token.symbol === action.payload)!.evmSymbol
       }
     case SET_EVM_SYMBOL:
       return {
         ...state,
-        accSymbol: config.tokens.find(token => token.evmSymbol === action.payload)!.accSymbol,
-        evmSymbol: action.payload
+        evmSymbol: action.payload,
+        accSymbol: state.tokens.find(token => token.evmSymbol === action.payload)!.symbol,
       }
     case SET_MINT_AMOUNT_AND_RECEIVED:
       return {
@@ -70,6 +75,18 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
         ...state,
         fees: action.payload
       }
+    case GET_TOKENS:
+      return {
+        ...state,
+        tokens: action.payload,
+        accSymbol: action.payload[0].symbol ,
+        evmSymbol: action.payload[0].evmSymbol
+      }
+    case SET_GLOBAL_NETWORK_ERROR:
+      return {
+        ...state,
+        globalNetworkError: action.payload
+      }
     default:
       return state
   }
@@ -77,9 +94,11 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
 
 export const initialState = {
   step: Step.INITIAL,
-  accSymbol: config.tokens[0].accSymbol,
-  evmSymbol: config.tokens[0].evmSymbol,
+  accSymbol: "",
+  evmSymbol: "",
   mintAmount: 0,
   mintReceived: 0,
-  fees: {  mintFee:0, burnFee: 0, evmFee: 0, received: null } as Fees
+  fees: {  mintFee:0, burnFee: 0, evmFee: 0, received: null } as Fees,
+  tokens: [],
+  globalNetworkError: false
 }

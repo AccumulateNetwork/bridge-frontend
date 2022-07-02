@@ -12,10 +12,11 @@ import { useNavigate } from "react-router-dom"
 import { config } from '../config/config'
 import { ReleaseTab } from "./ReleaseTab"
 import { MintTab } from "./MintTab"
-import { GET_FEES, INITIAL } from "../store/actions"
+import { GET_FEES, GET_TOKENS, INITIAL, SET_GLOBAL_NETWORK_ERROR } from "../store/actions"
 import { useStore } from "../store/useStore"
 import RPC from "../common/RPC"
 import { Fees } from "../common/Fees"
+import { Token } from "../common/Token"
 
 type Props = {
   tabIndex: number
@@ -47,6 +48,25 @@ export const CardTabs: FC<Props> = (props) => {
     }
   }
 
+  const getTokens = () => {
+    RPC.request('tokens', null).then((data) => {
+      if (data.chainId !== config.evmNetwork.chainId) {
+        dispatch({type:SET_GLOBAL_NETWORK_ERROR, payload: true})
+      } else {
+        dispatch({type:SET_GLOBAL_NETWORK_ERROR, payload: false})
+      }
+      const tokens = data.items as Token[]
+      dispatch({ type: GET_TOKENS, payload: tokens })
+
+      // const _data = {...data, received: true} as Fees 
+      // sessionStorage.setItem("Fees", JSON.stringify(_data))
+    }).catch((e) => {
+      // sessionStorage.removeItem("Fees")
+      // dispatch({ type: GET_FEES, payload: {burnFee: 0, evmFee: 0, mintFee: 0, received: false} as Fees })
+    })
+
+  }
+
   const navigate = useNavigate()
   const navigateToTab = (tabIndex: number)=> {
     setTabIndex(tabIndex)
@@ -57,10 +77,12 @@ export const CardTabs: FC<Props> = (props) => {
     }
     dispatch({type: INITIAL})
     getFees()
+    getTokens()
   }
 
   useEffect(() => {
     getFees()
+    getTokens()
   }, [])// eslint-disable-line react-hooks/exhaustive-deps
 
   return (

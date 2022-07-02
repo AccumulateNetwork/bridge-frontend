@@ -3,7 +3,6 @@ import { Box, Button, Divider, Flex, HStack, Input, Link, Select, Spacer, Text, 
 import { FC, useEffect, useState } from "react"
 import { CardButton } from "./СardButton"
 import { config } from '../config/config'
-import { Token } from "../config/ConfigModel"
 import { CardSelectItem } from "./CardSelectItem"
 import { useWeb3React } from "@web3-react/core"
 import SelectWalletModal from "../Modal"
@@ -16,18 +15,7 @@ import BigNumber from "bignumber.js"
 import { toETHNumber, web3BNToFloatNumber } from "../utils"
 import { useStore } from "../store/useStore"
 import { SET_EVM_SYMBOL } from "../store/actions"
-
-const releaseOptions: JSX.Element[] = []
-config.tokens.forEach((value:Token)=> {
-  releaseOptions.push(<CardSelectItem key= {value.evmSymbol} symbol={value.evmSymbol}/>)
-})
-
-const getEvmTokenAddress = (evmSymbol: string) => {
-  const result = config.tokens
-  .find(token => token.evmSymbol === evmSymbol)!
-  .evmTokenAddress
-  return result
-}
+import { Token } from "../common/Token"
 
 type Props = {
 }
@@ -39,7 +27,19 @@ export const ReleaseTab: FC<Props> = (props) => {
     library,
   } = useWeb3React()
 
-  const { evmSymbol, dispatch, fees } = useStore()
+  const { evmSymbol, dispatch, fees, tokens } = useStore()
+
+  const options: JSX.Element[] = []
+  tokens.forEach((value:Token)=> {
+    options.push(<CardSelectItem key= {value.evmSymbol} symbol={value.evmSymbol}/>)
+  })
+
+  const getEvmAddress = (evmSymbol: string) => {
+    const result = tokens
+    .find(token => token.evmSymbol === evmSymbol)!
+    .evmAddress
+    return result
+  }
 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [ amount, setAmount ] = useState(0)
@@ -169,16 +169,19 @@ export const ReleaseTab: FC<Props> = (props) => {
     return false;
   }
 
-  useEffect(() => {    
-    const address = getEvmTokenAddress(evmSymbol)
-    if (account && address) {  
-      getBalance(address)
-      getAllowance(address, config.evmNetwork.bridgeAddress)
+  useEffect(() => {  
+    if (evmSymbol && tokens.length) {
+      const address = getEvmAddress(evmSymbol)
+      if (account && address) {  
+        getBalance(address)
+        getAllowance(address, config.evmNetwork.bridgeAddress)
+      }
+      setTokenAddress(address)
+      setAmount(0)
+      calculateValue(0)
     }
-    setTokenAddress(address)
-    setAmount(0)
-    calculateValue(0)
-    }, [chainId, account, evmSymbol]);// eslint-disable-line react-hooks/exhaustive-deps
+  
+    }, [chainId, account, evmSymbol, tokens]);// eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Box>
@@ -195,7 +198,7 @@ export const ReleaseTab: FC<Props> = (props) => {
           <Select id='token' fontSize= {14} borderRadius='15px' size='lg' onChange={(v) => {
               dispatch({type: SET_EVM_SYMBOL, payload: v.target.value})
             }}>
-            { releaseOptions }
+            { options }
           </Select>
         </FormControl>
         <FormControl pb={3}>
