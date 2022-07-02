@@ -15,7 +15,7 @@ type Props = {
 
 export const MintTab: FC<Props> = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { mintAmount, mintReceived, fees, tokens, dispatch } = useStore()
+  const { accSymbol, mintAmount, mintReceived, fees, tokens, dispatch, } = useStore()
 
   const mintFeeBps = fees.mintFee
   const mintFeePercentage = mintFeeBps / 100
@@ -62,7 +62,7 @@ export const MintTab: FC<Props> = (props) => {
         <VStack borderRadius='15px'>
           <FormControl pb={3}>
             <FormLabel htmlFor='token'>Token</FormLabel>
-            <Select id='token' fontSize={14} borderRadius='15px' size='lg' onChange={(v) => {
+            <Select value={accSymbol} id='token' fontSize={14} borderRadius='15px' size='lg' onChange={(v) => {
               dispatch({type: SET_ACC_SYMBOL, payload: v.target.value})
             }}>
               {options}

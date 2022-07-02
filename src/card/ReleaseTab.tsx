@@ -27,19 +27,12 @@ export const ReleaseTab: FC<Props> = (props) => {
     library,
   } = useWeb3React()
 
-  const { evmSymbol, dispatch, fees, tokens } = useStore()
+  const { evmSymbol, evmAddress, fees, tokens, dispatch } = useStore()
 
   const options: JSX.Element[] = []
   tokens.forEach((value:Token)=> {
     options.push(<CardSelectItem key= {value.evmSymbol} symbol={value.evmSymbol}/>)
   })
-
-  const getEvmAddress = (evmSymbol: string) => {
-    const result = tokens
-    .find(token => token.evmSymbol === evmSymbol)!
-    .evmAddress
-    return result
-  }
 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [ amount, setAmount ] = useState(0)
@@ -169,14 +162,14 @@ export const ReleaseTab: FC<Props> = (props) => {
     return false;
   }
 
-  useEffect(() => {  
-    if (evmSymbol && tokens.length) {
-      const address = getEvmAddress(evmSymbol)
-      if (account && address) {  
-        getBalance(address)
-        getAllowance(address, config.evmNetwork.bridgeAddress)
+  useEffect(() => {
+    //TODO refactor evmAddress
+    if (evmSymbol && evmAddress && tokens.length) {
+      if (account && evmAddress) {  
+        getBalance(evmAddress)
+        getAllowance(evmAddress, config.evmNetwork.bridgeAddress)
       }
-      setTokenAddress(address)
+      setTokenAddress(evmAddress)
       setAmount(0)
       calculateValue(0)
     }
