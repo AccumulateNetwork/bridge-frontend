@@ -8,12 +8,10 @@ const {
   INITIAL,
   // use for back button
   INITIAL_WITH_DATA,
-  CALCULATE_FEE_STEP,
   TRANSFER_INSTRUCTIONS_STEP,
   SET_ACC_SYMBOL,
   SET_EVM_SYMBOL,
-  SET_SEND,
-  SET_SEND_AND_RECEIVING,
+  SET_MINT_AMOUNT_AND_RECEIVED,
   GET_FEES
 } = ACTION
 
@@ -21,9 +19,8 @@ export type StateType = {
   step: Step,
   accSymbol: string,
   evmSymbol: string,
-  send: string,
-  receiving: string,
-  nextStepDisabled: boolean,
+  mintAmount: number,
+  mintReceived: number,
   fees: Fees
 }
 
@@ -45,11 +42,6 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
         ...state,
         step: Step.INITIAL
       }
-    case CALCULATE_FEE_STEP:
-      return {
-        ...state,
-        step: Step.CALCULATE_FEE
-      }
     case TRANSFER_INSTRUCTIONS_STEP:
       return {
         ...state,
@@ -67,17 +59,11 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
         accSymbol: config.tokens.find(token => token.evmSymbol === action.payload)!.accSymbol,
         evmSymbol: action.payload
       }
-    case SET_SEND_AND_RECEIVING:
+    case SET_MINT_AMOUNT_AND_RECEIVED:
       return {
         ...state,
-        send: action.payload.send,
-        receiving: action.payload.receiving,
-        nextStepDisabled: action.payload.nextStepDisabled
-      }
-    case SET_SEND:
-      return {
-        ...state,
-        send: action.payload
+        mintAmount: action.payload.mintAmount,
+        mintReceived: action.payload.mintReceived
       }
     case GET_FEES:
       return {
@@ -93,8 +79,7 @@ export const initialState = {
   step: Step.INITIAL,
   accSymbol: config.tokens[0].accSymbol,
   evmSymbol: config.tokens[0].evmSymbol,
-  send: "",
-  receiving: "",
-  fees: {  mintFee:0, burnFee: 0, evmFee: 0, received: null } as Fees,
-  nextStepDisabled: true
+  mintAmount: 0,
+  mintReceived: 0,
+  fees: {  mintFee:0, burnFee: 0, evmFee: 0, received: null } as Fees
 }

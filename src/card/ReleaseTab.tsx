@@ -70,8 +70,8 @@ export const ReleaseTab: FC<Props> = (props) => {
 
   const calcReceived = (inputValue: any) => {
     const value = new BigNumber(inputValue)
-    const mintFee = value.div(100).multipliedBy(burnFeePercentage)
-    const result = value.minus(mintFee)
+    const burnFee = value.div(100).multipliedBy(burnFeePercentage)
+    const result = value.minus(burnFee)
    if (result.isGreaterThan(0)) {
      setReceived(result.toNumber())
    } else {
@@ -229,16 +229,13 @@ export const ReleaseTab: FC<Props> = (props) => {
         </FormControl>
         <FormControl pb={3}>
           <FormLabel htmlFor='received'>Received</FormLabel>
-          <Input 
-            _focus={amountError ? {borderColor:"red"} : { borderColor:"inherit"}} 
-            borderColor={ amountError ? "red" : "inherit"}
+          <Input
             placeholder="Received"  borderRadius='15px' readOnly
             fontSize='12px'
             size='lg'
             id='received'
             value={ received }/>
         </FormControl>
-        
         <FormControl pb={3}>
           <FormLabel htmlFor='amount'>Destination Address</FormLabel>
           <Input 

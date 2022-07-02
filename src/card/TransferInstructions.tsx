@@ -12,7 +12,7 @@ import {
 
 import { FC, useState } from "react"
 
-import { CALCULATE_FEE_STEP } from "../store/actions"
+import { INITIAL_WITH_DATA } from "../store/actions"
 import { useStore } from "../store/useStore"
 import { config } from '../config/config'
 import { useWeb3React } from "@web3-react/core"
@@ -55,7 +55,7 @@ export const TransferInstructions: FC<Props> = (props) => {
   return (
     <Box fontSize={16}>
       <HStack p={2} width="100%">
-        <ArrowBackIcon mr="90px" onClick={()=> dispatch({type: CALCULATE_FEE_STEP})}/>
+        <ArrowBackIcon mr="90px" onClick={()=> dispatch({type: INITIAL_WITH_DATA})}/>
         <Center mb={5}>
             Transfer Instructions
         </Center>

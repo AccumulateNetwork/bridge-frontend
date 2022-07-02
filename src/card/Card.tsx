@@ -3,7 +3,6 @@ import { Box } from "@chakra-ui/react"
 import { useStore } from "../store/useStore"
 
 import { Step } from "./steps"
-import CalculateFee from "./CalculateFee"
 import CardTabs from "./CardTabs"
 import { TransferInstructions } from "./TransferInstructions"
 
@@ -16,8 +15,6 @@ export const Card: FC<Props> = (props) => {
   switch(step) {
     case Step.INITIAL:
     return <CardStateless children={<CardTabs tabIndex={props.tabIndex}/>}/>
-    case Step.CALCULATE_FEE:
-      return <CardStateless children={<CalculateFee/>}/> 
     case Step.TRANSFER_INSTRUCTIONS:
     return <CardStateless children={<TransferInstructions/>}/> 
     default: return null
