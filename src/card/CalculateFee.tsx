@@ -32,8 +32,8 @@ export const CalculateFee: FC<Props> = (props) => {
      nextStepDisabled,
      dispatch, fees } = useStore();
 
-  const evmFeeBps = fees.evmFee
-  const evmFeePercentage = evmFeeBps / 100
+  const mintFeeBps = fees.mintFee
+  const mintFeePercentage = mintFeeBps / 100
   const navigate = useNavigate()
 
   const calculateFee = (inputValue: string) => {  
@@ -47,8 +47,8 @@ export const CalculateFee: FC<Props> = (props) => {
       return
     }
     const value = new BigNumber(inputValue)
-    const evmFee = value.div(100).multipliedBy(evmFeePercentage)
-    let result = value.minus(evmFee)
+    const mintFee = value.div(100).multipliedBy(mintFeePercentage)
+    let result = value.minus(mintFee)
     if (result.isGreaterThan(0)) {
      const payload =  {
       "send": value.toNumber(), 
@@ -117,13 +117,13 @@ export const CalculateFee: FC<Props> = (props) => {
         </HStack>
         <Flex fontSize={14} color={"gray.500"}>
           <Box>
-            EVM fee
+            Mint fee
             </Box>
             <Spacer />
             {fees.received ?
             (
               <Box >
-                {evmFeePercentage} % 
+                {mintFeePercentage} % 
               </Box>
             ) :
             (
@@ -131,8 +131,7 @@ export const CalculateFee: FC<Props> = (props) => {
                 { config.messages.feesNotReceived }
               </Box>
             )
-            }
-           
+            }  
         </Flex>
         <CardButton title="Next" disabled={nextStepDisabled} onClick={() =>  dispatch({type: TRANSFER_INSTRUCTIONS_STEP})}/>
       </Box>  

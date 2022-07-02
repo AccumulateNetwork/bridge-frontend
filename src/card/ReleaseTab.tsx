@@ -54,9 +54,6 @@ export const ReleaseTab: FC<Props> = (props) => {
   const [amountError, setAmountError] = useState("")
 
   const [ decimals, setDecimals] = useState(0)
-
-  const evmFeeBps = fees.evmFee
-  const evmFeePercentage = evmFeeBps / 100
   const burnFeeBps = fees.burnFee
   const burnFeePercentage = burnFeeBps / 100
 
@@ -258,23 +255,6 @@ export const ReleaseTab: FC<Props> = (props) => {
             )
             }
            
-        </Flex>
-        <Flex fontSize={14} color={"gray.500"}>
-          <Box>
-            EVM fee
-            </Box>
-            <Spacer />
-            {fees.received ?
-            ( <Box>
-              {evmFeePercentage} %
-              </Box>
-            ):
-            (
-              <Box w={40}> 
-              { config.messages.feesNotReceived } 
-              </Box>
-            )
-            }
         </Flex>
       </Box>
       <Box padding='6'>
