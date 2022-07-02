@@ -43,6 +43,7 @@ export const ReleaseTab: FC<Props> = (props) => {
 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [ amount, setAmount ] = useState(0)
+  const [ received, setReceived ] = useState(0)
   const [ balance, setBalance ] = useState(0)
   const [ tokenAddress, setTokenAddress] = useState("")
   const [ allowance, setAllowance ] = useState(0)
@@ -58,11 +59,24 @@ export const ReleaseTab: FC<Props> = (props) => {
   const burnFeePercentage = burnFeeBps / 100
 
   const handleAmountChange = (event: any) => {
-     if (isNaN(Number(event.target.value))) {
+    const inputValue = event.target.value
+     if (isNaN(Number(inputValue))) {
        return
      }
-     setAmount(event.target.value);
+     setAmount(inputValue)
+     calcReceived(inputValue)
      calculateValue(event.target.value)   
+  }
+
+  const calcReceived = (inputValue: any) => {
+    const value = new BigNumber(inputValue)
+    const mintFee = value.div(100).multipliedBy(burnFeePercentage)
+    const result = value.minus(mintFee)
+   if (result.isGreaterThan(0)) {
+     setReceived(result.toNumber())
+   } else {
+     setReceived(0)
+   }
   }
 
   const handleDestinationAddressChange = (event: any) => {
@@ -208,10 +222,23 @@ export const ReleaseTab: FC<Props> = (props) => {
           <Link color='#3182ce' 
             onClick={() => { 
               setAmount(balance)
-              calculateValue(balance) }}>
+              calculateValue(balance) 
+              calcReceived(balance)}}>
             <Text my={2} fontSize='sm'>Available balance: { balance } </Text>
           </Link>
         </FormControl>
+        <FormControl pb={3}>
+          <FormLabel htmlFor='received'>Received</FormLabel>
+          <Input 
+            _focus={amountError ? {borderColor:"red"} : { borderColor:"inherit"}} 
+            borderColor={ amountError ? "red" : "inherit"}
+            placeholder="Received"  borderRadius='15px' readOnly
+            fontSize='12px'
+            size='lg'
+            id='received'
+            value={ received }/>
+        </FormControl>
+        
         <FormControl pb={3}>
           <FormLabel htmlFor='amount'>Destination Address</FormLabel>
           <Input 
@@ -274,7 +301,7 @@ export const ReleaseTab: FC<Props> = (props) => {
                 {
                   isApproving ?
                     "Approving..." :
-                    ((!isAllowanceMoreThenAmount(allowance, amount) || allowance==0) ? "Approve" : "Approved")
+                    ((!isAllowanceMoreThenAmount(allowance, amount) || allowance===0) ? "Approve" : "Approved")
                 }
 
            </Button>
