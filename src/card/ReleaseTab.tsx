@@ -136,7 +136,7 @@ export const ReleaseTab: FC<Props> = (props) => {
     }
   }
 
-   const handleApprove = (address: string = tokenAddress, spender: string = config.evmNetwork.bridgeAddress) => {
+  const handleApprove = (address: string = tokenAddress, spender: string = config.evmNetwork.bridgeAddress) => {
     const contract = getContract(library, TOKENSERC20ABI, address);
     const maxApproval = new BigNumber(2).pow(256).minus(1);
     setIsApproving(true);
@@ -181,7 +181,7 @@ export const ReleaseTab: FC<Props> = (props) => {
       calculateValue(0)
     }
   
-    }, [chainId, account, evmSymbol, tokens]);// eslint-disable-line react-hooks/exhaustive-deps
+  }, [chainId, account, evmSymbol, tokens]);// eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Box>

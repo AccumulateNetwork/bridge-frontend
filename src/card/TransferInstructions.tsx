@@ -10,7 +10,7 @@ import {
   VStack 
 } from "@chakra-ui/react"
 
-import { FC, useEffect, useState } from "react"
+import { FC, useState } from "react"
 
 import { INITIAL_WITH_DATA } from "../store/actions"
 import { useStore } from "../store/useStore"
@@ -46,20 +46,11 @@ export const CopyPopover: FC<CopyPopoverProps> = (props) => {
 }
 export const TransferInstructions: FC<Props> = (props) => {
   const { 
-    account, 
-    chainId
+    account
   } = useWeb3React()
 
-  const { accSymbol, tokens, dispatch } = useStore()
+  const { accSymbol, url, dispatch } = useStore()
 
-  const [url, setUrl] = useState("")
-
-  useEffect(() => {
-    if (tokens.length) {
-      const url =  tokens.find(token => token.symbol === accSymbol)!.url
-      setUrl(url)
-    }
-  }, [account, chainId, accSymbol, tokens])
   return (
     <Box fontSize={16}>
       <HStack p={2} width="100%">

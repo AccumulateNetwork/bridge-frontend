@@ -22,6 +22,7 @@ export type StateType = {
   step: Step,
   accSymbol: string,
   evmSymbol: string,
+  url: string,
   mintAmount: number,
   mintReceived: number,
   fees: Fees,
@@ -56,13 +57,15 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
       return {
         ...state,
         accSymbol: action.payload,
-        evmSymbol: state.tokens.find(token => token.symbol === action.payload)!.evmSymbol
+        evmSymbol: state.tokens.find(token => token.symbol === action.payload)!.evmSymbol,
+        url: state.tokens.find(token => token.evmSymbol === action.payload)!.url
       }
     case SET_EVM_SYMBOL:
       return {
         ...state,
         evmSymbol: action.payload,
         accSymbol: state.tokens.find(token => token.evmSymbol === action.payload)!.symbol,
+        url: state.tokens.find(token => token.evmSymbol === action.payload)!.url
       }
     case SET_MINT_AMOUNT_AND_RECEIVED:
       return {
@@ -79,8 +82,9 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
       return {
         ...state,
         tokens: action.payload,
-        accSymbol: action.payload[0].symbol ,
-        evmSymbol: action.payload[0].evmSymbol
+        accSymbol: action.payload[0].symbol,
+        evmSymbol: action.payload[0].evmSymbol,
+        url: action.payload[0].url
       }
     case SET_GLOBAL_NETWORK_ERROR:
       return {
@@ -96,6 +100,7 @@ export const initialState = {
   step: Step.INITIAL,
   accSymbol: "",
   evmSymbol: "",
+  url: "",
   mintAmount: 0,
   mintReceived: 0,
   fees: {  mintFee:0, burnFee: 0, evmFee: 0, received: null } as Fees,
