@@ -88,7 +88,6 @@ export const CardTabs: FC<Props> = (props) => {
     getFees()
     getTokens()
   }, [])// eslint-disable-line react-hooks/exhaustive-deps
-
   return (
     <Tabs 
       defaultIndex={ tabIndex } 

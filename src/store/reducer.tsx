@@ -22,6 +22,7 @@ export type StateType = {
   step: Step,
   accSymbol: string,
   evmSymbol: string,
+  evmMintTxCost: string,
   url: string,
   evmAddress: string,
   mintAmount: number,
@@ -60,7 +61,9 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
         accSymbol: action.payload,
         evmSymbol: state.tokens.find(token => token.symbol === action.payload)!.evmSymbol,
         url: state.tokens.find(token => token.symbol === action.payload)!.url,
-        evmAddress: state.tokens.find(token => token.symbol === action.payload)!.evmAddress
+        evmAddress: state.tokens.find(token => token.symbol === action.payload)!.evmAddress,
+        evmMintTxCost: state.tokens.find(token => token.symbol === action.payload)!.evmMintTxCost
+
       }
     case SET_EVM_SYMBOL:
       return {
@@ -88,7 +91,9 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
         accSymbol: !state.accSymbol ? action.payload[0].symbol : state.accSymbol,
         evmSymbol: !state.evmSymbol ? action.payload[0].evmSymbol : state.evmSymbol,
         url: !state.url ? action.payload[0].url: state.url,
-        evmAddress: !state.evmAddress ? action.payload[0].evmAddress: state.evmAddress
+        evmAddress: !state.evmAddress ? action.payload[0].evmAddress: state.evmAddress,
+        evmMintTxCost: !state.evmMintTxCost? action.payload[0].evmMintTxCost: state.evmMintTxCost
+
       }
     case SET_GLOBAL_NETWORK_ERROR:
       return {
@@ -105,6 +110,7 @@ export const initialState = {
   accSymbol: "",
   evmSymbol: "",
   evmAddress: "",
+  evmMintTxCost:"",
   url: "",
   mintAmount: 0,
   mintReceived: 0,

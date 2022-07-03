@@ -15,7 +15,7 @@ type Props = {
 
 export const MintTab: FC<Props> = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { accSymbol, mintAmount, mintReceived, fees, tokens, dispatch, } = useStore()
+  const { accSymbol, mintAmount, mintReceived, fees, tokens, evmMintTxCost, dispatch, } = useStore()
 
   const mintFeeBps = fees.mintFee
   const mintFeePercentage = mintFeeBps / 100
@@ -119,6 +119,15 @@ export const MintTab: FC<Props> = (props) => {
               </Box>
             )
             }  
+        </Flex>
+        <Flex fontSize={14} color={"gray.500"}>
+          <Box>
+            Mint tx cost
+          </Box>
+          <Spacer />
+          <Box >
+            {evmMintTxCost} % 
+          </Box>
         </Flex>
           {active ? (
               <CardButton title="Next" onClick={() =>dispatch({type: TRANSFER_INSTRUCTIONS_STEP})}/>
