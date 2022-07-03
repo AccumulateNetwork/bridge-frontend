@@ -4,7 +4,6 @@ import * as ACTION from './actions'
 import { Fees } from "../common/Fees"
 import { Token } from "../common/Token"
 
-
 const {
   INITIAL,
   // use for back button
@@ -63,7 +62,6 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
         url: state.tokens.find(token => token.symbol === action.payload)!.url,
         evmAddress: state.tokens.find(token => token.symbol === action.payload)!.evmAddress,
         evmMintTxCost: state.tokens.find(token => token.symbol === action.payload)!.evmMintTxCost
-
       }
     case SET_EVM_SYMBOL:
       return {
@@ -93,7 +91,6 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
         url: !state.url ? action.payload[0].url: state.url,
         evmAddress: !state.evmAddress ? action.payload[0].evmAddress: state.evmAddress,
         evmMintTxCost: !state.evmMintTxCost? action.payload[0].evmMintTxCost: state.evmMintTxCost
-
       }
     case SET_GLOBAL_NETWORK_ERROR:
       return {
