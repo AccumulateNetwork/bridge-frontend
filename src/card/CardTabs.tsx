@@ -49,22 +49,25 @@ export const CardTabs: FC<Props> = (props) => {
   }
 
   const getTokens = () => {
-    RPC.request('tokens', null).then((data) => {
-      if (data.chainId !== config.evmNetwork.chainId) {
-        dispatch({type:SET_GLOBAL_NETWORK_ERROR, payload: true})
-      } else {
-        dispatch({type:SET_GLOBAL_NETWORK_ERROR, payload: false})
-      }
-      const tokens = data.items as Token[]
-      dispatch({ type: GET_TOKENS, payload: tokens })
-
-      // const _data = {...data, received: true} as Fees 
-      // sessionStorage.setItem("Fees", JSON.stringify(_data))
-    }).catch((e) => {
-      // sessionStorage.removeItem("Fees")
-      // dispatch({ type: GET_FEES, payload: {burnFee: 0, evmFee: 0, mintFee: 0, received: false} as Fees })
-    })
-
+    const tokens = sessionStorage.getItem("Tokens")
+    console.log(tokens)
+    if (tokens) {
+      const data = JSON.parse(tokens) as Token[]
+      dispatch({ type: GET_TOKENS, payload: data })
+    } else {
+      RPC.request('tokens', null).then((data) => {
+        if (data.chainId !== config.evmNetwork.chainId) {
+          dispatch({type:SET_GLOBAL_NETWORK_ERROR, payload: true})
+        } else {
+          dispatch({type:SET_GLOBAL_NETWORK_ERROR, payload: false})
+        }
+        const tokens = data.items as Token[]
+        dispatch({ type: GET_TOKENS, payload: tokens })
+        sessionStorage.setItem("Tokens", JSON.stringify(tokens))
+      }).catch((e) => {
+         sessionStorage.removeItem("Tokens")
+      })
+    }
   }
 
   const navigate = useNavigate()

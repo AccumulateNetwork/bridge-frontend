@@ -85,10 +85,10 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
       return {
         ...state,
         tokens: action.payload,
-        accSymbol: action.payload[0].symbol,
-        evmSymbol: action.payload[0].evmSymbol,
-        url: action.payload[0].url,
-        evmAddress: action.payload[0].evmAddress
+        accSymbol: !state.accSymbol ? action.payload[0].symbol : state.accSymbol,
+        evmSymbol: !state.evmSymbol ? action.payload[0].evmSymbol : state.evmSymbol,
+        url: !state.url ? action.payload[0].url: state.url,
+        evmAddress: !state.evmAddress ? action.payload[0].evmAddress: state.evmAddress
       }
     case SET_GLOBAL_NETWORK_ERROR:
       return {
