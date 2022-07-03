@@ -66,6 +66,7 @@ export const CardTabs: FC<Props> = (props) => {
         sessionStorage.setItem("Tokens", JSON.stringify(tokens))
       }).catch((e) => {
          sessionStorage.removeItem("Tokens")
+         // TODO set global errors
       })
     }
   }
@@ -94,19 +95,19 @@ export const CardTabs: FC<Props> = (props) => {
       isFitted
       colorScheme="messenger" 
       onChange={(index) => navigateToTab(index) }>
-    <TabList>
-      <Tab _focus={{borderColor:"inherit"}} py={3}>{ tab1Name }</Tab>
-      <Tab _focus={{borderColor:"inherit"}} py={3}>{ tab2Name }</Tab>  
-    </TabList>
-    <TabPanels>
-      <TabPanel >
-        <MintTab/>
-      </TabPanel>
-      <TabPanel>
-        <ReleaseTab/>
-      </TabPanel>
-    </TabPanels>
-  </Tabs>
+      <TabList>
+        <Tab _focus={{borderColor:"inherit"}} py={3}>{ tab1Name }</Tab>
+        <Tab _focus={{borderColor:"inherit"}} py={3}>{ tab2Name }</Tab>  
+      </TabList>
+      <TabPanels>
+        <TabPanel >
+          <MintTab/>
+        </TabPanel>
+        <TabPanel>
+          <ReleaseTab/>
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
   )
 }
 export default CardTabs
