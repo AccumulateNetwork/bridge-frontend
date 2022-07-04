@@ -11,7 +11,7 @@ type Props = {
 }
 
 export const Card: FC<Props> = (props) => {
-  const { step } = useStore();  
+  const { step } = useStore()
   switch(step) {
     case Step.INITIAL:
     return <CardStateless children={<CardTabs tabIndex={props.tabIndex}/>}/>

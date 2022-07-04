@@ -14,7 +14,9 @@ const {
   SET_MINT_AMOUNT_AND_RECEIVED,
   GET_FEES,
   GET_TOKENS,
-  SET_GLOBAL_NETWORK_ERROR
+  UPDATE_EVM_ADDRESS,
+  SET_GLOBAL_NETWORK_ERROR,
+  SET_GLOBAL_SERVER_NOT_RESPONDED
 } = ACTION
 
 export type StateType = {
@@ -28,7 +30,9 @@ export type StateType = {
   mintReceived: number,
   fees: Fees,
   tokens: Token[],
+  tokensChainId: number,
   globalNetworkError: boolean
+  globalServerNotResponded: boolean
 }
 
 export type ActionType = {
@@ -85,17 +89,28 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
     case GET_TOKENS:
       return {
         ...state,
-        tokens: action.payload,
-        accSymbol: !state.accSymbol ? action.payload[0].symbol : state.accSymbol,
-        evmSymbol: !state.evmSymbol ? action.payload[0].evmSymbol : state.evmSymbol,
-        url: !state.url ? action.payload[0].url: state.url,
-        evmAddress: !state.evmAddress ? action.payload[0].evmAddress: state.evmAddress,
-        evmMintTxCost: !state.evmMintTxCost? action.payload[0].evmMintTxCost: state.evmMintTxCost
+        tokens: action.payload.items,
+        tokensChainId: action.payload.chainId,
+        accSymbol: !state.accSymbol ? action.payload.items[0].symbol : state.accSymbol,
+        evmSymbol: !state.evmSymbol ? action.payload.items[0].evmSymbol : state.evmSymbol,
+        url: !state.url ? action.payload.items[0].url: state.url,
+        evmAddress: !state.evmAddress ? action.payload.items[0].evmAddress: state.evmAddress,
+        evmMintTxCost: !state.evmMintTxCost? action.payload.items[0].evmMintTxCost: state.evmMintTxCost
+      }
+    case UPDATE_EVM_ADDRESS:
+      return {
+        ...state,
+        evmAddress: state.tokens.find(token => token.evmSymbol === action.payload)!.evmAddress
       }
     case SET_GLOBAL_NETWORK_ERROR:
       return {
         ...state,
         globalNetworkError: action.payload
+      }
+    case SET_GLOBAL_SERVER_NOT_RESPONDED:
+      return {
+        ...state,
+        globalServerNotResponded: action.payload
       }
     default:
       return state
@@ -113,5 +128,7 @@ export const initialState = {
   mintReceived: 0,
   fees: {  mintFee:0, burnFee: 0, evmFee: 0, received: null } as Fees,
   tokens: [],
-  globalNetworkError: false
+  tokensChainId: 0,
+  globalNetworkError: false,
+  globalServerNotResponded: false
 }

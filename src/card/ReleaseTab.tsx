@@ -14,8 +14,8 @@ import BRIDGEABI from '../contracts/BRIDGE-CONTRACT-ABI.json'
 import BigNumber from "bignumber.js"
 import { toETHNumber, web3BNToFloatNumber } from "../utils"
 import { useStore } from "../store/useStore"
-import { SET_EVM_SYMBOL } from "../store/actions"
 import { Token } from "../common/Token"
+import { UPDATE_EVM_ADDRESS } from "../store/actions"
 
 type Props = {
 }
@@ -27,7 +27,7 @@ export const ReleaseTab: FC<Props> = (props) => {
     library,
   } = useWeb3React()
 
-  const { evmSymbol, evmAddress, fees, tokens, dispatch } = useStore()
+  const { evmAddress, fees, tokens, dispatch } = useStore()
 
   const options: JSX.Element[] = []
   tokens.forEach((value:Token)=> {
@@ -35,6 +35,7 @@ export const ReleaseTab: FC<Props> = (props) => {
   })
 
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [evmSymbol, setEvmSymbol] = useState("")
   const [ amount, setAmount ] = useState(0)
   const [ received, setReceived ] = useState(0)
   const [ balance, setBalance ] = useState(0)
@@ -164,11 +165,9 @@ export const ReleaseTab: FC<Props> = (props) => {
 
   useEffect(() => {
     //TODO refactor evmAddress
-    if (evmSymbol && evmAddress && tokens.length) {
-      if (account && evmAddress) {  
-        getBalance(evmAddress)
-        getAllowance(evmAddress, config.evmNetwork.bridgeAddress)
-      }
+    if (account && evmAddress && tokens.length) {
+      getBalance(evmAddress)
+      getAllowance(evmAddress, config.evmNetwork.bridgeAddress)
       setTokenAddress(evmAddress)
       setAmount(0)
       calculateValue(0)
@@ -189,7 +188,8 @@ export const ReleaseTab: FC<Props> = (props) => {
         <FormControl pb={3}>
           <FormLabel htmlFor='token'>Token</FormLabel>
           <Select id='token' fontSize= {14} borderRadius='15px' size='lg' onChange={(v) => {
-              dispatch({type: SET_EVM_SYMBOL, payload: v.target.value})
+              setEvmSymbol(v.target.value)
+              dispatch({ type: UPDATE_EVM_ADDRESS, payload: v.target})
             }}>
             { options }
           </Select>
@@ -307,7 +307,7 @@ export const ReleaseTab: FC<Props> = (props) => {
               p='7'
               disabled={
                 !isAllowanceMoreThenAmount(allowance, amount) 
-                || isApproving || isBurning
+                || isApproving || isBurning || (amountError ? true : false)
                 || amount === 0 || destinationAddress === "" || destinationAddressError 
               }
               onClick={handleBurn}>
