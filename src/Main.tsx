@@ -58,7 +58,7 @@ export const Routing: FC<Props> = () => {
     return (
       <Alert  justifyContent='center' status='error'>
       <AlertIcon />
-       { chainId} Wrong network. Use Chain ID {tokensChainId} 
+        Wrong network. Use Chain ID {tokensChainId} 
       </Alert>
     )
   } else {
