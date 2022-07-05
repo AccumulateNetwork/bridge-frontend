@@ -31,6 +31,7 @@ export const Routing: FC<Props> = () => {
       dispatch({ type: GET_FEES, payload: {burnFee: 0, evmFee: 0, mintFee: 0, received: false} as Fees })
     })
   }
+
   const getTokens = () => {
     RPC.request('tokens').then((data) => {
       if (chainId && data.chainId !== chainId) {
@@ -43,10 +44,12 @@ export const Routing: FC<Props> = () => {
        dispatch({type:SET_GLOBAL_SERVER_NOT_RESPONDED, payload: true})
     })
   }
+
   useEffect(() => {
     getTokens()  
     getFees()
   }, [account, chainId]) // eslint-disable-line react-hooks/exhaustive-deps
+  
   if (globalServerNotResponded) {
     return (
       <Alert  justifyContent='center' status='error'>
@@ -62,8 +65,6 @@ export const Routing: FC<Props> = () => {
       </Alert>
     )
   } else {
-    
-  
     return (
       <Routes>
       <Route path="/" element={<Navigate to="mint"/>}/>
