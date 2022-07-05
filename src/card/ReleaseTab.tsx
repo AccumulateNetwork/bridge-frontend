@@ -189,7 +189,7 @@ export const ReleaseTab: FC<Props> = (props) => {
           <FormLabel htmlFor='token'>Token</FormLabel>
           <Select id='token' fontSize= {14} borderRadius='15px' size='lg' onChange={(v) => {
               setEvmSymbol(v.target.value)
-              dispatch({ type: UPDATE_EVM_ADDRESS, payload: v.target})
+              dispatch({ type: UPDATE_EVM_ADDRESS, payload: v.target.value})
             }}>
             { options }
           </Select>
