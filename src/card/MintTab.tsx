@@ -1,4 +1,4 @@
-import { Box, Select, useDisclosure, VStack, FormControl, FormLabel, Alert, AlertIcon, Input, HStack, Flex, Spacer, Divider } from "@chakra-ui/react"
+import { Box, Select, useDisclosure, VStack, FormControl, FormLabel, Alert, AlertIcon, Input, HStack, Flex, Spacer, Divider, InputGroup, InputRightAddon } from "@chakra-ui/react"
 import { FC } from "react"
 import { CardButton } from "./СardButton"
 import { config } from '../config/config'
@@ -41,7 +41,7 @@ export const MintTab: FC<Props> = (props) => {
   const calcReceived = (inputValue: any) => {
     const value = new BigNumber(inputValue)
     const mintFee = value.div(100).multipliedBy(mintFeePercentage)
-    const result = value.minus(mintFee)
+    const result = value.minus(mintFee).minus(evmMintTxCost)
    if (result.isGreaterThan(0)) {
     dispatch({type: SET_MINT_AMOUNT_AND_RECEIVED, payload: {
       "mintAmount": inputValue, "mintReceived": result.toNumber()}})
@@ -68,30 +68,37 @@ export const MintTab: FC<Props> = (props) => {
               {options}
             </Select>
           </FormControl>
-          <FormControl>
+          <FormControl pb={3}>
             <FormLabel htmlFor='destination'>Destination</FormLabel>
             <Select id='destination' fontSize={14} borderRadius='15px' size='lg'>
               <option value='eth'>Ethereum</option>
             </Select>
           </FormControl>
           <FormControl pb={3}>
-          <FormLabel htmlFor='amount'>Amount</FormLabel>
-          <Input 
-            placeholder="Amount"  borderRadius='15px' 
-            fontSize='12px'
-            size='lg'
-            id='amount'
-            onChange={handleAmountChange}
-            value={ mintAmount }/>
+            <FormLabel htmlFor='amount'>How much will you send</FormLabel>
+            <InputGroup size='lg'>
+              <Input 
+                placeholder="Amount"
+                borderRadius='15px' 
+                fontSize='10pt'
+                id='amount'
+                onChange={handleAmountChange}
+                value={ mintAmount }/>
+              <InputRightAddon fontSize='10pt' children={accSymbol} />
+            </InputGroup>
           </FormControl>
           <FormControl pb={3}>
-            <FormLabel htmlFor='received'>Received</FormLabel>
-            <Input 
-              placeholder="Received"  borderRadius='15px' readOnly
-              fontSize='12px'
-              size='lg'
-              id='received'
-              value={ mintReceived }/>
+            <FormLabel htmlFor='received'>Receiving</FormLabel>
+            <InputGroup size='lg'>
+              <Input 
+                placeholder="Received"
+                borderRadius='15px'
+                readOnly
+                fontSize='10pt'
+                id='received'
+                value={ mintReceived }/>
+              <InputRightAddon fontSize='10pt' children={evmSymbol} />
+            </InputGroup>
           </FormControl>
         </VStack>
         </Box>
@@ -104,7 +111,7 @@ export const MintTab: FC<Props> = (props) => {
         </HStack>
         <Flex fontSize={14} color={"gray.500"}>
           <Box>
-            Mint fee
+            Bridge Mint Fee
             </Box>
             <Spacer />
             {fees.received ?
@@ -122,11 +129,11 @@ export const MintTab: FC<Props> = (props) => {
         </Flex>
         <Flex fontSize={14} color={"gray.500"}>
           <Box>
-            Mint tx cost
+            Ethereum Tx Cost
           </Box>
           <Spacer />
           <Box >
-            {evmMintTxCost} {evmSymbol} 
+            {evmMintTxCost} {accSymbol} 
           </Box>
         </Flex>
           {active ? (
