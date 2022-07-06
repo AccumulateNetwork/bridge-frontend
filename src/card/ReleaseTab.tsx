@@ -1,5 +1,5 @@
 
-import { Box, Button, Divider, Flex, HStack, Input, Link, Select, Spacer, Text, useDisclosure, VStack, Alert, AlertIcon, FormControl, FormLabel } from "@chakra-ui/react"
+import { Box, Button, Divider, Flex, HStack, Input, Link, Select, Spacer, Text, useDisclosure, VStack, Alert, AlertIcon, FormControl, FormLabel, InputGroup, InputRightAddon } from "@chakra-ui/react"
 import { FC, useEffect, useState } from "react"
 import { CardButton } from "./СardButton"
 import { config } from '../config/config'
@@ -44,7 +44,9 @@ export const ReleaseTab: FC<Props> = (props) => {
   const [ isApproving, setIsApproving] = useState(false)
   const [ isBurning, setIsBurning] = useState(false)
   const [ destinationAddress, setDestinationAddress] = useState("")
-  const [destinationAddressError, setDestinationAddressError] = useState(false)
+
+  //const [destinationAddressError, setDestinationAddressError] = useState(false)
+  const destinationAddressError = false
 
   const [amountError, setAmountError] = useState("")
 
@@ -75,11 +77,14 @@ export const ReleaseTab: FC<Props> = (props) => {
 
   const handleDestinationAddressChange = (event: any) => {
     const address = event.target.value
+    /*
+    // disabled this check because Accumulate lite tokens accounts do not have .acme
     if (address.includes(".acme")) {
       setDestinationAddressError(false)
     } else {
       setDestinationAddressError(true)
     }
+    */
     setDestinationAddress(address)
   }
 
@@ -202,17 +207,21 @@ export const ReleaseTab: FC<Props> = (props) => {
         </FormControl>
         <FormControl pb={3}>
           <FormLabel htmlFor='amount'>Amount</FormLabel>
-          <Input 
-            _focus={amountError ? {borderColor:"red"} : { borderColor:"inherit"}} 
-            borderColor={ amountError ? "red" : "inherit"}
-            placeholder="Amount"  borderRadius='15px' 
-            fontSize='12px'
-            size='lg'
-            id='amount'
-            onChange={handleAmountChange}
-            value={ amount }/>
+          <InputGroup size='lg'>
+            <Input 
+              _focus={amountError ? {borderColor:"red"} : { borderColor:"inherit"}} 
+              borderColor={ amountError ? "red" : "inherit"}
+              placeholder="Amount"  borderRadius='15px' 
+              fontSize='10pt'
+              autoComplete='off'
+              size='lg'
+              id='amount'
+              onChange={handleAmountChange}
+              value={ amount }/>
+            <InputRightAddon fontSize='10pt' children={evmSymbol} />
+          </InputGroup>
           { amountError ?
-            <Text color={"red.400"} my={2} fontSize='sm'>Not enough tokens </Text>
+            <Text color={"red.400"} my={2} fontSize='sm'>Not enough tokens</Text>
             : null
           }
           <Link color='#3182ce' 
@@ -224,28 +233,32 @@ export const ReleaseTab: FC<Props> = (props) => {
           </Link>
         </FormControl>
         <FormControl pb={3}>
-          <FormLabel htmlFor='received'>Received</FormLabel>
-          <Input
-            placeholder="Received"  borderRadius='15px' readOnly
-            fontSize='12px'
-            size='lg'
-            id='received'
-            value={ received }/>
+          <FormLabel htmlFor='received'>Receiving</FormLabel>
+          <InputGroup size='lg'>
+            <Input
+              borderRadius='15px'
+              readOnly
+              variant='filled'
+              fontSize='10pt'
+              size='lg'
+              id='received'
+              value={ received }/>
+            <InputRightAddon fontSize='10pt' children={evmSymbol} border={0} />
+          </InputGroup>
         </FormControl>
         <FormControl pb={3}>
           <FormLabel htmlFor='amount'>Destination Address</FormLabel>
           <Input 
-            placeholder='Enter a Destination Address' 
+            placeholder='Accumulate token account' 
             borderRadius='15px' 
-            fontSize='12px'
+            fontSize='10pt'
             size='lg'
-            textAlign={"center"}
             _focus={ destinationAddressError ? {borderColor:"red"} : { borderColor:"inherit"} } 
             borderColor={ destinationAddressError ? "red" : "inherit" }
             onChange={ handleDestinationAddressChange }
           />
           { destinationAddressError ?
-            <Text color={"red.400"} my={2} fontSize='sm'>Address should contains .acme </Text>
+            <Text color={"red.400"} my={2} fontSize='sm'>Invalid Accumulate address</Text>
             : null
           }
         </FormControl>
@@ -255,12 +268,12 @@ export const ReleaseTab: FC<Props> = (props) => {
       <Divider mb={6} />
         <HStack spacing='24px' pb={2}>
           <Box fontSize= {14}>
-            Fees
+            Details
           </Box>
         </HStack>
         <Flex fontSize={14} color={"gray.500"}>
           <Box>
-            Burn fee
+            Bridge Release Fee
             </Box>
             <Spacer />
             {fees.received ?

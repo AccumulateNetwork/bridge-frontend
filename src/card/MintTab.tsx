@@ -1,5 +1,5 @@
 import { Box, Select, useDisclosure, VStack, FormControl, FormLabel, Alert, AlertIcon, Input, HStack, Flex, Spacer, Divider, InputGroup, InputRightAddon } from "@chakra-ui/react"
-import { FC } from "react"
+import { FC, useState, useEffect } from "react"
 import { CardButton } from "./СardButton"
 import { config } from '../config/config'
 import { CardSelectItem } from "./CardSelectItem"
@@ -9,13 +9,22 @@ import { useWeb3React } from "@web3-react/core"
 import SelectWalletModal from "../Modal"
 import BigNumber from "bignumber.js"
 import { Token } from "../common/Token"
+import { formAddress } from "../utils"
 
 type Props = {
 }
 
 export const MintTab: FC<Props> = (props) => {
+
+  const { 
+    account,
+    active,
+    chainId
+  } = useWeb3React()
+
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { accSymbol, evmSymbol, mintAmount, mintReceived, fees, tokens, evmMintTxCost, dispatch, } = useStore()
+  const { accSymbol, evmSymbol, mintAmount, mintReceived, fees, tokens, evmMintTxCost, dispatch } = useStore()
+  const [ destinationAddress, setDestinationAddress] = useState("")
 
   const mintFeeBps = fees.mintFee
   const mintFeePercentage = mintFeeBps / 100
@@ -26,16 +35,17 @@ export const MintTab: FC<Props> = (props) => {
     options.push(<CardSelectItem key= {value.symbol} symbol={value.symbol}/>)
   })
   
-  const { 
-    active, 
-  } = useWeb3React()
-
   const handleAmountChange = (event: any) => {
     const inputValue = event.target.value
      if (isNaN(Number(inputValue))) {
        return
      }
      calcReceived(inputValue)
+  }
+
+  const handleDestinationAddressChange = (event: any) => {
+    const address = event.target.value
+    setDestinationAddress(address)
   }
 
   const calcReceived = (inputValue: any) => {
@@ -50,6 +60,14 @@ export const MintTab: FC<Props> = (props) => {
       "mintAmount": inputValue, "mintReceived": 0}})
    }
   }
+
+  useEffect(() => {
+    if (account && tokens.length) {
+      setDestinationAddress(formAddress(account))
+    }
+    }, [chainId, account, tokens]);// eslint-disable-line react-hooks/exhaustive-deps
+
+
   return (
     <Box>
       <Box padding='6' pt={4}>
@@ -82,6 +100,7 @@ export const MintTab: FC<Props> = (props) => {
                 borderRadius='15px' 
                 fontSize='10pt'
                 id='amount'
+                autoComplete='off'
                 onChange={handleAmountChange}
                 value={ mintAmount }/>
               <InputRightAddon fontSize='10pt' children={accSymbol} />
@@ -94,11 +113,25 @@ export const MintTab: FC<Props> = (props) => {
                 placeholder="Received"
                 borderRadius='15px'
                 readOnly
+                variant='filled'
                 fontSize='10pt'
                 id='received'
                 value={ mintReceived }/>
-              <InputRightAddon fontSize='10pt' children={evmSymbol} />
+              <InputRightAddon fontSize='10pt' children={evmSymbol} border={0} />
             </InputGroup>
+          </FormControl>
+          <FormControl pb={3}>
+            <FormLabel htmlFor='destinationAddress'>Destination Address</FormLabel>
+              <Input 
+                borderRadius='15px'
+                size='lg'
+                fontSize='10pt'
+                id='destinationAddress'
+                placeholder='Ethereum address' 
+                autoComplete='off'
+                onChange={ handleDestinationAddressChange }
+                value={ destinationAddress }
+              />
           </FormControl>
         </VStack>
         </Box>
