@@ -1,12 +1,3 @@
-export interface Token {
-  accSymbol: string
-  evmSymbol: string
-  logo: string
-  evmTokenAddress: string
-  accTokenAddress: string
-  accDepositAddress: string
-}
-
 export interface Messages {
   feesNotReceived: string
 }
@@ -33,6 +24,5 @@ export interface Config {
   tab2Path: string
   accNetwork: AccNetwork
   evmNetwork: EVMNetwork
-  tokens: Token[]
   messages: Messages
 }

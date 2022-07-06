@@ -14,7 +14,6 @@ import { FC, useState } from "react"
 
 import { INITIAL_WITH_DATA } from "../store/actions"
 import { useStore } from "../store/useStore"
-import { config } from '../config/config'
 import { useWeb3React } from "@web3-react/core"
 import { truncateAddress } from "../utils"
 
@@ -47,11 +46,11 @@ export const CopyPopover: FC<CopyPopoverProps> = (props) => {
 }
 export const TransferInstructions: FC<Props> = (props) => {
   const { 
-    account, 
+    account
   } = useWeb3React()
 
-  const { accSymbol, dispatch } = useStore()
-  const accDepositAddress =  config.tokens.find(token => token.accSymbol === accSymbol)!.accDepositAddress
+  const { accSymbol, url, dispatch } = useStore()
+
   return (
     <Box fontSize={16}>
       <HStack p={2} width="100%">
@@ -64,8 +63,8 @@ export const TransferInstructions: FC<Props> = (props) => {
         <VStack>
           <Box>Send { accSymbol } to </Box>    
           <Box>
-            {accDepositAddress}
-            <CopyPopover address={accDepositAddress}/>
+            {url}
+            <CopyPopover address={url}/>
           </Box>
           <Box>with <b>memo</b> </Box> 
           <Box> 

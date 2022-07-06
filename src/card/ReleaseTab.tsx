@@ -3,7 +3,6 @@ import { Box, Button, Divider, Flex, HStack, Input, Link, Select, Spacer, Text, 
 import { FC, useEffect, useState } from "react"
 import { CardButton } from "./СardButton"
 import { config } from '../config/config'
-import { Token } from "../config/ConfigModel"
 import { CardSelectItem } from "./CardSelectItem"
 import { useWeb3React } from "@web3-react/core"
 import SelectWalletModal from "../Modal"
@@ -15,19 +14,8 @@ import BRIDGEABI from '../contracts/BRIDGE-CONTRACT-ABI.json'
 import BigNumber from "bignumber.js"
 import { toETHNumber, web3BNToFloatNumber } from "../utils"
 import { useStore } from "../store/useStore"
-import { SET_EVM_SYMBOL } from "../store/actions"
-
-const releaseOptions: JSX.Element[] = []
-config.tokens.forEach((value:Token)=> {
-  releaseOptions.push(<CardSelectItem key= {value.evmSymbol} symbol={value.evmSymbol}/>)
-})
-
-const getEvmTokenAddress = (evmSymbol: string) => {
-  const result = config.tokens
-  .find(token => token.evmSymbol === evmSymbol)!
-  .evmTokenAddress
-  return result
-}
+import { Token } from "../common/Token"
+import { UPDATE_EVM_ADDRESS } from "../store/actions"
 
 type Props = {
 }
@@ -39,9 +27,15 @@ export const ReleaseTab: FC<Props> = (props) => {
     library,
   } = useWeb3React()
 
-  const { evmSymbol, dispatch, fees } = useStore()
+  const { evmAddress, fees, tokens, dispatch } = useStore()
+
+  const options: JSX.Element[] = []
+  tokens.forEach((value:Token)=> {
+    options.push(<CardSelectItem key= {value.evmSymbol} symbol={value.evmSymbol}/>)
+  })
 
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [evmSymbol, setEvmSymbol] = useState("")
   const [ amount, setAmount ] = useState(0)
   const [ received, setReceived ] = useState(0)
   const [ balance, setBalance ] = useState(0)
@@ -136,7 +130,7 @@ export const ReleaseTab: FC<Props> = (props) => {
     }
   }
 
-   const handleApprove = (address: string = tokenAddress, spender: string = config.evmNetwork.bridgeAddress) => {
+  const handleApprove = (address: string = tokenAddress, spender: string = config.evmNetwork.bridgeAddress) => {
     const contract = getContract(library, TOKENSERC20ABI, address);
     const maxApproval = new BigNumber(2).pow(256).minus(1);
     setIsApproving(true);
@@ -169,16 +163,17 @@ export const ReleaseTab: FC<Props> = (props) => {
     return false;
   }
 
-  useEffect(() => {    
-    const address = getEvmTokenAddress(evmSymbol)
-    if (account && address) {  
-      getBalance(address)
-      getAllowance(address, config.evmNetwork.bridgeAddress)
+  useEffect(() => {
+    //TODO refactor evmAddress
+    if (account && evmAddress && tokens.length) {
+      getBalance(evmAddress)
+      getAllowance(evmAddress, config.evmNetwork.bridgeAddress)
+      setTokenAddress(evmAddress)
+      setAmount(0)
+      calculateValue(0)
     }
-    setTokenAddress(address)
-    setAmount(0)
-    calculateValue(0)
-    }, [chainId, account, evmSymbol]);// eslint-disable-line react-hooks/exhaustive-deps
+  
+  }, [chainId, account, evmSymbol, tokens]);// eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Box>
@@ -193,9 +188,10 @@ export const ReleaseTab: FC<Props> = (props) => {
         <FormControl pb={3}>
           <FormLabel htmlFor='token'>Token</FormLabel>
           <Select id='token' fontSize= {14} borderRadius='15px' size='lg' onChange={(v) => {
-              dispatch({type: SET_EVM_SYMBOL, payload: v.target.value})
+              setEvmSymbol(v.target.value)
+              dispatch({ type: UPDATE_EVM_ADDRESS, payload: v.target.value})
             }}>
-            { releaseOptions }
+            { options }
           </Select>
         </FormControl>
         <FormControl pb={3}>
@@ -311,7 +307,7 @@ export const ReleaseTab: FC<Props> = (props) => {
               p='7'
               disabled={
                 !isAllowanceMoreThenAmount(allowance, amount) 
-                || isApproving || isBurning
+                || isApproving || isBurning || (amountError ? true : false)
                 || amount === 0 || destinationAddress === "" || destinationAddressError 
               }
               onClick={handleBurn}>

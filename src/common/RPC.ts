@@ -8,13 +8,13 @@ class RPC {
     this.currentId  = 1
     axios.defaults.headers.post['Content-Type'] = 'application/json'
   }
-  
-  request = (method: string, params = null, catchError = false) => {
+ 
+  request = (method: string, params?: any, catchError?: boolean) => {
     const result = axios.post('', {
       jsonrpc: '2.0',
       id: ++this.currentId,
       method,
-      params: typeof params === 'string' ? [params] : params
+      params: params? (typeof params === 'string' ? [params] : params) : null
     })
     .then(function(response) {
       if (response.data.error) {

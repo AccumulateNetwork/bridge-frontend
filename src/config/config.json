@@ -17,24 +17,6 @@
     "bridgeAddress":"0x167dA1A6074A68b3ae4dF4205e9f44a1703Cab66",
     "explorer": "https://rinkeby.etherscan.io"
   },
-  "tokens": [
-    {
-      "accSymbol": "ACME",
-      "evmSymbol": "WACME",
-      "logo": "logoUrl",
-      "evmTokenAddress": "0x555E7deddae1711FDEf2490a32F27eb364cF343e",
-      "accTokenAddress": "bridge.acme/ACME",
-      "accDepositAddress": "acc://acme.test.address"
-    },
-    {
-      "accSymbol": "TEST",
-      "evmSymbol": "WTEST",
-      "logo": "logoUrl",
-      "evmTokenAddress": "0xE5d6B94849D6f924398125DAd70C8b2dB7d0E36E",
-      "accTokenAddress": "bridge.acme/ACME",
-      "accDepositAddress": "accDepositAddress"
-    }
-  ],
   "messages": {
     "feesNotReceived": "Unable to get fees from bridge node"
   }
