@@ -45,8 +45,7 @@ export const ReleaseTab: FC<Props> = (props) => {
   const [ isBurning, setIsBurning] = useState(false)
   const [ destinationAddress, setDestinationAddress] = useState("")
 
-  //const [destinationAddressError, setDestinationAddressError] = useState(false)
-  const destinationAddressError = false
+  const [destinationAddressError, setDestinationAddressError] = useState(false)
 
   const [amountError, setAmountError] = useState("")
 
@@ -77,14 +76,11 @@ export const ReleaseTab: FC<Props> = (props) => {
 
   const handleDestinationAddressChange = (event: any) => {
     const address = event.target.value
-    /*
-    // disabled this check because Accumulate lite tokens accounts do not have .acme
-    if (address.includes(".acme")) {
+     if (address.toLowerCase().includes("acme")) {
       setDestinationAddressError(false)
     } else {
       setDestinationAddressError(true)
     }
-    */
     setDestinationAddress(address)
   }
 
