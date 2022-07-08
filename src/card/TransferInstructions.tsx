@@ -62,7 +62,7 @@ export const TransferInstructions: FC<Props> = (props) => {
     if (chainId && tokens.length) {
       setTokenAccount(generateTokenAccount(chainId, accSymbol))
     }
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Box fontSize={16}>
