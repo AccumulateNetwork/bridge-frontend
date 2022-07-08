@@ -36,6 +36,8 @@ export const ReleaseTab: FC<Props> = (props) => {
 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [evmSymbol, setEvmSymbol] = useState("")
+  const [accSymbol, setAccSymbol] = useState("")
+
   const [ amount, setAmount ] = useState(0)
   const [ received, setReceived ] = useState(0)
   const [ balance, setBalance ] = useState(0)
@@ -165,7 +167,10 @@ export const ReleaseTab: FC<Props> = (props) => {
   }
 
   useEffect(() => {
-    //TODO refactor evmAddress
+    if (tokens.length) {
+      setEvmSymbol(tokens[0].evmSymbol)
+      setAccSymbol(tokens[0].symbol)
+    }
     if (account && evmAddress && tokens.length) {
       getBalance(evmAddress)
       getAllowance(evmAddress, config.evmNetwork.bridgeAddress)
@@ -189,8 +194,12 @@ export const ReleaseTab: FC<Props> = (props) => {
         <FormControl pb={3}>
           <FormLabel htmlFor='token'>Token</FormLabel>
           <Select id='token' fontSize= {14} borderRadius='15px' size='lg' onChange={(v) => {
-              setEvmSymbol(v.target.value)
-              dispatch({ type: UPDATE_EVM_ADDRESS, payload: v.target.value})
+              const accSymbol = tokens.find(item => item.evmAddress === v.target.value)?.symbol
+              if (accSymbol) {
+                setEvmSymbol(v.target.value)
+                setAccSymbol(accSymbol)
+                dispatch({ type: UPDATE_EVM_ADDRESS, payload: v.target.value})
+              }
             }}>
             { options }
           </Select>
@@ -239,7 +248,7 @@ export const ReleaseTab: FC<Props> = (props) => {
               size='lg'
               id='received'
               value={ received }/>
-            <InputRightAddon fontSize='10pt' children={evmSymbol} border={0} />
+            <InputRightAddon fontSize='10pt' children={accSymbol} border={0} />
           </InputGroup>
         </FormControl>
         <FormControl pb={3}>
