@@ -180,7 +180,6 @@ export const ReleaseTab: FC<Props> = (props) => {
     }
   
   }, [chainId, account, evmSymbol, tokens]);// eslint-disable-line react-hooks/exhaustive-deps
-
   return (
     <Box>
       <Box padding='6' pt={4}>
@@ -279,24 +278,23 @@ export const ReleaseTab: FC<Props> = (props) => {
         <Flex fontSize={14} color={"gray.500"}>
           <Box>
             Bridge Release Fee
+          </Box>
+          <Spacer />
+          {fees.received ?
+          ( <Box >
+            { burnFeePercentage } %
             </Box>
-            <Spacer />
-            {fees.received ?
-            ( <Box >
-              { burnFeePercentage } %
-              </Box>
-            ):
-            (
-              <Box w={40}> 
-              { config.messages.feesNotReceived } 
-              </Box>
-            )
-            }
-           
+          ):
+          (
+            <Box w={40}> 
+            { config.messages.feesNotReceived } 
+            </Box>
+          )
+          }   
         </Flex>
       </Box>
       <Box padding='6'>
-        { active ? (
+      { active ? (
           <HStack>
            <Button
               colorScheme='blue' 
@@ -314,7 +312,6 @@ export const ReleaseTab: FC<Props> = (props) => {
                     "Approving..." :
                     ((!isAllowanceMoreThenAmount(allowance, amount) || allowance===0) ? "Approve" : "Approved")
                 }
-
            </Button>
            <Button
               colorScheme='blue' 
@@ -335,7 +332,7 @@ export const ReleaseTab: FC<Props> = (props) => {
                   "Release"
                 } 
            </Button>
-        </HStack>
+          </HStack>
         ):(
           <CardButton title="Connect wallet" onClick={onOpen}/>
         )

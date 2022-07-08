@@ -10,12 +10,13 @@ import {
   VStack 
 } from "@chakra-ui/react"
 
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 
 import { INITIAL_WITH_DATA } from "../store/actions"
 import { useStore } from "../store/useStore"
 import { useWeb3React } from "@web3-react/core"
 import { truncateAddress } from "../utils"
+import { config } from "../config/config"
 
 type Props =  {
 }
@@ -46,10 +47,22 @@ export const CopyPopover: FC<CopyPopoverProps> = (props) => {
 }
 export const TransferInstructions: FC<Props> = (props) => {
   const { 
-    account
+    account,
+    chainId
   } = useWeb3React()
 
-  const { accSymbol, url, dispatch } = useStore()
+  const { accSymbol, tokens, dispatch } = useStore()
+  const [ tokenAccount, setTokenAccount ] = useState("")
+
+  const generateTokenAccount = (chainId: number, symbol: string) => {
+    return config.bridgeADI + "/" + chainId + "-" + symbol
+  }
+
+  useEffect(() => {
+    if (chainId && tokens.length) {
+      setTokenAccount(generateTokenAccount(chainId, accSymbol))
+    }
+  }, [])
 
   return (
     <Box fontSize={16}>
@@ -63,8 +76,8 @@ export const TransferInstructions: FC<Props> = (props) => {
         <VStack>
           <Box>Send { accSymbol } to </Box>    
           <Box>
-            {url}
-            <CopyPopover address={url}/>
+            {tokenAccount}
+            <CopyPopover address={tokenAccount}/>
           </Box>
           <Box>with <b>memo</b> </Box> 
           <Box> 

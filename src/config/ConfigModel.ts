@@ -10,7 +10,6 @@ export interface AccNetwork {
 
 export interface EVMNetwork {
   node: string
-  chainId: number
   safeAddress: string
   bridgeAddress: string
   explorer: string
@@ -24,5 +23,6 @@ export interface Config {
   tab2Path: string
   accNetwork: AccNetwork
   evmNetwork: EVMNetwork
-  messages: Messages
+  messages: Messages,
+  bridgeADI: string
 }
