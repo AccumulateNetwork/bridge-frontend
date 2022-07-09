@@ -1,5 +1,5 @@
-import { Box, Select, useDisclosure, VStack, FormControl, FormLabel, Alert, AlertIcon, Input, HStack, Flex, Spacer, Divider, InputGroup, InputRightAddon } from "@chakra-ui/react"
-import { FC, useEffect } from "react"
+import { Box, Select, useDisclosure, VStack, FormControl, FormLabel, Alert, AlertIcon, Input, HStack, Flex, Spacer, Divider, InputGroup, InputRightAddon, Text } from "@chakra-ui/react"
+import { FC, useEffect, useState } from "react"
 import { CardButton } from "./СardButton"
 import { config } from '../config/config'
 import { CardSelectItem } from "./CardSelectItem"
@@ -9,7 +9,7 @@ import { useWeb3React } from "@web3-react/core"
 import SelectWalletModal from "../Modal"
 import BigNumber from "bignumber.js"
 import { Token } from "../common/Token"
-import { formAddress } from "../utils"
+import { formAddress, validETHAddress } from "../utils"
 
 type Props = {
 }
@@ -23,6 +23,9 @@ export const MintTab: FC<Props> = (props) => {
   } = useWeb3React()
 
   const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const [destinationAddressError, setDestinationAddressError] = useState(false)
+
   const { 
     accSymbol, evmSymbol, 
     mintAmount, mintReceived, 
@@ -53,6 +56,11 @@ export const MintTab: FC<Props> = (props) => {
   }
 
   const setDestinationAddress = (address: string) => {
+    if (validETHAddress(address)) {
+      setDestinationAddressError(false)
+    } else {
+      setDestinationAddressError(true)
+    }
     dispatch({type: UPDATE_MINT_DESTINATION_ADDRESS, payload: address})
   }
 
@@ -138,8 +146,14 @@ export const MintTab: FC<Props> = (props) => {
                 placeholder='Ethereum address' 
                 autoComplete='off'
                 onChange={ handleDestinationAddressChange }
+                _focus={ destinationAddressError ? {borderColor:"red"} : { borderColor:"inherit"} } 
+                borderColor={ destinationAddressError ? "red" : "inherit" }
                 value={ mintDestinationAddress }
               />
+              { destinationAddressError ?
+              <Text color={"red.400"} my={2} fontSize='sm'>Invalid EVM address</Text>
+              : null
+              }
           </FormControl>
         </VStack>
         </Box>
@@ -158,7 +172,7 @@ export const MintTab: FC<Props> = (props) => {
             {fees.received ?
             (
               <Box >
-                {mintFeePercentage} % 
+                { mintFeePercentage } % 
               </Box>
             ) :
             (
@@ -178,7 +192,7 @@ export const MintTab: FC<Props> = (props) => {
           </Box>
         </Flex>
           {active ? (
-              <CardButton title="Next" onClick={() =>dispatch({type: TRANSFER_INSTRUCTIONS_STEP})}/>
+              <CardButton disabled= { destinationAddressError } title="Next" onClick={() =>dispatch({type: TRANSFER_INSTRUCTIONS_STEP})}/>
             ) : (
               <CardButton title="Connect wallet" onClick={onOpen}/>
             )

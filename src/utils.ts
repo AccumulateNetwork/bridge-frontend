@@ -9,6 +9,12 @@ export const truncateAddress = (address: string | null| undefined) => {
     return `${match[1]}…${match[2]}`
 }
 
+export const validETHAddress = (address: string) => {
+  if (!address) {return false}
+  const match = address.match( /^0x[a-fA-F0-9]{40}$/)
+  return match
+}
+
 export const formAddress = (address: string | null| undefined) => {
   if (!address) return ""
   return address
