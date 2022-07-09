@@ -15,7 +15,6 @@ import { FC, useEffect, useState } from "react"
 import { INITIAL_WITH_DATA } from "../store/actions"
 import { useStore } from "../store/useStore"
 import { useWeb3React } from "@web3-react/core"
-import { truncateAddress } from "../utils"
 import { config } from "../config/config"
 
 type Props =  {
@@ -46,12 +45,9 @@ export const CopyPopover: FC<CopyPopoverProps> = (props) => {
   )
 }
 export const TransferInstructions: FC<Props> = (props) => {
-  const { 
-    account,
-    chainId
-  } = useWeb3React()
+  const { chainId } = useWeb3React()
 
-  const { accSymbol, tokens, dispatch } = useStore()
+  const { accSymbol, mintDestinationAddress,  tokens, dispatch } = useStore()
   const [ tokenAccount, setTokenAccount ] = useState("")
 
   const generateTokenAccount = (chainId: number, symbol: string) => {
@@ -76,18 +72,13 @@ export const TransferInstructions: FC<Props> = (props) => {
         <VStack>
           <Box>Send { accSymbol } to </Box>    
           <Box>
-            {tokenAccount}
-            <CopyPopover address={tokenAccount}/>
+            { tokenAccount }
+            <CopyPopover address={ tokenAccount }/>
           </Box>
           <Box>with <b>memo</b> </Box> 
           <Box> 
-            { truncateAddress(account) } 
-            {
-              account ? (
-                <CopyPopover address={account}/>
-              ) : 
-              null
-            }
+            { mintDestinationAddress }         
+            <CopyPopover address={ mintDestinationAddress }/>     
           </Box>
           <Box>(txs without memo will be lost)</Box>
         </VStack>

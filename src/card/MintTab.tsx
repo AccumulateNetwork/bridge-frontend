@@ -1,9 +1,9 @@
 import { Box, Select, useDisclosure, VStack, FormControl, FormLabel, Alert, AlertIcon, Input, HStack, Flex, Spacer, Divider, InputGroup, InputRightAddon } from "@chakra-ui/react"
-import { FC, useState, useEffect } from "react"
+import { FC, useEffect } from "react"
 import { CardButton } from "./СardButton"
 import { config } from '../config/config'
 import { CardSelectItem } from "./CardSelectItem"
-import { SET_ACC_SYMBOL, SET_MINT_AMOUNT_AND_RECEIVED, TRANSFER_INSTRUCTIONS_STEP } from "../store/actions"
+import { SET_ACC_SYMBOL, SET_MINT_AMOUNT_AND_RECEIVED, TRANSFER_INSTRUCTIONS_STEP, UPDATE_MINT_DESTINATION_ADDRESS } from "../store/actions"
 import { useStore } from "../store/useStore"
 import { useWeb3React } from "@web3-react/core"
 import SelectWalletModal from "../Modal"
@@ -23,8 +23,12 @@ export const MintTab: FC<Props> = (props) => {
   } = useWeb3React()
 
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { accSymbol, evmSymbol, mintAmount, mintReceived, fees, tokens, evmMintTxCost, dispatch } = useStore()
-  const [ destinationAddress, setDestinationAddress] = useState("")
+  const { 
+    accSymbol, evmSymbol, 
+    mintAmount, mintReceived, 
+    mintDestinationAddress,
+    fees, tokens, 
+    evmMintTxCost, dispatch } = useStore()
 
   const mintFeeBps = fees.mintFee
   const mintFeePercentage = mintFeeBps / 100
@@ -48,6 +52,10 @@ export const MintTab: FC<Props> = (props) => {
     setDestinationAddress(address)
   }
 
+  const setDestinationAddress = (address: string) => {
+    dispatch({type: UPDATE_MINT_DESTINATION_ADDRESS, payload: address})
+  }
+
   const calcReceived = (inputValue: any) => {
     const value = new BigNumber(inputValue)
     const mintFee = value.div(100).multipliedBy(mintFeePercentage)
@@ -62,7 +70,7 @@ export const MintTab: FC<Props> = (props) => {
   }
 
   useEffect(() => {
-    if (account && tokens.length) {
+    if (account && tokens.length && !mintDestinationAddress) {
       setDestinationAddress(formAddress(account))
     }
     }, [chainId, account, tokens]);// eslint-disable-line react-hooks/exhaustive-deps
@@ -130,7 +138,7 @@ export const MintTab: FC<Props> = (props) => {
                 placeholder='Ethereum address' 
                 autoComplete='off'
                 onChange={ handleDestinationAddressChange }
-                value={ destinationAddress }
+                value={ mintDestinationAddress }
               />
           </FormControl>
         </VStack>

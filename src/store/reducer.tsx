@@ -12,6 +12,7 @@ const {
   SET_ACC_SYMBOL,
   SET_EVM_SYMBOL,
   SET_MINT_AMOUNT_AND_RECEIVED,
+  UPDATE_MINT_DESTINATION_ADDRESS,
   GET_FEES,
   GET_TOKENS,
   UPDATE_EVM_ADDRESS,
@@ -28,6 +29,7 @@ export type StateType = {
   evmAddress: string,
   mintAmount: number,
   mintReceived: number,
+  mintDestinationAddress: string,
   fees: Fees,
   tokens: Token[],
   tokensChainId: number,
@@ -81,6 +83,11 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
         mintAmount: action.payload.mintAmount,
         mintReceived: action.payload.mintReceived
       }
+    case UPDATE_MINT_DESTINATION_ADDRESS:
+      return {
+        ...state,
+        mintDestinationAddress: action.payload
+      }
     case GET_FEES:
       return {
         ...state,
@@ -95,7 +102,7 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
         evmSymbol: !state.evmSymbol ? action.payload.items[0].evmSymbol : state.evmSymbol,
         url: !state.url ? action.payload.items[0].url: state.url,
         evmAddress: !state.evmAddress ? action.payload.items[0].evmAddress: state.evmAddress,
-        evmMintTxCost: !state.evmMintTxCost? action.payload.items[0].evmMintTxCost: state.evmMintTxCost
+        evmMintTxCost: !state.evmMintTxCost? action.payload.items[0].evmMintTxCost: state.evmMintTxCost,
       }
     case UPDATE_EVM_ADDRESS:
       return {
@@ -126,6 +133,7 @@ export const initialState = {
   url: "",
   mintAmount: 0,
   mintReceived: 0,
+  mintDestinationAddress: "",
   fees: {  mintFee:0, burnFee: 0, evmFee: 0, received: null } as Fees,
   tokens: [],
   tokensChainId: 0,
