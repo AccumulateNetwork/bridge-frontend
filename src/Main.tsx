@@ -54,14 +54,14 @@ export const Routing: FC<Props> = () => {
     return (
       <Alert  justifyContent='center' status='error'>
         <AlertIcon />
-        Chain id from server was not found
+        Can not connect to bridge node
       </Alert>
     )
-  } else if ( globalNetworkError || (account && chainId !== tokensChainId)) {
+  } else if ( globalNetworkError || (chainId !== tokensChainId) || (chainId === undefined)) {
     return (
       <Alert  justifyContent='center' status='error'>
       <AlertIcon />
-        Wrong network. Use Chain ID {tokensChainId} 
+        Bridge node is connected to chain id {tokensChainId}, please use it
       </Alert>
     )
   } else {
