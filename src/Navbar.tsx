@@ -4,8 +4,6 @@ import {
   Box,
   Spacer,
   Button,
-  Tooltip,
-  Link,
   MenuButton,
   Menu,
   MenuDivider,
@@ -21,9 +19,8 @@ import { useWeb3React } from "@web3-react/core"
 import { Logo } from './Logo'
 import { CircleIcon } from './CircleIcon'
 import { connectors } from "./connectors"
-import { CopyIcon, ExternalLinkIcon } from '@chakra-ui/icons'
+import { CopyIcon } from '@chakra-ui/icons'
 
-import { config }  from './config/config'
 import SelectWalletModal from './Modal'
 import { truncateAddress } from './utils'
 import { toast } from 'react-toastify'
@@ -68,6 +65,7 @@ export const Navbar: FC<Props> = () => {
       activate(connectors[provider])
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <Flex gap='2' wrap='wrap'>
       <Box ml={2}>
@@ -84,22 +82,13 @@ export const Navbar: FC<Props> = () => {
         </Button>              
         ) : 
         <div>
-          {chainId === 1337 ? (
-            <Tooltip label='You are connected to localhost' fontSize='md'>
-              <Button size='lg' colorScheme='grey' variant='outline' mb={3}>Localhost</Button>
-            </Tooltip>
+          {chainId === 1 ? (
+            <Button size='lg' colorScheme='grey' variant='outline' mb={3}>Ethereum Mainnet</Button>
           ) :
             null
           }
           {chainId === 4 ? (
-            <Tooltip label='You are connected to testnet' fontSize='md'>
-              <Button size='lg' colorScheme='grey' variant='outline' mb={3}>Rinkeby Testnet</Button>
-            </Tooltip>
-          ) :
-            null
-          }
-          {chainId === 1 ? (
-            <Button size='lg' colorScheme='grey' variant='outline' mb={3}>Ethereum</Button>
+            <Button size='lg' colorScheme='grey' variant='outline' mb={3}>Rinkeby Testnet</Button>
           ) :
             null
           }
@@ -108,10 +97,6 @@ export const Navbar: FC<Props> = () => {
             <MenuButton as={Button} size='lg' colorScheme='messenger' mb={3} ml={3} leftIcon={<CircleIcon color='#48BB78' />}>{account ? truncateAddress(account) : "Connected"}</MenuButton>
             <MenuList className="address-menu">
               <MenuItem onClick={() => {navigator.clipboard.writeText(account)}}><CopyIcon mr={2} />Copy address</MenuItem>
-              {config.evmNetwork.explorer !== "" ? (
-                <MenuItem><Link href={config.evmNetwork.explorer + '/address/' + account} isExternal><ExternalLinkIcon mr={2} />View on explorer</Link></MenuItem>
-              ) : null
-              }
               <MenuDivider />
               <MenuItem onClick={() => disconnect()}>Disconnect</MenuItem>
             </MenuList>
