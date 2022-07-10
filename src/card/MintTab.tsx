@@ -192,7 +192,7 @@ export const MintTab: FC<Props> = (props) => {
           </Box>
         </Flex>
           {active ? (
-              <CardButton disabled= { destinationAddressError } title="Next" onClick={() =>dispatch({type: TRANSFER_INSTRUCTIONS_STEP})}/>
+              <CardButton disabled= { destinationAddressError || mintReceived === 0 } title="Next" onClick={() =>dispatch({type: TRANSFER_INSTRUCTIONS_STEP})}/>
             ) : (
               <CardButton title="Connect wallet" onClick={onOpen}/>
             )

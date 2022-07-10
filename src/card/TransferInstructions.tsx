@@ -1,13 +1,13 @@
-import { ArrowBackIcon, CopyIcon } from "@chakra-ui/icons"
+import { CopyIcon, WarningTwoIcon } from "@chakra-ui/icons"
 import {
   Box, 
-  Center, 
-  HStack, 
-  Popover, 
-  PopoverContent, 
-  PopoverTrigger, 
-  Portal, 
-  VStack 
+  VStack,
+  Heading,
+  Divider,
+  Alert,
+  Tooltip,
+  Text,
+  Button
 } from "@chakra-ui/react"
 
 import { FC, useEffect, useState } from "react"
@@ -20,38 +20,31 @@ import { config } from "../config/config"
 type Props =  {
 }
 
-type CopyPopoverProps = {
-  address: string
+type CopyTooltipProps = {
+  content: string
 }
 
-export const CopyPopover: FC<CopyPopoverProps> = (props) => {
-  const [open, setOpen]= useState(false)
-  const onOpen = () => {
-    setOpen(true)
-    navigator.clipboard.writeText(props.address)
-    setTimeout(() => { setOpen(false)}, 400)  
+export const CopyTooltip: FC<CopyTooltipProps> = (props) => {
+  const [clicked, setClicked]= useState(false)
+  const onClick = () => {
+    setClicked(true)
+    navigator.clipboard.writeText(props.content)
+    setTimeout(() => { setClicked(false) }, 1000)  
   }
   return (
-    <Popover placement='right-start' onOpen={onOpen} isOpen = {open}>
-      <PopoverTrigger>
-      <CopyIcon ml={1}/>
-      </PopoverTrigger>
-      <Portal>
-        <PopoverContent maxWidth={14}>
-          Copied
-        </PopoverContent>
-      </Portal>
-    </Popover>
+    <Tooltip label={clicked ? "Copied!" : "Copy"} placement="right">
+      <CopyIcon ml={1} onClick={onClick}/>
+    </Tooltip>
   )
 }
 export const TransferInstructions: FC<Props> = (props) => {
   const { chainId } = useWeb3React()
 
-  const { accSymbol, mintDestinationAddress,  tokens, dispatch } = useStore()
+  const { accSymbol, mintDestinationAddress, tokens, dispatch, mintAmount } = useStore()
   const [ tokenAccount, setTokenAccount ] = useState("")
 
   const generateTokenAccount = (chainId: number, symbol: string) => {
-    return config.bridgeADI + "/" + chainId + "-" + symbol
+    return "acc://" + config.bridgeADI + "/" + chainId + "-" + symbol
   }
 
   useEffect(() => {
@@ -62,25 +55,24 @@ export const TransferInstructions: FC<Props> = (props) => {
 
   return (
     <Box fontSize={16}>
-      <HStack p={2} width="100%">
-        <ArrowBackIcon mr="90px" onClick={()=> dispatch({type: INITIAL_WITH_DATA})}/>
-        <Center mb={5}>
-            Transfer Instructions
-        </Center>
-      </HStack>
-      <Box pt = {5} pl={10} pr={10} pb={5}>
+      <Box pt={5} pl={10} pr={10} pb={5}>
         <VStack>
-          <Box>Send { accSymbol } to </Box>    
-          <Box>
-            { tokenAccount }
-            <CopyPopover address={ tokenAccount }/>
+          <Heading size='md'>Mint Instructions</Heading>
+          <Divider pt={2} />
+          <Box py={2}>Send <strong>{ mintAmount } { accSymbol }</strong><br />to the bridge token account:</Box>    
+          <Alert status='warning' justifyContent='center' display='block'>
+            <strong>{ tokenAccount }</strong>
+            <CopyTooltip content={ tokenAccount }/>
+          </Alert>
+          <Box py={2}><Text color='red'><WarningTwoIcon mr={1} mb={1} />Do not forget to inlcude <b>memo</b><br />(txs without memo will be lost)</Text></Box>
+          <Alert status='warning' justifyContent='center' display='block'>
+            <strong>{ mintDestinationAddress }</strong>
+            <CopyTooltip content={ mintDestinationAddress }/>
+          </Alert>
+          <Divider pt={4} />
+          <Box py={2}>
+            <Button size='lg' colorScheme='messenger' onClick={()=> dispatch({type: INITIAL_WITH_DATA})}>Back to Mint Form</Button>
           </Box>
-          <Box>with <b>memo</b> </Box> 
-          <Box> 
-            { mintDestinationAddress }         
-            <CopyPopover address={ mintDestinationAddress }/>     
-          </Box>
-          <Box>(txs without memo will be lost)</Box>
         </VStack>
       </Box>
     </Box>
