@@ -41,8 +41,10 @@ export const ReleaseTab: FC<Props> = (props) => {
   const [ amount, setAmount ] = useState(0)
   const [ received, setReceived ] = useState(0)
   const [ balance, setBalance ] = useState(0)
+  // TODO refactor - use only shared state here
   const [ tokenAddress, setTokenAddress] = useState("")
   const [ allowance, setAllowance ] = useState(0)
+  console.log(allowance)
   const [ isApproving, setIsApproving] = useState(false)
   const [ isBurning, setIsBurning] = useState(false)
   const [ destinationAddress, setDestinationAddress] = useState("")
@@ -60,6 +62,7 @@ export const ReleaseTab: FC<Props> = (props) => {
      if (isNaN(Number(inputValue))) {
        return
      }
+     getAllowance(evmAddress, config.evmNetwork.bridgeAddress)
      setAmount(inputValue)
      calcReceived(inputValue)
      calculateValue(event.target.value)   
@@ -69,11 +72,11 @@ export const ReleaseTab: FC<Props> = (props) => {
     const value = new BigNumber(inputValue)
     const burnFee = value.div(100).multipliedBy(burnFeePercentage)
     const result = value.minus(burnFee)
-   if (result.isGreaterThan(0)) {
-     setReceived(result.toNumber())
-   } else {
-     setReceived(0)
-   }
+    if (result.isGreaterThan(0)) {
+      setReceived(result.toNumber())
+    } else {
+      setReceived(0)
+    }
   }
 
   const handleDestinationAddressChange = (event: any) => {
@@ -125,8 +128,8 @@ export const ReleaseTab: FC<Props> = (props) => {
   const getAllowance = (tokenAddress: string, spender: string) => {
     const contract = getContract(library, TOKENSERC20ABI, tokenAddress)
     if (contract) {
-      contract.methods.allowance(account, spender).call().then((_amount: number) => {
-        setAllowance(_amount)
+      contract.methods.allowance(account, spender).call().then((_allowance: number) => {
+        setAllowance(_allowance)
       }).catch((e: Error) => {
         toast(e.message)
        })
@@ -159,16 +162,23 @@ export const ReleaseTab: FC<Props> = (props) => {
     }   
   }
 
-  const isAllowanceMoreThenAmount = (allowance: number, amount: number) => {
-    if (Number(allowance) >= Number(amount)) {
-      return true;
+  const isApproveAllowanceDisabled = (allowance: number, amount: number) => {
+    const amountValue = toETHNumber(amount, decimals)
+    if (isNaN(amountValue)) {
+      return true
     }
-    return false;
+    return Number(allowance) > 0 && Number(allowance) >= Number(amountValue)
+  }
+
+  const isReleaseAllowanceDisabled = (allowance: number, amount: number) => {
+    return !isApproveAllowanceDisabled(allowance, amount)
   }
 
   useEffect(() => {
-    if (tokens.length) {
+    if (tokens.length && !evmSymbol) {
       setEvmSymbol(tokens[0].evmSymbol)
+    }
+    if (tokens.length && !accSymbol) {
       setAccSymbol(tokens[0].symbol)
     }
     if (account && evmAddress && tokens.length) {
@@ -178,7 +188,6 @@ export const ReleaseTab: FC<Props> = (props) => {
       setAmount(0)
       calculateValue(0)
     }
-  
   }, [chainId, account, evmSymbol, tokens]);// eslint-disable-line react-hooks/exhaustive-deps
   return (
     <Box>
@@ -193,7 +202,7 @@ export const ReleaseTab: FC<Props> = (props) => {
         <FormControl pb={3}>
           <FormLabel htmlFor='token'>Token</FormLabel>
           <Select id='token' fontSize= {14} borderRadius='15px' size='lg' onChange={(v) => {
-              const accSymbol = tokens.find(item => item.evmAddress === v.target.value)?.symbol
+              const accSymbol = tokens.find(item => item.evmSymbol === v.target.value)?.symbol
               if (accSymbol) {
                 setEvmSymbol(v.target.value)
                 setAccSymbol(accSymbol)
@@ -222,7 +231,7 @@ export const ReleaseTab: FC<Props> = (props) => {
               id='amount'
               onChange={handleAmountChange}
               value={ amount }/>
-            <InputRightAddon fontSize='10pt' children={evmSymbol} />
+            <InputRightAddon fontSize='10pt' children={ evmSymbol } />
           </InputGroup>
           { amountError ?
             <Text color={"red.400"} my={2} fontSize='sm'>Not enough tokens</Text>
@@ -247,7 +256,7 @@ export const ReleaseTab: FC<Props> = (props) => {
               size='lg'
               id='received'
               value={ received }/>
-            <InputRightAddon fontSize='10pt' children={accSymbol} border={0} />
+            <InputRightAddon fontSize='10pt' children={ accSymbol} border={0} />
           </InputGroup>
         </FormControl>
         <FormControl pb={3}>
@@ -304,13 +313,11 @@ export const ReleaseTab: FC<Props> = (props) => {
               size='lg'
               p='7'
               onClick={() => handleApprove()}
-              disabled={
-                isAllowanceMoreThenAmount(allowance, amount) || isApproving
-              }>
+              disabled={ isApproveAllowanceDisabled(allowance, amount) || isApproving }>
                 {
                   isApproving ?
                     "Approving..." :
-                    ((!isAllowanceMoreThenAmount(allowance, amount) || allowance===0) ? "Approve" : "Approved")
+                    (isApproveAllowanceDisabled(allowance, amount) ? "Approved" : "Approve")
                 }
            </Button>
            <Button
@@ -321,9 +328,9 @@ export const ReleaseTab: FC<Props> = (props) => {
               size='lg'
               p='7'
               disabled={
-                !isAllowanceMoreThenAmount(allowance, amount) 
-                || isApproving || isBurning || (amountError ? true : false)
-                || amount === 0 || destinationAddress === "" || destinationAddressError 
+                isReleaseAllowanceDisabled(allowance, amount) 
+                 || isApproving || isBurning || (amountError ? true : false)
+                 || Number(amount) === 0 || destinationAddress === "" || destinationAddressError 
               }
               onClick={handleBurn}>
                 {
