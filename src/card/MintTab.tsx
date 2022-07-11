@@ -9,7 +9,7 @@ import { useWeb3React } from "@web3-react/core"
 import SelectWalletModal from "../Modal"
 import BigNumber from "bignumber.js"
 import { Token } from "../common/Token"
-import { formAddress, validETHAddress } from "../utils"
+import { decimalCount, formAddress, toETHNumber, validETHAddress } from "../utils"
 
 type Props = {
 }
@@ -30,7 +30,7 @@ export const MintTab: FC<Props> = (props) => {
     accSymbol, evmSymbol, 
     mintAmount, mintReceived, 
     mintDestinationAddress,
-    fees, tokens, 
+    fees, tokens, precision, evmDecimals,
     evmMintTxCost, dispatch } = useStore()
 
   const mintFeeBps = fees.mintFee
@@ -41,12 +41,20 @@ export const MintTab: FC<Props> = (props) => {
   tokens.forEach((value:Token)=> {
     options.push(<CardSelectItem key= {value.symbol} symbol={value.symbol}/>)
   })
+
+
   
   const handleAmountChange = (event: any) => {
     const inputValue = event.target.value
      if (isNaN(Number(inputValue))) {
        return
      }
+      // replace 8 with accumulate token decimals here
+      if (decimalCount(inputValue) > precision) {
+        const roundedDown = Math.floor((Number(inputValue) + Number.EPSILON) * toETHNumber(1, precision)) /  toETHNumber(1, precision)
+        calcReceived(roundedDown)
+        return
+      }
      calcReceived(inputValue)
   }
 
@@ -70,7 +78,7 @@ export const MintTab: FC<Props> = (props) => {
     const result = value.minus(mintFee).minus(evmMintTxCost)
    if (result.isGreaterThan(0)) {
     dispatch({type: SET_MINT_AMOUNT_AND_RECEIVED, payload: {
-      "mintAmount": inputValue, "mintReceived": result.toNumber()}})
+      "mintAmount": inputValue, "mintReceived": result.toNumber().toFixed(evmDecimals)}})
   } else {
     dispatch({type: SET_MINT_AMOUNT_AND_RECEIVED, payload: {
       "mintAmount": inputValue, "mintReceived": 0}})
