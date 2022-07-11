@@ -15,7 +15,6 @@ const {
   UPDATE_MINT_DESTINATION_ADDRESS,
   GET_FEES,
   GET_TOKENS,
-  UPDATE_EVM_ADDRESS,
   SET_GLOBAL_NETWORK_ERROR,
   SET_GLOBAL_SERVER_NOT_RESPONDED
 } = ACTION
@@ -23,8 +22,9 @@ const {
 export type StateType = {
   step: Step,
   accSymbol: string,
+  precision: number,
   evmSymbol: string,
-  decimals: number,
+  evmDecimals: number,
   evmMintTxCost: string,
   url: string,
   evmAddress: string,
@@ -65,7 +65,9 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
       return {
         ...state,
         accSymbol: action.payload,
+        precision: state.tokens.find(token => token.symbol === action.payload)!.precision,
         evmSymbol: state.tokens.find(token => token.symbol === action.payload)!.evmSymbol,
+        evmDecimals: state.tokens.find(token => token.symbol === action.payload)!.evmDecimals,
         url: state.tokens.find(token => token.symbol === action.payload)!.url,
         evmAddress: state.tokens.find(token => token.symbol === action.payload)!.evmAddress,
         evmMintTxCost: state.tokens.find(token => token.symbol === action.payload)!.evmMintTxCost
@@ -75,6 +77,8 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
         ...state,
         evmSymbol: action.payload,
         accSymbol: state.tokens.find(token => token.evmSymbol === action.payload)!.symbol,
+        precision: state.tokens.find(token => token.evmSymbol === action.payload)!.precision,
+        evmDecimals: state.tokens.find(token => token.evmSymbol === action.payload)!.evmDecimals,
         url: state.tokens.find(token => token.evmSymbol === action.payload)!.url,
         evmAddress: state.tokens.find(token => token.evmSymbol === action.payload)!.evmAddress
       }
@@ -100,16 +104,12 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
         tokens: action.payload.items,
         tokensChainId: action.payload.chainId,
         accSymbol: !state.accSymbol ? action.payload.items[0].symbol : state.accSymbol,
+        precision: !state.precision ? action.payload.items[0].precision: state.precision,
         evmSymbol: !state.evmSymbol ? action.payload.items[0].evmSymbol : state.evmSymbol,
-        decimals: !state.evmSymbol ? action.payload.items[0].decimals : state.decimals,
+        evmDecimals: !state.evmDecimals ? action.payload.items[0].evmDecimals : state.evmDecimals,
         url: !state.url ? action.payload.items[0].url: state.url,
         evmAddress: !state.evmAddress ? action.payload.items[0].evmAddress: state.evmAddress,
         evmMintTxCost: !state.evmMintTxCost? action.payload.items[0].evmMintTxCost: state.evmMintTxCost,
-      }
-    case UPDATE_EVM_ADDRESS:
-      return {
-        ...state,
-        evmAddress: state.tokens.find(token => token.evmSymbol === action.payload)!.evmAddress
       }
     case SET_GLOBAL_NETWORK_ERROR:
       return {
@@ -129,8 +129,9 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
 export const initialState = {
   step: Step.INITIAL,
   accSymbol: "",
+  precision: 0,
   evmSymbol: "",
-  decimals: 0,
+  evmDecimals: 0,
   evmAddress: "",
   evmMintTxCost:"",
   url: "",

@@ -81,7 +81,7 @@ export const MintTab: FC<Props> = (props) => {
     if (account && tokens.length && !mintDestinationAddress) {
       setDestinationAddress(formAddress(account))
     }
-    }, [chainId, account, tokens]);// eslint-disable-line react-hooks/exhaustive-deps
+  }, [chainId, account, tokens]);// eslint-disable-line react-hooks/exhaustive-deps
 
 
   return (

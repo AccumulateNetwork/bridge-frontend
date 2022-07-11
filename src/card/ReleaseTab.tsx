@@ -15,7 +15,7 @@ import BigNumber from "bignumber.js"
 import { toETHNumber, web3BNToFloatNumber } from "../utils"
 import { useStore } from "../store/useStore"
 import { Token } from "../common/Token"
-import { UPDATE_EVM_ADDRESS } from "../store/actions"
+import { SET_EVM_SYMBOL } from "../store/actions"
 
 type Props = {
 }
@@ -27,7 +27,7 @@ export const ReleaseTab: FC<Props> = (props) => {
     library,
   } = useWeb3React()
 
-  const { evmAddress, fees, tokens, dispatch } = useStore()
+  const { evmAddress, evmDecimals, fees, tokens, dispatch } = useStore()
 
   const options: JSX.Element[] = []
   tokens.forEach((value:Token)=> {
@@ -41,6 +41,7 @@ export const ReleaseTab: FC<Props> = (props) => {
   const [ amount, setAmount ] = useState(0)
   const [ received, setReceived ] = useState(0)
   const [ balance, setBalance ] = useState(0)
+
   // TODO refactor - use only shared state here
   const [ tokenAddress, setTokenAddress] = useState("")
   const [ allowance, setAllowance ] = useState(0)
@@ -52,7 +53,6 @@ export const ReleaseTab: FC<Props> = (props) => {
 
   const [amountError, setAmountError] = useState("")
 
-  const [ decimals, setDecimals] = useState(0)
   const burnFeeBps = fees.burnFee
   const burnFeePercentage = burnFeeBps / 100
 
@@ -111,13 +111,10 @@ export const ReleaseTab: FC<Props> = (props) => {
   const getBalance = (tokenAddress: string) => {
     const contract = getContract(library, TOKENSERC20ABI, tokenAddress)
     if (contract) {
-      contract.methods.decimals().call().then((_decimals: number) => {
-        setDecimals(_decimals)
-        return contract.methods.balanceOf(account).call()
-          .then((_balance: number) => {
-            const pow = new BigNumber('10').pow(new BigNumber(_decimals))
-            setBalance(web3BNToFloatNumber(_balance, pow, 18, BigNumber.ROUND_DOWN))
-          })
+      contract.methods.balanceOf(account).call()
+      .then((_balance: number) => {
+        const pow = new BigNumber('10').pow(new BigNumber(evmDecimals))
+        setBalance(web3BNToFloatNumber(_balance, pow, 18, BigNumber.ROUND_DOWN))
       }).catch((e: Error) => {
         toast(e.message)
        })
@@ -150,7 +147,7 @@ export const ReleaseTab: FC<Props> = (props) => {
 
   const handleBurn = () => {
     const contract = getContract(library, BRIDGEABI, config.evmNetwork.bridgeAddress)
-    const value = toETHNumber(amount, decimals)
+    const value = toETHNumber(amount, evmDecimals)
     setIsBurning(true)
     if (contract) {
       contract.methods.burn(tokenAddress, destinationAddress, value).send({from: account}).then((result: any) => {
@@ -162,7 +159,7 @@ export const ReleaseTab: FC<Props> = (props) => {
   }
 
   const isApproveAllowanceDisabled = (allowance: number, amount: number) => {
-    const amountValue = toETHNumber(amount, decimals)
+    const amountValue = toETHNumber(amount, evmDecimals)
     if (isNaN(amountValue)) {
       return true
     }
@@ -205,7 +202,7 @@ export const ReleaseTab: FC<Props> = (props) => {
               if (accSymbol) {
                 setEvmSymbol(v.target.value)
                 setAccSymbol(accSymbol)
-                dispatch({ type: UPDATE_EVM_ADDRESS, payload: v.target.value})
+                dispatch({ type: SET_EVM_SYMBOL, payload: v.target.value})
               }
             }}>
             { options }
@@ -221,6 +218,8 @@ export const ReleaseTab: FC<Props> = (props) => {
           <FormLabel htmlFor='amount'>Amount</FormLabel>
           <InputGroup size='lg'>
             <Input 
+              maxLength={3}
+              type="number"
               _focus={amountError ? {borderColor:"red"} : { borderColor:"inherit"}} 
               borderColor={ amountError ? "red" : "inherit"}
               placeholder="Amount"  borderRadius='15px' 
