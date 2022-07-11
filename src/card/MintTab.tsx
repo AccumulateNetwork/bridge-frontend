@@ -42,9 +42,23 @@ export const MintTab: FC<Props> = (props) => {
     options.push(<CardSelectItem key= {value.symbol} symbol={value.symbol}/>)
   })
   
+  const decimalCount = (num: any) => {
+    const numStr = String(num);
+    if (numStr.includes('.')) {
+       return numStr.split('.')[1].length;
+    };
+    return 0;
+ }
+  
   const handleAmountChange = (event: any) => {
     const inputValue = event.target.value
      if (isNaN(Number(inputValue))) {
+       return
+     }
+     // replace 8 with accumulate token decimals here
+     if (decimalCount(inputValue) > 8) {
+       const roundedDown = Math.floor((Number(inputValue) + Number.EPSILON) * 1e8) / 1e8;
+       calcReceived(roundedDown)
        return
      }
      calcReceived(inputValue)
@@ -70,7 +84,8 @@ export const MintTab: FC<Props> = (props) => {
     const result = value.minus(mintFee).minus(evmMintTxCost)
    if (result.isGreaterThan(0)) {
     dispatch({type: SET_MINT_AMOUNT_AND_RECEIVED, payload: {
-      "mintAmount": inputValue, "mintReceived": result.toNumber()}})
+      // replace 8 with evm decimals here
+      "mintAmount": inputValue, "mintReceived": result.toNumber().toFixed(8)}})
   } else {
     dispatch({type: SET_MINT_AMOUNT_AND_RECEIVED, payload: {
       "mintAmount": inputValue, "mintReceived": 0}})
