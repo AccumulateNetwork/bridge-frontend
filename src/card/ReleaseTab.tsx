@@ -44,7 +44,6 @@ export const ReleaseTab: FC<Props> = (props) => {
   // TODO refactor - use only shared state here
   const [ tokenAddress, setTokenAddress] = useState("")
   const [ allowance, setAllowance ] = useState(0)
-  console.log(allowance)
   const [ isApproving, setIsApproving] = useState(false)
   const [ isBurning, setIsBurning] = useState(false)
   const [ destinationAddress, setDestinationAddress] = useState("")
