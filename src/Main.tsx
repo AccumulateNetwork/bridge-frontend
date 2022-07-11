@@ -57,7 +57,7 @@ export const Routing: FC<Props> = () => {
         Can not connect to bridge node
       </Alert>
     )
-  } else if (globalNetworkError || (account && chainId !== tokensChainId) || (chainId === undefined)) {
+  } else if (globalNetworkError || (account && chainId !== tokensChainId) || (account && chainId === undefined)) {
     return (
       <Alert justifyContent='center' status='error'>
       <AlertIcon />
