@@ -70,7 +70,9 @@ export const reducer: ReducerType<StateType, ActionType> = (state, action) => {
         evmDecimals: state.tokens.find(token => token.symbol === action.payload)!.evmDecimals,
         url: state.tokens.find(token => token.symbol === action.payload)!.url,
         evmAddress: state.tokens.find(token => token.symbol === action.payload)!.evmAddress,
-        evmMintTxCost: state.tokens.find(token => token.symbol === action.payload)!.evmMintTxCost
+        evmMintTxCost: state.tokens.find(token => token.symbol === action.payload)!.evmMintTxCost,
+        mintAmount: 0,
+        mintReceived: 0
       }
     case SET_EVM_SYMBOL:
       return {

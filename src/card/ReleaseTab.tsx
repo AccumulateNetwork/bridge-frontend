@@ -189,6 +189,7 @@ export const ReleaseTab: FC<Props> = (props) => {
       getAllowance(evmAddress, config.evmNetwork.bridgeAddress)
       setTokenAddress(evmAddress)
       setAmount(0)
+      setReceived(0)
       calculateValue(0)
     }
   }, [chainId, account, evmSymbol, tokens]);// eslint-disable-line react-hooks/exhaustive-deps
