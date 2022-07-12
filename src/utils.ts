@@ -53,5 +53,5 @@ export const decimalCount = (num: any) => {
 export const toRoundedDown = (num: any, precision: number) => {
   const  p = Math.pow(10, precision)
   const result = Math.floor((Number(num) + Number.EPSILON) * p) / p
-  return result
+  return Number(result)
 }

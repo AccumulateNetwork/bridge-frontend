@@ -64,13 +64,13 @@ export const ReleaseTab: FC<Props> = (props) => {
      getAllowance(evmAddress, config.evmNetwork.bridgeAddress)
      if (decimalCount(inputValue) > evmDecimals) {
       const rounded = toRoundedDown(inputValue, evmDecimals)
-      setAmount(rounded)
       calcReceived(rounded)
+      calculateValue(rounded)  
      } else {
       setAmount(inputValue)
       calcReceived(inputValue)
-     }
-     calculateValue(event.target.value)   
+      calculateValue(inputValue)  
+     } 
   }
 
   const calcReceived = (inputValue: any) => {
@@ -233,7 +233,7 @@ export const ReleaseTab: FC<Props> = (props) => {
               autoComplete='off'
               size='lg'
               id='amount'
-              onChange={handleAmountChange}
+              onChange={ handleAmountChange }
               value={ amount }/>
             <InputRightAddon fontSize='10pt' children={ evmSymbol } />
           </InputGroup>
