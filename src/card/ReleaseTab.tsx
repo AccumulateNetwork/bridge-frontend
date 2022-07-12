@@ -12,7 +12,7 @@ import TOKENSERC20ABI from '../contracts/TOKENS-CONTRACT-ABI.json'
 import BRIDGEABI from '../contracts/BRIDGE-CONTRACT-ABI.json'
 
 import BigNumber from "bignumber.js"
-import { toETHNumber, web3BNToFloatNumber } from "../utils"
+import { decimalCount, toETHNumber, toRoundedDown, web3BNToFloatNumber } from "../utils"
 import { useStore } from "../store/useStore"
 import { Token } from "../common/Token"
 import { SET_EVM_SYMBOL } from "../store/actions"
@@ -27,7 +27,7 @@ export const ReleaseTab: FC<Props> = (props) => {
     library,
   } = useWeb3React()
 
-  const { evmAddress, evmDecimals, fees, tokens, dispatch } = useStore()
+  const { evmAddress, evmDecimals, precision, fees, tokens, dispatch } = useStore()
 
   const options: JSX.Element[] = []
   tokens.forEach((value:Token)=> {
@@ -62,8 +62,14 @@ export const ReleaseTab: FC<Props> = (props) => {
        return
      }
      getAllowance(evmAddress, config.evmNetwork.bridgeAddress)
-     setAmount(inputValue)
-     calcReceived(inputValue)
+     if (decimalCount(inputValue) > evmDecimals) {
+      const rounded = toRoundedDown(inputValue, evmDecimals)
+      setAmount(rounded)
+      calcReceived(rounded)
+     } else {
+      setAmount(inputValue)
+      calcReceived(inputValue)
+     }
      calculateValue(event.target.value)   
   }
 
@@ -72,7 +78,7 @@ export const ReleaseTab: FC<Props> = (props) => {
     const burnFee = value.div(100).multipliedBy(burnFeePercentage)
     const result = value.minus(burnFee)
     if (result.isGreaterThan(0)) {
-      setReceived(result.toNumber())
+      setReceived(toRoundedDown(result, precision))
     } else {
       setReceived(0)
     }
