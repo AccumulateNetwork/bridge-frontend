@@ -64,13 +64,14 @@ export const ReleaseTab: FC<Props> = (props) => {
      getAllowance(evmAddress, config.evmNetwork.bridgeAddress)
      if (decimalCount(inputValue) > evmDecimals) {
       const rounded = toRoundedDown(inputValue, evmDecimals)
+      setAmount(rounded)
       calcReceived(rounded)
-      calculateValue(rounded)  
-     } else {
-      setAmount(inputValue)
-      calcReceived(inputValue)
-      calculateValue(inputValue)  
-     } 
+      calculateValue(rounded)
+      return
+     }
+     setAmount(inputValue)
+     calcReceived(inputValue)
+     calculateValue(inputValue)  
   }
 
   const calcReceived = (inputValue: any) => {
@@ -224,11 +225,10 @@ export const ReleaseTab: FC<Props> = (props) => {
           <FormLabel htmlFor='amount'>Amount</FormLabel>
           <InputGroup size='lg'>
             <Input 
-              maxLength={3}
-              type="number"
               _focus={amountError ? {borderColor:"red"} : { borderColor:"inherit"}} 
               borderColor={ amountError ? "red" : "inherit"}
-              placeholder="Amount"  borderRadius='15px' 
+              placeholder="Amount"
+              borderRadius='15px' 
               fontSize='10pt'
               autoComplete='off'
               size='lg'
