@@ -40,10 +40,7 @@ export const Navbar: FC<Props> = () => {
   } = useWeb3React()
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  // TODO don't forget get from config
-  // const explorerURL = ''
-  // const tokenContract = ''
+  
   const disconnect = () => {
     refreshState()
     deactivate()

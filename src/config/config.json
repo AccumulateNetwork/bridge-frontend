@@ -4,14 +4,7 @@
   "tab2Names": ["Release", "Release"],
   "tab1Path": "/mint",
   "tab2Path": "/release",
-  "accNetwork": {
-    "node": "string",
-    "keyBook": "string",
-    "explorer": "accExplorerUrl"
-  },
   "evmNetwork": {
-    "node": "string",
-    "safeAddress": "0x5ca3ad054405cbe88b0907131cf021f8d24a6291",
     "bridgeAddress":"0x167dA1A6074A68b3ae4dF4205e9f44a1703Cab66",
     "explorer": "https://rinkeby.etherscan.io"
   },
