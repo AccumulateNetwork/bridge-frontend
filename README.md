@@ -13,6 +13,17 @@ Runs the app in the development mode.<br /> Open
 The page will reload if you make edits.<br /> You will also see any lint errors
 in the console.
 
+### `yarn buildConfig`
+Build config for development or production modes. <br />
+For development mode use config.json from src/config folder <br/>
+For production moded use config downloaded by CONFIG_URL using fetch api which stored in .env
+
+Сommands that contain:  <br />
+`yarn build` <br />
+`yarn start`
+<br />
+
+
 ### `yarn test`
 
 Launches the test runner in the interactive watch mode.<br /> See the section
