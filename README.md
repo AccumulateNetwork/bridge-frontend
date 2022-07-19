@@ -5,6 +5,10 @@ This project was bootstrapped with
 
 In the project directory, you can run:
 
+### `yarn install`
+Install all dependencies.<br />
+Need to execute before `yarn start` or `yarn build`
+
 ### `yarn start`
 
 Runs the app in the development mode.<br /> Open
