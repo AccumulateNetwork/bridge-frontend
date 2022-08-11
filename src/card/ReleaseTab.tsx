@@ -20,6 +20,9 @@ import { SET_EVM_SYMBOL } from "../store/actions"
 type Props = {
 }
 export const ReleaseTab: FC<Props> = (props) => {
+  const bridgeAddress = process.env.REACT_APP_BRIDGE_ADDRESS!
+  console.log(bridgeAddress)
+
   const { 
     active, 
     account,
@@ -61,7 +64,7 @@ export const ReleaseTab: FC<Props> = (props) => {
      if (isNaN(Number(inputValue))) {
        return
      }
-     getAllowance(evmAddress, config.evmNetwork.bridgeAddress)
+     getAllowance(evmAddress, bridgeAddress)
      if (decimalCount(inputValue) > evmDecimals) {
       const rounded = toRoundedDown(inputValue, evmDecimals)
       setAmount(rounded)
@@ -139,7 +142,7 @@ export const ReleaseTab: FC<Props> = (props) => {
     }
   }
 
-  const handleApprove = (address: string = tokenAddress, spender: string = config.evmNetwork.bridgeAddress) => {
+  const handleApprove = (address: string = tokenAddress, spender: string = bridgeAddress) => {
     const contract = getContract(library, TOKENSERC20ABI, address);
     const maxApproval = new BigNumber(2).pow(256).minus(1);
     setIsApproving(true);
@@ -153,7 +156,7 @@ export const ReleaseTab: FC<Props> = (props) => {
   }
 
   const handleBurn = () => {
-    const contract = getContract(library, BRIDGEABI, config.evmNetwork.bridgeAddress)
+    const contract = getContract(library, BRIDGEABI, bridgeAddress)
     const value = toETHNumber(amount, evmDecimals)
     setIsBurning(true)
     if (contract) {
@@ -186,7 +189,7 @@ export const ReleaseTab: FC<Props> = (props) => {
     }
     if (account && evmAddress && tokens.length) {
       getBalance(evmAddress)
-      getAllowance(evmAddress, config.evmNetwork.bridgeAddress)
+      getAllowance(evmAddress, bridgeAddress)
       setTokenAddress(evmAddress)
       setAmount(0)
       setReceived(0)

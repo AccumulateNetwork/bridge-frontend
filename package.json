@@ -37,9 +37,8 @@
     "web3": "^1.7.3"
   },
   "scripts": {
-    "buildConfig": "node scripts/build-config.ts",
-    "start": "node scripts/build-config.ts && react-scripts start",
-    "build": "node scripts/build-config.ts && react-scripts build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

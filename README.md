@@ -20,7 +20,7 @@ in the console.
 ### `yarn buildConfig`
 Build config for development or production modes. <br />
 For development mode use config.json from src/config folder <br/>
-For production moded use config downloaded by CONFIG_URL using fetch api which stored in .env
+For production mode use config downloaded by CONFIG_URL using fetch api which stored in .env
 
 Сommands that contain:  <br />
 `yarn build` <br />

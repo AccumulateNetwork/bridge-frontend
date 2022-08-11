@@ -4,10 +4,6 @@
   "tab2Names": ["Release", "Release"],
   "tab1Path": "/mint",
   "tab2Path": "/release",
-  "evmNetwork": {
-    "bridgeAddress":"0x167dA1A6074A68b3ae4dF4205e9f44a1703Cab66",
-    "explorer": "https://rinkeby.etherscan.io"
-  },
   "messages": {
     "feesNotReceived": "Unable to get fees from bridge node"
   },
