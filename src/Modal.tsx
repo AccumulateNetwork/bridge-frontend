@@ -28,7 +28,6 @@ export default function SelectWalletModal({ isOpen, closeModal } : any) {
 
   const connectWalletConnect = () => {
     activate(connectors.walletConnect, (error: Error) => {
-      console.log(error)
     })
     setProvider("walletConnect")
   }

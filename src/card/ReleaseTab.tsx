@@ -21,8 +21,6 @@ type Props = {
 }
 export const ReleaseTab: FC<Props> = (props) => {
   const bridgeAddress = process.env.REACT_APP_BRIDGE_ADDRESS!
-  console.log(bridgeAddress)
-
   const { 
     active, 
     account,
