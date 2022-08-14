@@ -14,7 +14,7 @@ import { ReleaseTab } from "./ReleaseTab"
 import { MintTab } from "./MintTab"
 
 type Props = {
-  tabIndex: number
+  tabIndex?: number
 }
 
 export const CardTabs: FC<Props> = (props) => {

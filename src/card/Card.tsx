@@ -5,18 +5,30 @@ import { useStore } from "../store/useStore"
 import { Step } from "./steps"
 import CardTabs from "./CardTabs"
 import { TransferInstructions } from "./TransferInstructions"
+import { ReleaseCompleted } from "./ReleaseCompleted"
+import { useLocation, useParams } from "react-router-dom"
 
 type Props = {
-  tabIndex: number
+  tabIndex?: number,
+}
+
+interface LocationState {
+  symbol: string
 }
 
 export const Card: FC<Props> = (props) => {
   const { step } = useStore()
+  const location  = useLocation()
+  const params = useParams()
+  if (params.transactionHash && location.state) {
+    const { symbol } = location.state as LocationState
+    return <CardStateless children={<ReleaseCompleted symbol={ symbol }/>}/>
+  }
   switch(step) {
     case Step.INITIAL:
     return <CardStateless children={<CardTabs tabIndex={props.tabIndex}/>}/>
     case Step.TRANSFER_INSTRUCTIONS:
-    return <CardStateless children={<TransferInstructions/>}/> 
+    return <CardStateless children={<TransferInstructions/>}/>
     default: return null
   }
 }

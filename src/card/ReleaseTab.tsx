@@ -16,11 +16,14 @@ import { decimalCount, toETHNumber, toRoundedDown, web3BNToFloatNumber } from ".
 import { useStore } from "../store/useStore"
 import { Token } from "../common/Token"
 import { SET_EVM_SYMBOL } from "../store/actions"
+import { useNavigate } from "react-router-dom"
 
 type Props = {
 }
 export const ReleaseTab: FC<Props> = (props) => {
   const bridgeAddress = process.env.REACT_APP_BRIDGE_ADDRESS!
+  const navigate = useNavigate()
+
   const { 
     active, 
     account,
@@ -43,7 +46,6 @@ export const ReleaseTab: FC<Props> = (props) => {
   const [ received, setReceived ] = useState(0)
   const [ balance, setBalance ] = useState(0)
 
-  // TODO refactor - use only shared state here
   const [ tokenAddress, setTokenAddress] = useState("")
   const [ allowance, setAllowance ] = useState(0)
   const [ isApproving, setIsApproving] = useState(false)
@@ -146,7 +148,8 @@ export const ReleaseTab: FC<Props> = (props) => {
     setIsApproving(true);
     if (contract) {
       contract.methods.approve(spender, maxApproval).send({from: account}).then((_ : number) => {
-        window.location.reload();
+        setIsApproving(false)
+        getAllowance(evmAddress, bridgeAddress)
       }).catch((e: Error) => {
         setIsApproving(false)
        })
@@ -159,7 +162,7 @@ export const ReleaseTab: FC<Props> = (props) => {
     setIsBurning(true)
     if (contract) {
       contract.methods.burn(tokenAddress, destinationAddress, value).send({from: account}).then((result: any) => {
-        window.location.reload();
+        navigate(`/tx/${result.transactionHash}`, {state: {symbol: accSymbol}})
       }).catch((e: Error) => {
         setIsBurning(false)
        }) 
