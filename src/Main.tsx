@@ -70,6 +70,7 @@ export const Routing: FC<Props> = () => {
       <Route path="/" element={<Navigate to="mint"/>}/>
       <Route path={ config.tab1Path } element={ <Card tabIndex={0}/>}/>
       <Route path={ config.tab2Path } element={ <Card tabIndex={1}/>}/>
+      <Route path={ "/tx/:transactionHash" } element={ <Card/>}/>
       <Route
         path="*"
         element={
