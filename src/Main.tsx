@@ -49,7 +49,7 @@ export const Routing: FC<Props> = () => {
     getTokens()  
     getFees()
   }, [account, chainId]) // eslint-disable-line react-hooks/exhaustive-deps
-  
+  console.log(account)
   if (globalServerNotResponded) {
     return (
       <Alert justifyContent='center' status='error'>
@@ -57,7 +57,7 @@ export const Routing: FC<Props> = () => {
         Can not connect to bridge node
       </Alert>
     )
-  } else if (globalNetworkError || (account && chainId !== tokensChainId) || (account && chainId === undefined)) {
+  } else if (globalNetworkError || (chainId !== tokensChainId) || (chainId === undefined)) {
     return (
       <Alert justifyContent='center' status='error'>
       <AlertIcon />
