@@ -61,7 +61,7 @@ export const Routing: FC<Props> = () => {
     return (
       <Alert justifyContent='center' status='error'>
       <AlertIcon />
-        Please choose chain id {tokensChainId}
+        Please connect wallet and choose chain id {tokensChainId}
       </Alert>
     )
   } else {
