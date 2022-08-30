@@ -1,9 +1,17 @@
 This project was bootstrapped with
 [Create React App](https://github.com/facebook/create-react-app).
 
+## Environment variables
+.env file contains all variables that have to be secured and setted during build execution.  
+
+REACT_APP_API_URL=<<API URL>> 
+REACT_APP_BRIDGE_ADDRESS=0x167dA1A6074A68b3ae4dF4205e9f44a1703Cab66
+
+
 ## Available Scripts
 
 In the project directory, you can run:
+
 
 ### `yarn install`
 Install all dependencies.<br />
@@ -16,17 +24,6 @@ Runs the app in the development mode.<br /> Open
 
 The page will reload if you make edits.<br /> You will also see any lint errors
 in the console.
-
-### `yarn buildConfig`
-Build config for development or production modes. <br />
-For development mode use config.json from src/config folder <br/>
-For production mode use config downloaded by CONFIG_URL using fetch api which stored in .env
-
-Сommands that contain:  <br />
-`yarn build` <br />
-`yarn start`
-<br />
-
 
 ### `yarn test`
 
