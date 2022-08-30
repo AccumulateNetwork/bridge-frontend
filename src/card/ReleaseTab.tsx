@@ -17,6 +17,8 @@ import { useStore } from "../store/useStore"
 import { Token } from "../common/Token"
 import { SET_EVM_SYMBOL } from "../store/actions"
 import { useNavigate } from "react-router-dom"
+const maxApproval = '115792089237316195423570985008687907853269984665640564039457584007913129639935'; //(2^256 - 1 )
+
 
 type Props = {
 }
@@ -144,8 +146,7 @@ export const ReleaseTab: FC<Props> = (props) => {
 
   const handleApprove = (address: string = tokenAddress, spender: string = bridgeAddress) => {
     const contract = getContract(library, TOKENSERC20ABI, address);
-    const maxApproval = new BigNumber(2).pow(256).minus(1);
-    setIsApproving(true);
+    setIsApproving(true)
     if (contract) {
       contract.methods.approve(spender, maxApproval).send({from: account}).then((_ : number) => {
         setIsApproving(false)
