@@ -5,7 +5,7 @@ This project was bootstrapped with
 .env file contains all variables that have to be secured and setted during build execution.  
 
 REACT_APP_API_URL=<<API URL>> 
-REACT_APP_BRIDGE_ADDRESS=0x167dA1A6074A68b3ae4dF4205e9f44a1703Cab66
+REACT_APP_BRIDGE_ADDRESS=<<BRIDGE ADDRESS>>
 
 
 ## Available Scripts
