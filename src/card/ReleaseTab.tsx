@@ -162,7 +162,9 @@ export const ReleaseTab: FC<Props> = (props) => {
     const value = toETHNumber(amount, evmDecimals)
     setIsBurning(true)
     if (contract) {
-      contract.methods.burn(tokenAddress, destinationAddress, value).send({from: account})
+      contract.methods
+      .burn(tokenAddress, destinationAddress, value)
+      .send({from: account})
       .on('transactionHash', (transactionHash: any) => {
         navigate(`/tx/${transactionHash}`, {state: {symbol: accSymbol}})
       }).catch((e: Error) => {

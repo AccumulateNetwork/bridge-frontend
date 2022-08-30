@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom"
 
 type Props =  {
   symbol: string
+  transactionHash: string
 }
 
 export const ReleaseCompleted: FC<Props> = (props) => {
@@ -23,7 +24,7 @@ export const ReleaseCompleted: FC<Props> = (props) => {
           <Heading size='md'>Burn TX Created</Heading>
           <Divider pt={2} /> 
           <Box py={2}>
-            When your tx is confirmed by the network, 
+            When your tx with hash <Heading size="sm"> { props.transactionHash }</Heading> is confirmed by the network, 
             Accumulate Bridge nodes will catch it up and send { props.symbol } to your address. 
             This operation usually takes up to 5 minutes.
           </Box>    

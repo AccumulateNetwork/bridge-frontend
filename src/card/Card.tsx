@@ -20,9 +20,10 @@ export const Card: FC<Props> = (props) => {
   const { step } = useStore()
   const location  = useLocation()
   const params = useParams()
-  if (params.transactionHash && location.state) {
+  const transactionHash = params.transactionHash
+  if (transactionHash && location.state) {
     const { symbol } = location.state as LocationState
-    return <CardStateless children={<ReleaseCompleted symbol={ symbol }/>}/>
+    return <CardStateless children={<ReleaseCompleted symbol={ symbol } transactionHash={ transactionHash }/>}/>
   }
   switch(step) {
     case Step.INITIAL:
