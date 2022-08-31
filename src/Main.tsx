@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, VStack } from "@chakra-ui/react";
+import { Alert, AlertIcon, Box, VStack } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import { FC, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
@@ -49,7 +49,6 @@ export const Routing: FC<Props> = () => {
     getTokens()  
     getFees()
   }, [account, chainId]) // eslint-disable-line react-hooks/exhaustive-deps
-  console.log(account)
   if (globalServerNotResponded) {
     return (
       <Alert justifyContent='center' status='error'>
@@ -57,30 +56,31 @@ export const Routing: FC<Props> = () => {
         Can not connect to bridge node
       </Alert>
     )
-  } else if (globalNetworkError || (chainId !== tokensChainId) || (chainId === undefined)) {
-    return (
-      <Alert justifyContent='center' status='error'>
-      <AlertIcon />
-        Please connect wallet and choose chain id {tokensChainId}
-      </Alert>
-    )
   } else {
     return (
-      <Routes>
-      <Route path="/" element={<Navigate to="mint"/>}/>
-      <Route path={ config.tab1Path } element={ <Card tabIndex={0}/>}/>
-      <Route path={ config.tab2Path } element={ <Card tabIndex={1}/>}/>
-      <Route path={ "/tx/:transactionHash" } element={ <Card/>}/>
-      <Route
-        path="*"
-        element={
-          <div>
-            <h1><strong>404</strong></h1>
-            <h2>Page not found</h2>
-          </div>
+      <Box> 
+        {(globalNetworkError || (chainId !== tokensChainId) || (chainId === undefined))? 
+         <Alert mb={10} maxWidth={400} justifyContent='center' status='error'>
+         <AlertIcon />
+           Please connect wallet and choose chain id {tokensChainId}
+         </Alert> : null
         }
-      />
-    </Routes> 
+        <Routes>
+          <Route path="/" element={<Navigate to="mint"/>}/>
+          <Route path={ config.tab1Path } element={ <Card tabIndex={0}/>}/>
+          <Route path={ config.tab2Path } element={ <Card tabIndex={1}/>}/>
+          <Route path={ "/tx/:transactionHash" } element={ <Card/>}/>
+          <Route
+            path="*"
+            element={
+              <div>
+                <h1><strong>404</strong></h1>
+                <h2>Page not found</h2>
+              </div>
+            }
+          />
+        </Routes> 
+      </Box>
     )     
   }
 }
