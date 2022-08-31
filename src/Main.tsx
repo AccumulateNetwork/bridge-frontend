@@ -2,7 +2,10 @@ import { Alert, AlertIcon, Box, VStack } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import { FC, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
+import Web3 from "web3";
 import Card from "./card/Card";
+import { CardButton } from "./card/СardButton";
+import { Chains } from "./chains";
 import { Fees } from "./common/Fees";
 import RPC from "./common/RPC";
 import { config } from "./config/config";
@@ -22,6 +25,17 @@ export const Main: FC<Props> = () => {
 export const Routing: FC<Props> = () => {
   const { account, chainId  } = useWeb3React()
   const { tokensChainId, globalNetworkError, globalServerNotResponded, dispatch } = useStore()
+
+  const switchNetwork = async (chainId: any) => {    
+      try {
+        await  (window as any).ethereum.request({
+          method: 'wallet_switchEthereumChain',
+            params: [{ chainId: Web3.utils.toHex(chainId) }],
+          });
+      } catch (switchError) {
+        console.log(switchError)
+      }
+  }
 
   const getFees = () => {
     RPC.request('fees').then((data) => {
@@ -57,12 +71,19 @@ export const Routing: FC<Props> = () => {
       </Alert>
     )
   } else {
+    const chainLabel = Chains.get(tokensChainId)
+    if (tokensChainId && !chainLabel) {
+      return <Alert mb={10} maxWidth={400} justifyContent='center' status='error'>
+      <AlertIcon />
+        Wrong network
+      </Alert> 
+    }
     return (
       <Box> 
-        {(globalNetworkError || (chainId !== tokensChainId) || (chainId === undefined))? 
+        { tokensChainId && (globalNetworkError || (chainId !== tokensChainId) || (chainId === undefined)) && chainLabel ? 
          <Alert mb={10} maxWidth={400} justifyContent='center' status='error'>
          <AlertIcon />
-           Please connect wallet and choose chain id {tokensChainId}
+           Please connect wallet and choose chain <CardButton title={chainLabel} onClick={() => switchNetwork(tokensChainId)}/>
          </Alert> : null
         }
         <Routes>
