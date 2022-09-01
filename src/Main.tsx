@@ -23,7 +23,7 @@ export const Main: FC<Props> = () => {
 }
 
 export const Routing: FC<Props> = () => {
-  const { account, chainId  } = useWeb3React()
+  const { account, chainId, active  } = useWeb3React()
   const { tokensChainId, globalNetworkError, globalServerNotResponded, dispatch } = useStore()
 
   const switchNetwork = async (chainId: any) => {    
@@ -80,7 +80,7 @@ export const Routing: FC<Props> = () => {
     }
     return (
       <Box> 
-        { tokensChainId && (globalNetworkError || (chainId !== tokensChainId) || (chainId === undefined)) && chainLabel ? 
+        { active && tokensChainId && (globalNetworkError || (chainId !== tokensChainId) || (chainId === undefined)) && chainLabel ? 
          <Alert mb={10} maxWidth={400} justifyContent='center' status='error'>
          <AlertIcon />
            Please connect wallet and choose chain <CardButton title={chainLabel} onClick={() => switchNetwork(tokensChainId)}/>
