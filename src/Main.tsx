@@ -63,6 +63,7 @@ export const Routing: FC<Props> = () => {
     getTokens()  
     getFees()
   }, [account, chainId]) // eslint-disable-line react-hooks/exhaustive-deps
+  
   if (globalServerNotResponded) {
     return (
       <Alert justifyContent='center' status='error'>
@@ -72,18 +73,12 @@ export const Routing: FC<Props> = () => {
     )
   } else {
     const chainLabel = Chains.get(tokensChainId)
-    if (tokensChainId && !chainLabel) {
-      return <Alert mb={10} maxWidth={400} justifyContent='center' status='error'>
-      <AlertIcon />
-        Wrong network
-      </Alert> 
-    }
     return (
       <Box> 
         { tokensChainId && (globalNetworkError || (chainId !== tokensChainId) || (chainId === undefined)) && chainLabel ? 
-         <Alert mb={10} maxWidth={400} justifyContent='center' status='error'>
-         <AlertIcon />
-           Please connect wallet and choose chain <CardButton title={chainLabel} onClick={() => switchNetwork(tokensChainId)}/>
+         <Alert mb={10} maxWidth={400} justifyContent='center' status='warning' variant='subtle' flexDirection='column' alignItems='center' textAlign='center'>
+           <p>Please connect to <strong>{chainLabel}</strong></p>
+           <CardButton title="Switch network" onClick={() => switchNetwork(tokensChainId)}/>
          </Alert> : null
         }
         <Routes>
