@@ -14,7 +14,6 @@ import { FC, useEffect, useState } from "react"
 
 import { INITIAL_WITH_DATA } from "../store/actions"
 import { useStore } from "../store/useStore"
-import { useWeb3React } from "@web3-react/core"
 import { config } from "../config/config"
 
 type Props =  {
@@ -38,7 +37,6 @@ export const CopyTooltip: FC<CopyTooltipProps> = (props) => {
   )
 }
 export const TransferInstructions: FC<Props> = (props) => {
-  const { chainId } = useWeb3React()
 
   const { accSymbol, mintDestinationAddress, tokens, dispatch, mintAmount, tokensChainId } = useStore()
   const [ tokenAccount, setTokenAccount ] = useState("")
