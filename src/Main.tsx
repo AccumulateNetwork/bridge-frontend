@@ -23,7 +23,7 @@ export const Main: FC<Props> = () => {
 }
 
 export const Routing: FC<Props> = () => {
-  const { account, chainId  } = useWeb3React()
+  const { account, chainId, active  } = useWeb3React()
   const { tokensChainId, globalNetworkError, globalServerNotResponded, dispatch } = useStore()
 
   const switchNetwork = async (chainId: any) => {    
