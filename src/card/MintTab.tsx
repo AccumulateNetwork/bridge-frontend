@@ -123,7 +123,7 @@ export const MintTab: FC<Props> = (props) => {
                 id='amount'
                 autoComplete='off'
                 onChange={handleAmountChange}
-                value={ mintAmount }/>
+                value={ mintAmount ? mintAmount : "" }/>
               <InputRightAddon fontSize='10pt' children={accSymbol} />
             </InputGroup>
           </FormControl>
