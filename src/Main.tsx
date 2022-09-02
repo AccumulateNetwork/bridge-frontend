@@ -1,8 +1,10 @@
-import { Alert, AlertIcon, VStack } from "@chakra-ui/react";
+import { Alert, AlertIcon, Box, VStack, Button } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import { FC, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
+import Web3 from "web3";
 import Card from "./card/Card";
+import { Chains } from "./chains";
 import { Fees } from "./common/Fees";
 import RPC from "./common/RPC";
 import { config } from "./config/config";
@@ -21,7 +23,18 @@ export const Main: FC<Props> = () => {
 
 export const Routing: FC<Props> = () => {
   const { account, chainId  } = useWeb3React()
-  const { tokensChainId, globalNetworkError, globalServerNotResponded, dispatch } = useStore()
+  const { tokensChainId, globalServerNotResponded, dispatch } = useStore()
+
+  const switchNetwork = async (chainId: any) => {    
+      try {
+        await  (window as any).ethereum.request({
+          method: 'wallet_switchEthereumChain',
+            params: [{ chainId: Web3.utils.toHex(chainId) }],
+          });
+      } catch (switchError) {
+        console.log(switchError)
+      }
+  }
 
   const getFees = () => {
     RPC.request('fees').then((data) => {
@@ -49,7 +62,7 @@ export const Routing: FC<Props> = () => {
     getTokens()  
     getFees()
   }, [account, chainId]) // eslint-disable-line react-hooks/exhaustive-deps
-  console.log(account)
+  
   if (globalServerNotResponded) {
     return (
       <Alert justifyContent='center' status='error'>
@@ -57,30 +70,32 @@ export const Routing: FC<Props> = () => {
         Can not connect to bridge node
       </Alert>
     )
-  } else if (globalNetworkError || (chainId !== tokensChainId) || (chainId === undefined)) {
-    return (
-      <Alert justifyContent='center' status='error'>
-      <AlertIcon />
-        Please connect wallet and choose chain id {tokensChainId}
-      </Alert>
-    )
   } else {
+    const chainLabel = Chains.get(tokensChainId)
     return (
-      <Routes>
-      <Route path="/" element={<Navigate to="mint"/>}/>
-      <Route path={ config.tab1Path } element={ <Card tabIndex={0}/>}/>
-      <Route path={ config.tab2Path } element={ <Card tabIndex={1}/>}/>
-      <Route path={ "/tx/:transactionHash" } element={ <Card/>}/>
-      <Route
-        path="*"
-        element={
-          <div>
-            <h1><strong>404</strong></h1>
-            <h2>Page not found</h2>
-          </div>
+      <Box> 
+        { tokensChainId && chainId !== tokensChainId ? 
+         <Alert mb={10} maxWidth={400} justifyContent='center' status='error' variant='subtle' flexDirection='column' alignItems='center' textAlign='center'>
+           <p>Please connect to <strong>{chainLabel}</strong> to use the bridge</p>
+           <Button size={'lg'} colorScheme='red' mt={3} mb={1} onClick={() => switchNetwork(tokensChainId)}>Switch network</Button>
+         </Alert> : null
         }
-      />
-    </Routes> 
+        <Routes>
+          <Route path="/" element={<Navigate to="mint"/>}/>
+          <Route path={ config.tab1Path } element={ <Card tabIndex={0}/>}/>
+          <Route path={ config.tab2Path } element={ <Card tabIndex={1}/>}/>
+          <Route path={ "/tx/:transactionHash" } element={ <Card/>}/>
+          <Route
+            path="*"
+            element={
+              <Alert mb={10} maxWidth={400} justifyContent='center' status='error' alignItems='center' textAlign='center'>
+                <AlertIcon />
+                <p>Page Not Found</p>
+              </Alert>
+            }
+          />
+        </Routes> 
+      </Box>
     )     
   }
 }

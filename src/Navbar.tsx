@@ -24,11 +24,14 @@ import { CopyIcon } from '@chakra-ui/icons'
 import SelectWalletModal from './Modal'
 import { truncateAddress } from './utils'
 import { toast } from 'react-toastify'
+import { useStore } from "./store/useStore"
 
 type Props = {
 }
 
 export const Navbar: FC<Props> = () => {
+
+  const { tokensChainId } = useStore();
 
   const { 
     activate, 
@@ -79,13 +82,8 @@ export const Navbar: FC<Props> = () => {
         </Button>              
         ) : 
         <div>
-          {chainId === 1 ? (
-            <Button size='lg' colorScheme='grey' variant='outline' mb={3}>Ethereum Mainnet</Button>
-          ) :
-            null
-          }
-          {chainId === 4 ? (
-            <Button size='lg' colorScheme='grey' variant='outline' mb={3}>Rinkeby Testnet</Button>
+          {tokensChainId && chainId !== tokensChainId ? (
+            <Button size='lg' colorScheme='red' variant='outline' mb={3}>Unsupported Network</Button>
           ) :
             null
           }

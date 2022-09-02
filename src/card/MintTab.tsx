@@ -1,6 +1,6 @@
 import { Box, Select, useDisclosure, VStack, FormControl, FormLabel, Alert, AlertIcon, Input, HStack, Flex, Spacer, Divider, InputGroup, InputRightAddon, Text } from "@chakra-ui/react"
 import { FC, useEffect, useState } from "react"
-import { CardButton } from "./СardButton"
+import { CardButton } from "./CardButton"
 import { config } from '../config/config'
 import { CardSelectItem } from "./CardSelectItem"
 import { SET_ACC_SYMBOL, SET_MINT_AMOUNT_AND_RECEIVED, TRANSFER_INSTRUCTIONS_STEP, UPDATE_MINT_DESTINATION_ADDRESS } from "../store/actions"
