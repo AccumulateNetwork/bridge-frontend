@@ -7,11 +7,8 @@ export const Footer = (): React.ReactElement => {
       width="100%"
       direction="column"
     >
-      <HStack spacing={4}>
-        <Text color="gray.400">About</Text>
-        <Text color="gray.400">Docs</Text>
-        <Text color="gray.400">FAQs</Text>
-        <Text color="gray.400">Wiki</Text>
+      <HStack spacing={2} fontSize={14} justifyContent={'center'} mb={5} mt={-5}>
+        <Text color="gray.400"><a href="https://github.com/AccumulateNetwork" target={'blank'}>GitHub</a></Text>
       </HStack>
     </Flex>
   )

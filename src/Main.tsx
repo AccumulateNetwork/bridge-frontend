@@ -1,10 +1,9 @@
-import { Alert, AlertIcon, Box, VStack } from "@chakra-ui/react";
+import { Alert, AlertIcon, Box, VStack, Button } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import { FC, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Web3 from "web3";
 import Card from "./card/Card";
-import { CardButton } from "./card/СardButton";
 import { Chains } from "./chains";
 import { Fees } from "./common/Fees";
 import RPC from "./common/RPC";
@@ -23,8 +22,8 @@ export const Main: FC<Props> = () => {
 }
 
 export const Routing: FC<Props> = () => {
-  const { account, chainId, active  } = useWeb3React()
-  const { tokensChainId, globalNetworkError, globalServerNotResponded, dispatch } = useStore()
+  const { account, chainId  } = useWeb3React()
+  const { tokensChainId, globalServerNotResponded, dispatch } = useStore()
 
   const switchNetwork = async (chainId: any) => {    
       try {
@@ -75,10 +74,10 @@ export const Routing: FC<Props> = () => {
     const chainLabel = Chains.get(tokensChainId)
     return (
       <Box> 
-        { tokensChainId && (globalNetworkError || (chainId !== tokensChainId) || (chainId === undefined)) && chainLabel ? 
-         <Alert mb={10} maxWidth={400} justifyContent='center' status='warning' variant='subtle' flexDirection='column' alignItems='center' textAlign='center'>
-           <p>Please connect to <strong>{chainLabel}</strong></p>
-           <CardButton title="Switch network" onClick={() => switchNetwork(tokensChainId)}/>
+        { tokensChainId && chainId !== tokensChainId ? 
+         <Alert mb={10} maxWidth={400} justifyContent='center' status='error' variant='subtle' flexDirection='column' alignItems='center' textAlign='center'>
+           <p>Please connect to <strong>{chainLabel}</strong> to use the bridge</p>
+           <Button size={'lg'} colorScheme='red' mt={3} mb={1} onClick={() => switchNetwork(tokensChainId)}>Switch network</Button>
          </Alert> : null
         }
         <Routes>
@@ -89,10 +88,10 @@ export const Routing: FC<Props> = () => {
           <Route
             path="*"
             element={
-              <div>
-                <h1><strong>404</strong></h1>
-                <h2>Page not found</h2>
-              </div>
+              <Alert mb={10} maxWidth={400} justifyContent='center' status='error' alignItems='center' textAlign='center'>
+                <AlertIcon />
+                <p>Page Not Found</p>
+              </Alert>
             }
           />
         </Routes> 

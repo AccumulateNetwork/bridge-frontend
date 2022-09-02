@@ -1,7 +1,7 @@
 
 import { Box, Button, Divider, Flex, HStack, Input, Link, Select, Spacer, Text, useDisclosure, VStack, Alert, AlertIcon, FormControl, FormLabel, InputGroup, InputRightAddon } from "@chakra-ui/react"
 import { FC, useEffect, useState } from "react"
-import { CardButton } from "./СardButton"
+import { CardButton } from "./CardButton"
 import { config } from '../config/config'
 import { CardSelectItem } from "./CardSelectItem"
 import { useWeb3React } from "@web3-react/core"
