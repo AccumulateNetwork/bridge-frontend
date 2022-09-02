@@ -14,7 +14,6 @@ import { FC, useEffect, useState } from "react"
 
 import { INITIAL_WITH_DATA } from "../store/actions"
 import { useStore } from "../store/useStore"
-import { useWeb3React } from "@web3-react/core"
 import { config } from "../config/config"
 
 type Props =  {
@@ -38,9 +37,8 @@ export const CopyTooltip: FC<CopyTooltipProps> = (props) => {
   )
 }
 export const TransferInstructions: FC<Props> = (props) => {
-  const { chainId } = useWeb3React()
 
-  const { accSymbol, mintDestinationAddress, tokens, dispatch, mintAmount } = useStore()
+  const { accSymbol, mintDestinationAddress, tokens, dispatch, mintAmount, tokensChainId } = useStore()
   const [ tokenAccount, setTokenAccount ] = useState("")
 
   const generateTokenAccount = (chainId: number, symbol: string) => {
@@ -48,8 +46,8 @@ export const TransferInstructions: FC<Props> = (props) => {
   }
 
   useEffect(() => {
-    if (chainId && tokens.length) {
-      setTokenAccount(generateTokenAccount(chainId, accSymbol))
+    if (tokensChainId && tokens.length) {
+      setTokenAccount(generateTokenAccount(tokensChainId, accSymbol))
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
