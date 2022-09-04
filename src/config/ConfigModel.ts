@@ -5,8 +5,8 @@ export interface EVMNetwork {
 
 export interface Config {
   appName: string
-  tab1Names: string []
-  tab2Names: string []
+  tab1Name: string
+  tab2Name: string
   tab1Path: string
   tab2Path: string
   evmNetwork: EVMNetwork

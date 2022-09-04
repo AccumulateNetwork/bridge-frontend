@@ -9,6 +9,18 @@ REACT_APP_API_URL=`<API URL>`
 REACT_APP_BRIDGE_ADDRESS=`<BRIDGE ADDRESS>`
 
 
+## Config
+
+{  
+  "appName": "Accumulate Bridge",  
+  "tab1Name": "Mint",  
+  "tab2Name": "Release",  
+  "tab1Path": "/mint",  
+  "tab2Path": "/release",  
+  "bridgeADI": "bridge.acme"  
+}  
+
+
 ## Available Scripts
 
 In the project directory, you can run:
