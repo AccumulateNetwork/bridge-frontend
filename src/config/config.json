@@ -4,8 +4,5 @@
   "tab2Names": ["Release", "Release"],
   "tab1Path": "/mint",
   "tab2Path": "/release",
-  "messages": {
-    "feesNotReceived": "Unable to get fees from bridge node"
-  },
   "bridgeADI": "bridge.acme"
 }
