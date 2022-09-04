@@ -1,6 +1,6 @@
 import { Alert, AlertIcon, Box, VStack, Button } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Web3 from "web3";
 import Card from "./card/Card";
@@ -24,7 +24,6 @@ export const Main: FC<Props> = () => {
 export const Routing: FC<Props> = () => {
   const { account, chainId  } = useWeb3React()
   const { tokensChainId, globalServerNotResponded, dispatch } = useStore()
-  const [ isLoaded, setIsLoaded ] = useState(false)
 
   const switchNetwork = async (chainId: any) => {    
       try {
@@ -62,7 +61,6 @@ export const Routing: FC<Props> = () => {
   useEffect(() => {
     getTokens()  
     getFees()
-    setIsLoaded(true)
   }, [account, chainId]) // eslint-disable-line react-hooks/exhaustive-deps
   
   if (globalServerNotResponded) {
@@ -76,7 +74,7 @@ export const Routing: FC<Props> = () => {
     const chainLabel = Chains.get(tokensChainId)
     return (
       <Box> 
-        {isLoaded && tokensChainId && chainId !== tokensChainId ? 
+        { tokensChainId && chainId !== tokensChainId ? 
          <Alert mb={10} maxWidth={400} justifyContent='center' status='error' variant='subtle' flexDirection='column' alignItems='center' textAlign='center'>
            <p>Please connect to <strong>{chainLabel}</strong> to use the bridge</p>
            <Button size={'lg'} colorScheme='red' mt={3} mb={1} onClick={() => switchNetwork(tokensChainId)}>Switch network</Button>
