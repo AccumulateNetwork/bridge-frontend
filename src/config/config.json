@@ -1,11 +1,8 @@
 { 
   "appName": "Accumulate Bridge",
-  "tab1Names": ["Mint", "Mint"],
-  "tab2Names": ["Release", "Release"],
+  "tab1Name": "Mint",
+  "tab2Name": "Release",
   "tab1Path": "/mint",
   "tab2Path": "/release",
-  "messages": {
-    "feesNotReceived": "Unable to get fees from bridge node"
-  },
   "bridgeADI": "bridge.acme"
 }

@@ -1,7 +1,6 @@
 import { Box, Select, useDisclosure, VStack, FormControl, FormLabel, Alert, AlertIcon, Input, HStack, Flex, Spacer, Divider, InputGroup, InputRightAddon, Text } from "@chakra-ui/react"
 import { FC, useEffect, useState } from "react"
 import { CardButton } from "./CardButton"
-import { config } from '../config/config'
 import { CardSelectItem } from "./CardSelectItem"
 import { SET_ACC_SYMBOL, SET_MINT_AMOUNT_AND_RECEIVED, TRANSFER_INSTRUCTIONS_STEP, UPDATE_MINT_DESTINATION_ADDRESS } from "../store/actions"
 import { useStore } from "../store/useStore"
@@ -181,8 +180,8 @@ export const MintTab: FC<Props> = (props) => {
               </Box>
             ) :
             (
-              <Box w={40}>
-                { config.messages.feesNotReceived }
+              <Box w={20}>
+                ...
               </Box>
             )
             }  
