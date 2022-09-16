@@ -13,7 +13,8 @@ import {
   Alert,
   AlertIcon,
   AlertTitle,
-  AlertDescription
+  AlertDescription,
+  Link
 } from '@chakra-ui/react'
 import { useWeb3React } from "@web3-react/core"
 import { Logo } from './Logo'
@@ -68,8 +69,10 @@ export const Navbar: FC<Props> = () => {
 
   return (
     <Flex gap='2' wrap='wrap'>
-      <Box ml={2}>
-        <Logo h='32px' mb={6} mt={2} />
+      <Box ml={2} mb={4}>
+        <Link href="/">
+        <Logo h='32px' mb={2} mt={2} />
+        </Link>
       </Box>
       <Spacer/>
       <Box mr={2}>
