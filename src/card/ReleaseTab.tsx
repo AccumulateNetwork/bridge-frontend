@@ -126,15 +126,12 @@ export const ReleaseTab: FC<Props> = (props) => {
       .then((_balance: number) => {
         const pow = new BigNumber('10').pow(new BigNumber(evmDecimals))
         setBalance(web3BNToFloatNumber(_balance, pow, 18, BigNumber.ROUND_DOWN))
-        return true
       }).catch((e: Error) => {
         if (chainId === tokensChainId) {
           toast(e.message)
         }
-        return false
        })
     }
-    return false
   }
 
   const getAllowance = (tokenAddress: string, spender: string) => {
@@ -199,10 +196,8 @@ export const ReleaseTab: FC<Props> = (props) => {
       setAccSymbol(tokens[0].symbol)
     }
     if (account && evmAddress && tokens.length) {
-      const executed = getBalance(evmAddress)
-      if (executed) {
-        getAllowance(evmAddress, bridgeAddress)
-      }
+      getBalance(evmAddress)
+      getAllowance(evmAddress, bridgeAddress)
       setTokenAddress(evmAddress)
       setAmount(0)
       setReceived(0)
