@@ -14,8 +14,9 @@ import BigNumber from "bignumber.js"
 import { decimalCount, toETHNumber, toRoundedDown, web3BNToFloatNumber } from "../utils"
 import { useStore } from "../store/useStore"
 import { Token } from "../common/Token"
-import { SET_EVM_SYMBOL } from "../store/actions"
+import { SET_EVM_SYMBOL, SET_GLOBAL_SERVER_NOT_RESPONDED } from "../store/actions"
 import { useNavigate } from "react-router-dom"
+import RPC from "../common/RPC"
 const maxApproval = '115792089237316195423570985008687907853269984665640564039457584007913129639935'; //(2^256 - 1 )
 
 
@@ -53,12 +54,34 @@ export const ReleaseTab: FC<Props> = (props) => {
   const [ isBurning, setIsBurning] = useState(false)
   const [ destinationAddress, setDestinationAddress] = useState("")
 
-  const [destinationAddressError, setDestinationAddressError] = useState(false)
+  const [destinationAddressError, setDestinationAddressError] = useState<DestinationAddressError | null>(null)
 
   const [amountError, setAmountError] = useState("")
 
   const burnFeeBps = fees.burnFee
   const burnFeePercentage = burnFeeBps / 100
+
+  enum DestinationAddressError {
+    INVALID_ACCOUNT,
+    ADDRESS_NOT_FOUND
+  }
+
+  const getTokenAccount = (account: string) => {
+    RPC.request('token-account', {"url": account}).then((data) => {
+      if (!data) {
+        setDestinationAddressError(DestinationAddressError.ADDRESS_NOT_FOUND)
+      } else {
+        const tokenUrl = tokens.find(item => item.evmSymbol === evmSymbol)?.url
+        if (data.type === 'tokenAccount' && data.tokenUrl === tokenUrl) {
+          setDestinationAddressError(null)
+        } else {
+          setDestinationAddressError(DestinationAddressError.INVALID_ACCOUNT)
+        }  
+      }
+    }).catch((e) => {
+      dispatch({type:SET_GLOBAL_SERVER_NOT_RESPONDED, payload: true})
+    })
+  }
 
   const handleAmountChange = (event: any) => {
     const inputValue = event.target.value
@@ -92,9 +115,9 @@ export const ReleaseTab: FC<Props> = (props) => {
   const handleDestinationAddressChange = (event: any) => {
     const address = event.target.value
      if (address.toLowerCase().includes("acme")) {
-      setDestinationAddressError(false)
+      getTokenAccount(address)
     } else {
-      setDestinationAddressError(true)
+      setDestinationAddressError(DestinationAddressError.INVALID_ACCOUNT)
     }
     setDestinationAddress(address)
   }
@@ -203,6 +226,9 @@ export const ReleaseTab: FC<Props> = (props) => {
       setReceived(0)
       calculateValue(0)
     }
+    if (destinationAddress) {
+      getTokenAccount(destinationAddress)
+    }
   }, [chainId, account, evmSymbol, tokens]);// eslint-disable-line react-hooks/exhaustive-deps
   return (
     <Box>
@@ -286,9 +312,13 @@ export const ReleaseTab: FC<Props> = (props) => {
             borderColor={ destinationAddressError ? "red" : "inherit" }
             onChange={ handleDestinationAddressChange }
           />
-          { destinationAddressError ?
+          { destinationAddressError === DestinationAddressError.INVALID_ACCOUNT ?
             <Text color={"red.400"} my={2} fontSize='sm'>Invalid Accumulate address</Text>
             : null
+          }
+          { destinationAddressError === DestinationAddressError.ADDRESS_NOT_FOUND ?
+            <Text color={"red.400"} my={2} fontSize='sm'>Token account not found</Text>
+            : null    
           }
         </FormControl>
         </VStack>
@@ -346,7 +376,7 @@ export const ReleaseTab: FC<Props> = (props) => {
               disabled={
                 isReleaseAllowanceDisabled(allowance, amount) 
                  || isApproving || isBurning || (amountError ? true : false)
-                 || Number(amount) === 0 || destinationAddress === "" || destinationAddressError 
+                 || Number(amount) === 0 || destinationAddress === "" 
               }
               onClick={handleBurn}>
                 {
