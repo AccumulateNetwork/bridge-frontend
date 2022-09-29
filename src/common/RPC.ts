@@ -17,7 +17,7 @@ class RPC {
       params: params? (typeof params === 'string' ? [params] : params) : null
     })
     .then(function(response) {
-      if (response.data.error) {
+      if (response.data.error && catchError) {
         if (response.data.error.data && response.data.error.code) {         
            toast('Error ' + response.data.error.code + ': ' + response.data.error.data) 
         } else {
