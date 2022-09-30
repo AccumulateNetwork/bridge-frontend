@@ -72,7 +72,7 @@ export const ReleaseTab: FC<Props> = (props) => {
         setDestinationAddressError(DestinationAddressError.ADDRESS_NOT_FOUND)
       } else {
         const tokenUrl = tokens.find(item => item.evmSymbol === evmSymbol)?.url
-        if (data.type === 'tokenAccount' && data.tokenUrl === tokenUrl) {
+        if ((data.type === 'tokenAccount' || data.type === 'liteTokenAccount') && data.tokenUrl === tokenUrl) {
           setDestinationAddressError(null)
         } else {
           setDestinationAddressError(DestinationAddressError.INVALID_ACCOUNT)
