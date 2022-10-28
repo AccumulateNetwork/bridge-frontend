@@ -1,5 +1,5 @@
 
-import { Box, Button, Divider, Flex, HStack, Input, Link, Select, Spacer, Text, useDisclosure, VStack, Alert, AlertIcon, FormControl, FormLabel, InputGroup, InputRightAddon } from "@chakra-ui/react"
+import { Box, Button, Divider, Flex, HStack, Input, Link, Select, Spacer, Text, useDisclosure, VStack, Alert, AlertIcon, FormControl, FormLabel, InputGroup, InputRightAddon, FormHelperText } from "@chakra-ui/react"
 import { FC, useEffect, useState } from "react"
 import { CardButton } from "./CardButton"
 import { CardSelectItem } from "./CardSelectItem"
@@ -252,25 +252,18 @@ export const ReleaseTab: FC<Props> = (props) => {
             }}>
             { options }
           </Select>
+          {evmAddress && 
+            <FormHelperText color='blue.500' textAlign={"left"} style={{wordBreak: "break-all", fontSize: "9pt"}}>{ evmAddress }</FormHelperText>
+          }
         </FormControl>
-        <FormControl pb={3}>
-            <FormLabel htmlFor='evmAddress'>{evmSymbol} token address</FormLabel>
-            <InputGroup size='lg'>
-              <Input 
-                readOnly
-                placeholder="evm address"
-                borderRadius='15px' 
-                fontSize='10pt'
-                id='evmAddress'
-                autoComplete='off'
-                value={ evmAddress ? evmAddress : "" }/>
-            </InputGroup>
-          </FormControl>   
         <FormControl pb={3}>
           <FormLabel htmlFor='destination'>Destination</FormLabel>
           <Select id='destination' fontSize= {14} borderRadius='15px' size='lg'>
             <option value='acc'>Accumulate</option>
           </Select>
+          {url && 
+            <FormHelperText color='blue.500' textAlign={"left"} style={{wordBreak: "break-all", fontSize: "9pt"}}>{ url }</FormHelperText>
+          }
         </FormControl>
         <FormControl pb={3}>
             <FormLabel htmlFor='acmeAddress'>{accSymbol} token address</FormLabel>
