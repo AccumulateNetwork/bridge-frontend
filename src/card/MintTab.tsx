@@ -26,7 +26,7 @@ export const MintTab: FC<Props> = (props) => {
   const [destinationAddressError, setDestinationAddressError] = useState(false)
 
   const { 
-    accSymbol, evmSymbol, 
+    accSymbol, evmSymbol, evmAddress, url, 
     mintAmount, mintReceived, 
     mintDestinationAddress,
     fees, tokens, precision, evmDecimals,
@@ -104,14 +104,40 @@ export const MintTab: FC<Props> = (props) => {
               dispatch({type: SET_ACC_SYMBOL, payload: v.target.value})
             }}>
               {options}
-            </Select>
-          </FormControl>
+            </Select>  
+          </FormControl>       
+          <FormControl pb={3}>
+            <FormLabel htmlFor='acmeAddress'>{accSymbol} token address</FormLabel>
+            <InputGroup size='lg'>
+              <Input 
+                readOnly
+                placeholder="ACME address"
+                borderRadius='15px' 
+                fontSize='10pt'
+                id='acmeAddress'
+                autoComplete='off'
+                value={ url ? url : "" }/>
+            </InputGroup>
+          </FormControl>         
           <FormControl pb={3}>
             <FormLabel htmlFor='destination'>Destination</FormLabel>
             <Select id='destination' fontSize={14} borderRadius='15px' size='lg'>
               <option value='eth'>Ethereum</option>
             </Select>
           </FormControl>
+          <FormControl pb={3}>
+            <FormLabel htmlFor='evmAddress'>{evmSymbol} token address</FormLabel>
+            <InputGroup size='lg'>
+              <Input 
+                readOnly
+                placeholder="evm address"
+                borderRadius='15px' 
+                fontSize='10pt'
+                id='evmAddress'
+                autoComplete='off'
+                value={ evmAddress ? evmAddress : "" }/>
+            </InputGroup>
+          </FormControl>   
           <FormControl pb={3}>
             <FormLabel htmlFor='amount'>How much will you send</FormLabel>
             <InputGroup size='lg'>

@@ -33,7 +33,7 @@ export const ReleaseTab: FC<Props> = (props) => {
     library,
   } = useWeb3React()
 
-  const { evmAddress, evmDecimals, precision, fees, tokensChainId, tokens, dispatch } = useStore()
+  const { evmAddress, evmDecimals, url, precision, fees, tokensChainId, tokens, dispatch } = useStore()
 
   const options: JSX.Element[] = []
   tokens.forEach((value:Token)=> {
@@ -254,11 +254,37 @@ export const ReleaseTab: FC<Props> = (props) => {
           </Select>
         </FormControl>
         <FormControl pb={3}>
+            <FormLabel htmlFor='evmAddress'>{evmSymbol} token address</FormLabel>
+            <InputGroup size='lg'>
+              <Input 
+                readOnly
+                placeholder="evm address"
+                borderRadius='15px' 
+                fontSize='10pt'
+                id='evmAddress'
+                autoComplete='off'
+                value={ evmAddress ? evmAddress : "" }/>
+            </InputGroup>
+          </FormControl>   
+        <FormControl pb={3}>
           <FormLabel htmlFor='destination'>Destination</FormLabel>
           <Select id='destination' fontSize= {14} borderRadius='15px' size='lg'>
             <option value='acc'>Accumulate</option>
           </Select>
         </FormControl>
+        <FormControl pb={3}>
+            <FormLabel htmlFor='acmeAddress'>{accSymbol} token address</FormLabel>
+            <InputGroup size='lg'>
+              <Input 
+                readOnly
+                placeholder="ACME address"
+                borderRadius='15px' 
+                fontSize='10pt'
+                id='acmeAddress'
+                autoComplete='off'
+                value={ url ? url : "" }/>
+            </InputGroup>
+          </FormControl>       
         <FormControl pb={3}>
           <FormLabel htmlFor='amount'>Amount</FormLabel>
           <InputGroup size='lg'>
