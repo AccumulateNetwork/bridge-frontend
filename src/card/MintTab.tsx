@@ -1,4 +1,4 @@
-import { Box, Select, useDisclosure, VStack, FormControl, FormLabel, Alert, AlertIcon, Input, HStack, Flex, Spacer, Divider, InputGroup, InputRightAddon, Text } from "@chakra-ui/react"
+import { Box, Select, useDisclosure, VStack, FormControl, FormLabel, Alert, AlertIcon, Input, HStack, Flex, Spacer, Divider, InputGroup, InputRightAddon, Text, FormHelperText } from "@chakra-ui/react"
 import { FC, useEffect, useState } from "react"
 import { CardButton } from "./CardButton"
 import { CardSelectItem } from "./CardSelectItem"
@@ -104,40 +104,20 @@ export const MintTab: FC<Props> = (props) => {
               dispatch({type: SET_ACC_SYMBOL, payload: v.target.value})
             }}>
               {options}
-            </Select>  
+            </Select>
+            {url && 
+              <FormHelperText color='blue.500' textAlign={"left"} style={{wordBreak: "break-all", fontSize: "9pt"}}>{ url }</FormHelperText>
+            }
           </FormControl>       
-          <FormControl pb={3}>
-            <FormLabel htmlFor='acmeAddress'>{accSymbol} token address</FormLabel>
-            <InputGroup size='lg'>
-              <Input 
-                readOnly
-                placeholder="ACME address"
-                borderRadius='15px' 
-                fontSize='10pt'
-                id='acmeAddress'
-                autoComplete='off'
-                value={ url ? url : "" }/>
-            </InputGroup>
-          </FormControl>         
           <FormControl pb={3}>
             <FormLabel htmlFor='destination'>Destination</FormLabel>
             <Select id='destination' fontSize={14} borderRadius='15px' size='lg'>
               <option value='eth'>Ethereum</option>
             </Select>
+            {evmAddress && 
+              <FormHelperText color='blue.500' textAlign={"left"} style={{wordBreak: "break-all", fontSize: "9pt"}}>{ evmAddress }</FormHelperText>
+            }
           </FormControl>
-          <FormControl pb={3}>
-            <FormLabel htmlFor='evmAddress'>{evmSymbol} token address</FormLabel>
-            <InputGroup size='lg'>
-              <Input 
-                readOnly
-                placeholder="evm address"
-                borderRadius='15px' 
-                fontSize='10pt'
-                id='evmAddress'
-                autoComplete='off'
-                value={ evmAddress ? evmAddress : "" }/>
-            </InputGroup>
-          </FormControl>   
           <FormControl pb={3}>
             <FormLabel htmlFor='amount'>How much will you send</FormLabel>
             <InputGroup size='lg'>
