@@ -266,19 +266,6 @@ export const ReleaseTab: FC<Props> = (props) => {
           }
         </FormControl>
         <FormControl pb={3}>
-            <FormLabel htmlFor='acmeAddress'>{accSymbol} token address</FormLabel>
-            <InputGroup size='lg'>
-              <Input 
-                readOnly
-                placeholder="ACME address"
-                borderRadius='15px' 
-                fontSize='10pt'
-                id='acmeAddress'
-                autoComplete='off'
-                value={ url ? url : "" }/>
-            </InputGroup>
-          </FormControl>       
-        <FormControl pb={3}>
           <FormLabel htmlFor='amount'>Amount</FormLabel>
           <InputGroup size='lg'>
             <Input 
@@ -336,7 +323,7 @@ export const ReleaseTab: FC<Props> = (props) => {
             : null
           }
           { destinationAddressError === DestinationAddressError.ADDRESS_NOT_FOUND ?
-            <Text color={"red.400"} my={2} fontSize='sm'>Token account not found</Text>
+            <Text color={"red.400"} my={2} fontSize='sm'>Token account not created yet, please ensure this is the correct address you'd like to send to</Text>
             : null    
           }
         </FormControl>
