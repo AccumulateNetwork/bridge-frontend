@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, Box, VStack, Button } from "@chakra-ui/react";
+import { Alert, AlertIcon, Box, VStack, Button, ButtonGroup } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import { FC, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
@@ -73,7 +73,13 @@ export const Routing: FC<Props> = () => {
   } else {
     const chainLabel = Chains.get(tokensChainId)
     return (
-      <Box> 
+      <Box>
+
+        <ButtonGroup gap='4' mb='10'>
+          <Button as='a' href='https://bridge.accumulatenetwork.io' colorScheme='blue' size='lg' variant={tokensChainId === 1 ? 'solid' : 'outline'}>Ethereum Bridge</Button>
+          <Button as='a' href='https://arbitrum.bridge.accumulatenetwork.io' colorScheme='blue' size='lg' variant={tokensChainId === 42161 ? 'solid' : 'outline'}>Arbitrum Bridge</Button>
+        </ButtonGroup>
+
         { tokensChainId && chainId !== tokensChainId ? 
          <Alert mb={10} maxWidth={400} justifyContent='center' status='error' variant='subtle' flexDirection='column' alignItems='center' textAlign='center'>
            <p>Please connect to <strong>{chainLabel}</strong> to use the bridge</p>
