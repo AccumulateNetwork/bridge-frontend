@@ -9,6 +9,7 @@ import SelectWalletModal from "../Modal"
 import BigNumber from "bignumber.js"
 import { Token } from "../common/Token"
 import { decimalCount, formAddress, toRoundedDown, validETHAddress } from "../utils"
+import { Chains } from "../chains";
 
 type Props = {
 }
@@ -34,6 +35,9 @@ export const MintTab: FC<Props> = (props) => {
 
   const mintFeeBps = fees.mintFee
   const mintFeePercentage = mintFeeBps / 100
+
+  const { tokensChainId } = useStore()
+  const chainLabel = Chains.get(tokensChainId)
 
   // select options group
   const options: JSX.Element[] = []
@@ -112,7 +116,7 @@ export const MintTab: FC<Props> = (props) => {
           <FormControl pb={3}>
             <FormLabel htmlFor='destination'>Destination</FormLabel>
             <Select id='destination' fontSize={14} borderRadius='15px' size='lg'>
-              <option value='eth'>Ethereum</option>
+              <option>{chainLabel}</option>
             </Select>
             {evmAddress && 
               <FormHelperText color='blue.500' textAlign={"left"} style={{wordBreak: "break-all", fontSize: "9pt"}}>{ evmAddress }</FormHelperText>
