@@ -76,8 +76,9 @@ export const Routing: FC<Props> = () => {
       <Box>
 
         <ButtonGroup gap='4' mb='10'>
-          <Button as='a' href='https://bridge.accumulatenetwork.io' colorScheme='blue' size='lg' variant={tokensChainId === 1 ? 'solid' : 'outline'}>Ethereum Bridge</Button>
-          <Button as='a' href='https://arbitrum.bridge.accumulatenetwork.io' colorScheme='blue' size='lg' variant={tokensChainId === 42161 ? 'solid' : 'outline'}>Arbitrum Bridge</Button>
+          <Button as='a' href='https://bridge.accumulatenetwork.io' colorScheme='blue' size='lg' variant={tokensChainId === 1 ? 'solid' : 'outline'}>Ethereum</Button>
+          <Button as='a' href='https://bnb-bridge.accumulatenetwork.io' colorScheme='blue' size='lg' variant={tokensChainId === 56 ? 'solid' : 'outline'}>BNB Chain</Button>
+          <Button as='a' href='https://arb-bridge.accumulatenetwork.io' colorScheme='blue' size='lg' variant={tokensChainId === 42161 ? 'solid' : 'outline'}>Arbitrum</Button>
         </ButtonGroup>
 
         { tokensChainId && chainId !== tokensChainId ? 
