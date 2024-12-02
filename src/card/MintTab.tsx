@@ -198,7 +198,7 @@ export const MintTab: FC<Props> = (props) => {
         </Flex>
         <Flex fontSize={14} color={"gray.500"}>
           <Box>
-            Ethereum Tx Cost
+          {chainLabel} Tx Cost
           </Box>
           <Spacer />
           <Box >

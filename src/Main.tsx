@@ -65,21 +65,29 @@ export const Routing: FC<Props> = () => {
   
   if (globalServerNotResponded) {
     return (
+      <>
+      <ButtonGroup gap='4' mb='10'>
+        <Button as='a' href='https://bridge.accumulatenetwork.io' colorScheme='blue' size='lg' variant={process.env.REACT_APP_API_URL === "https://api.bridge.accumulatenetwork.io" ? 'solid' : 'outline'}>Ethereum</Button>
+        <Button as='a' href='https://bnb-bridge.accumulatenetwork.io' colorScheme='blue' size='lg' variant={process.env.REACT_APP_API_URL === "https://bnb-api.bridge.accumulatenetwork.io" ? 'solid' : 'outline'}>BNB Chain</Button>
+        <Button as='a' href='https://arb-bridge.accumulatenetwork.io' colorScheme='blue' size='lg' variant={process.env.REACT_APP_API_URL === "https://arb-api.bridge.accumulatenetwork.io" ? 'solid' : 'outline'}>Arbitrum</Button>
+      </ButtonGroup>
       <Alert justifyContent='center' status='error'>
         <AlertIcon />
         Can not connect to bridge node
       </Alert>
+      </>
     )
   } else {
     const chainLabel = Chains.get(tokensChainId)
     return (
       <Box>
-
+        { tokensChainId &&
         <ButtonGroup gap='4' mb='10'>
           <Button as='a' href='https://bridge.accumulatenetwork.io' colorScheme='blue' size='lg' variant={tokensChainId === 1 ? 'solid' : 'outline'}>Ethereum</Button>
           <Button as='a' href='https://bnb-bridge.accumulatenetwork.io' colorScheme='blue' size='lg' variant={tokensChainId === 56 ? 'solid' : 'outline'}>BNB Chain</Button>
           <Button as='a' href='https://arb-bridge.accumulatenetwork.io' colorScheme='blue' size='lg' variant={tokensChainId === 42161 ? 'solid' : 'outline'}>Arbitrum</Button>
         </ButtonGroup>
+        }
 
         { tokensChainId && chainId !== tokensChainId ? 
          <Alert mb={10} maxWidth={400} justifyContent='center' status='error' variant='subtle' flexDirection='column' alignItems='center' textAlign='center'>
