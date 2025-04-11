@@ -3,4 +3,5 @@ export const Chains = new Map<number, string>([
     [5, 'Goerli Testnet'],
     [56, 'BNB Chain'],
     [42161, 'Arbitrum'],
+    [8453, 'Base'],
 ])

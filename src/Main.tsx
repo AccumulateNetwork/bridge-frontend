@@ -70,6 +70,7 @@ export const Routing: FC<Props> = () => {
         <Button as='a' href='https://bridge.accumulatenetwork.io' colorScheme='blue' size='lg' variant={process.env.REACT_APP_API_URL === "https://api.bridge.accumulatenetwork.io" ? 'solid' : 'outline'}>Ethereum</Button>
         <Button as='a' href='https://bnb-bridge.accumulatenetwork.io' colorScheme='blue' size='lg' variant={process.env.REACT_APP_API_URL === "https://bnb-api.bridge.accumulatenetwork.io" ? 'solid' : 'outline'}>BNB Chain</Button>
         <Button as='a' href='https://arb-bridge.accumulatenetwork.io' colorScheme='blue' size='lg' variant={process.env.REACT_APP_API_URL === "https://arb-api.bridge.accumulatenetwork.io" ? 'solid' : 'outline'}>Arbitrum</Button>
+        <Button as='a' href='https://base-bridge.accumulatenetwork.io' colorScheme='blue' size='lg' variant={process.env.REACT_APP_API_URL === "https://base-api.bridge.accumulatenetwork.io" ? 'solid' : 'outline'}>Base</Button>
       </ButtonGroup>
       <Alert justifyContent='center' status='error'>
         <AlertIcon />
@@ -86,6 +87,7 @@ export const Routing: FC<Props> = () => {
           <Button as='a' href='https://bridge.accumulatenetwork.io' colorScheme='blue' size='lg' variant={tokensChainId === 1 ? 'solid' : 'outline'}>Ethereum</Button>
           <Button as='a' href='https://bnb-bridge.accumulatenetwork.io' colorScheme='blue' size='lg' variant={tokensChainId === 56 ? 'solid' : 'outline'}>BNB Chain</Button>
           <Button as='a' href='https://arb-bridge.accumulatenetwork.io' colorScheme='blue' size='lg' variant={tokensChainId === 42161 ? 'solid' : 'outline'}>Arbitrum</Button>
+          <Button as='a' href='https://base-bridge.accumulatenetwork.io' colorScheme='blue' size='lg' variant={tokensChainId === 8453 ? 'solid' : 'outline'}>Base</Button>
         </ButtonGroup>
         }
 
